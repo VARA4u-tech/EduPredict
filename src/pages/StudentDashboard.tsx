@@ -20,7 +20,7 @@ const StudentDashboard = () => {
   const menuItems = [
     { icon: Home, label: 'Overview', path: '/dashboard/student' },
     { icon: BarChart3, label: 'My Performance', path: '/dashboard/student/performance' },
-    { icon: BookOpen, label: 'Predictions', path: '/dashboard/student/predictions' },
+    { icon: Target, label: 'Predictions', path: '/dashboard/student/predictions' },
     { icon: Settings, label: 'Settings', path: '/dashboard/student/settings' },
   ];
 
