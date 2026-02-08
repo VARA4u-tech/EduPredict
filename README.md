@@ -1,4 +1,4 @@
-# 🎓 EduPredict - Student Success Prediction Platform
+# 🎓 EduPredict - Predictive Analytics System for Student Performance Forecasting Platform
 
 <div align="center">
   
