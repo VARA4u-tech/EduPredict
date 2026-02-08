@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="14" fill="#FBBF24" stroke="#000" stroke-width="2"/>
+  
+  <!-- Brain icon - simplified for favicon -->
+  <path d="M16 8c-4 0-7 3-7 7 0 2.5 1.5 4.5 3.5 5.5v2.5c0 .5.5 1 1 1h5c.5 0 1-.5 1-1v-2.5c2-1 3.5-3 3.5-5.5 0-4-3-7-7-7z" 
+        fill="#fff" 
+        stroke="#000" 
+        stroke-width="1.5"/>
+  
+  <!-- Brain details -->
+  <path d="M13 14c0-1.5 1.5-3 3-3s3 1.5 3 3" 
+        fill="none" 
+        stroke="#000" 
+        stroke-width="1" 
+        stroke-linecap="round"/>
+  <path d="M14 17h4" 
+        fill="none" 
+        stroke="#000" 
+        stroke-width="1" 
+        stroke-linecap="round"/>
+  
+  <!-- Graduation cap -->
+  <path d="M16 6l-6 3 6 3 6-3-6-3z" fill="#000"/>
+  <rect x="15" y="9" width="2" height="3" fill="#000"/>
+</svg>
