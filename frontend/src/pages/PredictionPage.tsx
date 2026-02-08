@@ -17,11 +17,10 @@ import {
   Zap,
   CheckCircle,
   XCircle,
-  Lightbulb,
   ThumbsUp,
   ArrowUpCircle,
+  Lightbulb,
 } from "lucide-react";
-import { z } from "zod";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import ComicInput from "@/components/ComicInput";
@@ -33,25 +32,23 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { usePrediction } from "@/hooks/useAI";
 
-const predictionSchema = z.object({
-  attendance: z.number().min(0).max(100),
-  internalMarks: z.number().min(0).max(100),
-  assignmentScore: z.number().min(0).max(100),
-  previousGrade: z.number().min(0).max(100),
-  studyHours: z.number().min(0).max(24),
-});
-
 const PredictionPage = () => {
-  const { user, addXp } = useMockData();
+  const { user } = useMockData();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showWhatIf, setShowWhatIf] = useState(false);
+
+  // State for new form structure
   const [formData, setFormData] = useState({
     attendance: "",
+    attendanceMax: "100",
     internalMarks: "",
-    assignmentScore: "",
-    previousGrade: "",
-    studyHours: "",
+    internalMarksMax: "100",
+    externalMarks: "",
+    externalMarksMax: "100",
+    subjectPerformance: "",
+    subjectPerformanceMax: "100",
   });
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [prediction, setPrediction] = useState<{
     finalScore: number;
@@ -67,6 +64,13 @@ const PredictionPage = () => {
   } = usePrediction();
   const [showAiResults, setShowAiResults] = useState(false);
 
+  // Helper to normalize score to 0-100 scale
+  const normalize = (value: string, max: string) => {
+    const v = parseFloat(value) || 0;
+    const m = parseFloat(max) || 100;
+    return m === 0 ? 0 : (v / m) * 100;
+  };
+
   const menuItems = [
     { icon: Home, label: "Overview", path: "/dashboard/student" },
     {
@@ -76,8 +80,8 @@ const PredictionPage = () => {
     },
     {
       icon: BarChart3,
-      label: "Analytics",
-      path: "/dashboard/student/analytics",
+      label: "Performance",
+      path: "/dashboard/student/performance",
     },
     { icon: FileText, label: "Reports", path: "/dashboard/student/reports" },
     { icon: Settings, label: "Settings", path: "/dashboard/student/settings" },
@@ -90,35 +94,65 @@ const PredictionPage = () => {
 
   const handlePredict = async () => {
     // Validate inputs
-    const numericData = {
-      attendance: parseFloat(formData.attendance) || 0,
-      internalMarks: parseFloat(formData.internalMarks) || 0,
-      assignmentScore: parseFloat(formData.assignmentScore) || 0,
-      previousGrade: parseFloat(formData.previousGrade) || 0,
-      studyHours: parseFloat(formData.studyHours) || 0,
-    };
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
 
-    const result = predictionSchema.safeParse(numericData);
+    // specific validation logic
+    const fields = [
+      "attendance",
+      "internalMarks",
+      "externalMarks",
+      "subjectPerformance",
+    ];
 
-    if (!result.success) {
-      const newErrors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0]) {
-          newErrors[err.path[0].toString()] =
-            "Please enter a valid value (0-100)";
-        }
-      });
+    fields.forEach((field) => {
+      const val = parseFloat(formData[field as keyof typeof formData]);
+      const max = parseFloat(formData[`${field}Max` as keyof typeof formData]);
+
+      if (isNaN(val) || val < 0) {
+        newErrors[field] = "Enter a valid score";
+        isValid = false;
+      }
+      if (isNaN(max) || max <= 0) {
+        newErrors[`${field}Max`] = "Invalid Max";
+        isValid = false;
+      }
+      if (val > max) {
+        newErrors[field] = `Score cannot exceed ${max}`;
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
       setErrors(newErrors);
       return;
     }
 
-    // Local calculation for immediate feedback
+    // Normalize all inputs to %
+    const normalizedData = {
+      attendance: normalize(formData.attendance, formData.attendanceMax),
+      internalMarks: normalize(
+        formData.internalMarks,
+        formData.internalMarksMax,
+      ),
+      externalMarks: normalize(
+        formData.externalMarks,
+        formData.externalMarksMax,
+      ),
+      subjectPerformance: normalize(
+        formData.subjectPerformance,
+        formData.subjectPerformanceMax,
+      ),
+      studyHours: 4, // Default assumption since removed from UI
+    };
+
+    // Calculate weighted score (adjusted formula)
+    // Attendance: 20%, Internals: 30%, Externals: 30%, Subject Perf (Overall): 20%
     const weightedScore =
-      numericData.attendance * 0.2 +
-      numericData.internalMarks * 0.35 +
-      numericData.assignmentScore * 0.2 +
-      numericData.previousGrade * 0.15 +
-      (numericData.studyHours / 24) * 100 * 0.1;
+      normalizedData.attendance * 0.2 +
+      normalizedData.internalMarks * 0.3 +
+      normalizedData.externalMarks * 0.3 +
+      normalizedData.subjectPerformance * 0.2;
 
     const finalScore = Math.round(weightedScore);
     const passProbability = Math.min(Math.round(finalScore * 1.1), 100);
@@ -131,11 +165,11 @@ const PredictionPage = () => {
     // Call AI for detailed insights
     try {
       await getAIPrediction({
-        attendance: numericData.attendance,
-        assignmentCompletion: numericData.assignmentScore,
-        quizScores: numericData.internalMarks,
-        studyHours: numericData.studyHours,
-        participation: 85, // estimated
+        attendance: normalizedData.attendance,
+        internalMarks: normalizedData.internalMarks,
+        externalMarks: normalizedData.externalMarks,
+        subjectPerformance: normalizedData.subjectPerformance,
+        studyHours: normalizedData.studyHours,
       });
     } catch (error) {
       console.error("AI Prediction failed", error);
@@ -145,10 +179,13 @@ const PredictionPage = () => {
   const resetForm = () => {
     setFormData({
       attendance: "",
+      attendanceMax: "100",
       internalMarks: "",
-      assignmentScore: "",
-      previousGrade: "",
-      studyHours: "",
+      internalMarksMax: "100",
+      externalMarks: "",
+      externalMarksMax: "100",
+      subjectPerformance: "",
+      subjectPerformanceMax: "100",
     });
     setPrediction(null);
     setErrors({});
@@ -246,7 +283,7 @@ const PredictionPage = () => {
               Prediction & Analytics
             </StickerText>
             <p className="font-comic text-foreground/80 mt-1">
-              Enter your details to predict your performance! 🎯
+              Enter your scores and total marks to predict your performance! 🎯
             </p>
           </motion.div>
 
@@ -268,99 +305,147 @@ const PredictionPage = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <div>
-                    <ComicInput
-                      label="Attendance %"
-                      type="number"
-                      placeholder="e.g., 85"
-                      value={formData.attendance}
-                      onChange={(e) =>
-                        handleInputChange("attendance", e.target.value)
-                      }
-                      min="0"
-                      max="100"
-                    />
-                    {errors.attendance && (
-                      <p className="text-destructive font-comic text-sm mt-1">
-                        {errors.attendance}
-                      </p>
-                    )}
+                  {/* Attendance Field */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <ComicInput
+                        label="Attendance"
+                        type="number"
+                        placeholder="Attendance Score"
+                        value={formData.attendance}
+                        onChange={(e) =>
+                          handleInputChange("attendance", e.target.value)
+                        }
+                        min="0"
+                      />
+                      {errors.attendance && (
+                        <p className="text-destructive font-comic text-xs mt-1">
+                          {errors.attendance}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <ComicInput
+                        label="Out of"
+                        type="number"
+                        placeholder="Attendance Max"
+                        value={formData.attendanceMax}
+                        onChange={(e) =>
+                          handleInputChange("attendanceMax", e.target.value)
+                        }
+                        min="1"
+                      />
+                      {errors.attendanceMax && (
+                        <p className="text-destructive font-comic text-xs mt-1">
+                          {errors.attendanceMax}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <div>
-                    <ComicInput
-                      label="Internal Marks %"
-                      type="number"
-                      placeholder="e.g., 78"
-                      value={formData.internalMarks}
-                      onChange={(e) =>
-                        handleInputChange("internalMarks", e.target.value)
-                      }
-                      min="0"
-                      max="100"
-                    />
-                    {errors.internalMarks && (
-                      <p className="text-destructive font-comic text-sm mt-1">
-                        {errors.internalMarks}
-                      </p>
-                    )}
+                  {/* Internals Field */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <ComicInput
+                        label="Internals"
+                        type="number"
+                        placeholder="Internals Score"
+                        value={formData.internalMarks}
+                        onChange={(e) =>
+                          handleInputChange("internalMarks", e.target.value)
+                        }
+                        min="0"
+                      />
+                      {errors.internalMarks && (
+                        <p className="text-destructive font-comic text-xs mt-1">
+                          {errors.internalMarks}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <ComicInput
+                        label="Out of"
+                        type="number"
+                        placeholder="Internals Max"
+                        value={formData.internalMarksMax}
+                        onChange={(e) =>
+                          handleInputChange("internalMarksMax", e.target.value)
+                        }
+                        min="1"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <ComicInput
-                      label="Assignment Score %"
-                      type="number"
-                      placeholder="e.g., 90"
-                      value={formData.assignmentScore}
-                      onChange={(e) =>
-                        handleInputChange("assignmentScore", e.target.value)
-                      }
-                      min="0"
-                      max="100"
-                    />
-                    {errors.assignmentScore && (
-                      <p className="text-destructive font-comic text-sm mt-1">
-                        {errors.assignmentScore}
-                      </p>
-                    )}
+                  {/* Externals Field */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <ComicInput
+                        label="Externals"
+                        type="number"
+                        placeholder="Externals Score"
+                        value={formData.externalMarks}
+                        onChange={(e) =>
+                          handleInputChange("externalMarks", e.target.value)
+                        }
+                        min="0"
+                      />
+                      {errors.externalMarks && (
+                        <p className="text-destructive font-comic text-xs mt-1">
+                          {errors.externalMarks}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <ComicInput
+                        label="Out of"
+                        type="number"
+                        placeholder="Externals Max"
+                        value={formData.externalMarksMax}
+                        onChange={(e) =>
+                          handleInputChange("externalMarksMax", e.target.value)
+                        }
+                        min="1"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <ComicInput
-                      label="Previous Grade %"
-                      type="number"
-                      placeholder="e.g., 75"
-                      value={formData.previousGrade}
-                      onChange={(e) =>
-                        handleInputChange("previousGrade", e.target.value)
-                      }
-                      min="0"
-                      max="100"
-                    />
-                    {errors.previousGrade && (
-                      <p className="text-destructive font-comic text-sm mt-1">
-                        {errors.previousGrade}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <ComicInput
-                      label="Daily Study Hours"
-                      type="number"
-                      placeholder="e.g., 4"
-                      value={formData.studyHours}
-                      onChange={(e) =>
-                        handleInputChange("studyHours", e.target.value)
-                      }
-                      min="0"
-                      max="24"
-                    />
-                    {errors.studyHours && (
-                      <p className="text-destructive font-comic text-sm mt-1">
-                        {errors.studyHours}
-                      </p>
-                    )}
+                  {/* Subject Performance Field */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <ComicInput
+                        label="Subject Performance"
+                        type="number"
+                        placeholder="Subject Performance Score"
+                        value={formData.subjectPerformance}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "subjectPerformance",
+                            e.target.value,
+                          )
+                        }
+                        min="0"
+                      />
+                      {errors.subjectPerformance && (
+                        <p className="text-destructive font-comic text-xs mt-1">
+                          {errors.subjectPerformance}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <ComicInput
+                        label="Out of"
+                        type="number"
+                        placeholder="Subject Performance Max"
+                        value={formData.subjectPerformanceMax}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "subjectPerformanceMax",
+                            e.target.value,
+                          )
+                        }
+                        min="1"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex gap-3 pt-4">
@@ -644,32 +729,27 @@ const PredictionPage = () => {
                 <h3 className="font-bangers text-2xl text-comic-black mb-6">
                   📊 Performance Breakdown
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
                     {
                       label: "Attendance",
-                      value: formData.attendance,
+                      value: `${Math.round(normalize(formData.attendance, formData.attendanceMax))}%`,
                       color: "bg-accent",
                     },
                     {
-                      label: "Internal",
-                      value: formData.internalMarks,
+                      label: "Internals",
+                      value: `${Math.round(normalize(formData.internalMarks, formData.internalMarksMax))}%`,
                       color: "bg-secondary",
                     },
                     {
-                      label: "Assignments",
-                      value: formData.assignmentScore,
+                      label: "Externals",
+                      value: `${Math.round(normalize(formData.externalMarks, formData.externalMarksMax))}%`,
                       color: "bg-destructive",
                     },
                     {
-                      label: "Previous",
-                      value: formData.previousGrade,
+                      label: "Subject Perf.",
+                      value: `${Math.round(normalize(formData.subjectPerformance, formData.subjectPerformanceMax))}%`,
                       color: "bg-accent",
-                    },
-                    {
-                      label: "Study Hrs",
-                      value: `${formData.studyHours}h`,
-                      color: "bg-secondary",
                     },
                   ].map((item, i) => (
                     <motion.div
@@ -683,7 +763,7 @@ const PredictionPage = () => {
                         className={`${item.color} w-20 h-20 mx-auto rounded-full border-4 border-comic-black flex items-center justify-center mb-2`}
                       >
                         <span className="font-bangers text-xl text-comic-white">
-                          {item.value || "0"}
+                          {item.value}
                         </span>
                       </div>
                       <p className="font-comic text-sm text-comic-black font-bold">

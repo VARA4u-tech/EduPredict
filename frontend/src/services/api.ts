@@ -21,6 +21,16 @@ async function fetchAPI<T>(
     },
   };
 
+  // Automatically attach Authorization token if it exists
+  const token = localStorage.getItem("token");
+  if (token) {
+    if (config.headers instanceof Headers) {
+      config.headers.set("Authorization", `Bearer ${token}`);
+    } else {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
   try {
     const response = await fetch(url, config);
 

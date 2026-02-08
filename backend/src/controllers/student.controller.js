@@ -1,45 +1,15 @@
+import Student from "../models/student.model.js";
 import openai from "../config/openai.config.js";
-
-// Mock student database (replace with actual database in production)
-const mockStudents = {
-  1: {
-    id: "1",
-    name: "Alex Johnson",
-    email: "alex@example.com",
-    grade: "10th",
-    attendance: 92,
-    assignmentCompletion: 88,
-    quizScores: 85,
-    studyHours: 15,
-    participation: 78,
-    level: 5,
-    xp: 2450,
-    badges: ["Early Bird", "Quiz Master", "Consistent"],
-  },
-  2: {
-    id: "2",
-    name: "Sarah Chen",
-    email: "sarah@example.com",
-    grade: "11th",
-    attendance: 96,
-    assignmentCompletion: 95,
-    quizScores: 92,
-    studyHours: 20,
-    participation: 90,
-    level: 8,
-    xp: 4200,
-    badges: ["Top Performer", "Perfect Attendance", "Study Champion"],
-  },
-};
 
 /**
  * Get student profile by ID
  */
 export const getStudentProfile = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const student = mockStudents[id];
+    const student = await Student.findOne({ user: req.params.id }).populate(
+      "user",
+      "name email",
+    );
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
@@ -60,20 +30,42 @@ export const getStudentProfile = async (req, res) => {
  */
 export const updateStudentData = async (req, res) => {
   try {
-    const { id } = req.params;
     const updates = req.body;
 
-    if (!mockStudents[id]) {
-      return res.status(404).json({ error: "Student not found" });
+    // Allowed update fields (whitelist)
+    const allowedUpdates = [
+      "grade",
+      "attendance",
+      "assignmentCompletion",
+      "quizScores",
+      "studyHours",
+      "participation",
+    ];
+    const filteredUpdates = Object.keys(updates)
+      .filter((key) => allowedUpdates.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = updates[key];
+        return obj;
+      }, {});
+
+    if (Object.keys(filteredUpdates).length === 0) {
+      return res.status(400).json({ error: "No valid update fields provided" });
     }
 
-    // Update student data
-    mockStudents[id] = { ...mockStudents[id], ...updates };
+    const student = await Student.findOneAndUpdate(
+      { user: req.params.id },
+      { $set: filteredUpdates },
+      { new: true },
+    );
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
 
     res.json({
       success: true,
       message: "Student data updated successfully",
-      student: mockStudents[id],
+      student,
     });
   } catch (error) {
     console.error("Update error:", error);
@@ -83,40 +75,81 @@ export const updateStudentData = async (req, res) => {
     });
   }
 };
-
 /**
  * Get student progress and analytics
  */
 export const getStudentProgress = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const student = mockStudents[id];
+    const student = await Student.findOne({ user: req.params.id }).populate(
+      "user",
+      "name rollNumber gender",
+    );
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    // Calculate progress metrics
-    const overallScore =
-      student.attendance * 0.2 +
-      student.assignmentCompletion * 0.3 +
-      student.quizScores * 0.3 +
-      student.participation * 0.2;
+    // Check if student has entered any subject data
+    const hasSubjectData =
+      student.subjects &&
+      student.subjects.length > 0 &&
+      student.subjects.some((s) => s.internalMarks > 0 || s.externalMarks > 0);
+
+    // Calculate overall score from subjects if available
+    let overallScore = 0;
+    let subjectAverages = [];
+
+    if (hasSubjectData) {
+      subjectAverages = student.subjects.map((s) => ({
+        name: s.name,
+        internal: s.internalMarks,
+        external: s.externalMarks,
+        average: Math.round((s.internalMarks + s.externalMarks) / 2),
+      }));
+
+      const totalAvg =
+        subjectAverages.reduce((acc, s) => acc + s.average, 0) /
+        subjectAverages.length;
+      overallScore = Math.round(totalAvg);
+    } else {
+      // Fall back to legacy calculation if no subject data
+      overallScore =
+        student.attendance * 0.2 +
+        student.assignmentCompletion * 0.3 +
+        student.quizScores * 0.3 +
+        student.participation * 0.2;
+    }
 
     const progress = {
-      studentId: id,
-      name: student.name,
+      studentId: student._id,
+      name: student.user.name,
+      rollNumber: student.user.rollNumber,
+      gender: student.user.gender,
       overallScore: Math.round(overallScore),
+      hasSubjectData, // Flag for frontend to detect first-time users
+      subjects: student.subjects || [],
+      subjectAverages,
       metrics: {
-        attendance: { value: student.attendance, trend: "up", change: 3 },
+        attendance: {
+          value: hasSubjectData ? overallScore : student.attendance,
+          trend: "up",
+          change: 3,
+        },
         assignments: {
-          value: student.assignmentCompletion,
+          value: hasSubjectData ? overallScore : student.assignmentCompletion,
           trend: "up",
           change: 5,
         },
-        quizzes: { value: student.quizScores, trend: "stable", change: 0 },
-        participation: { value: student.participation, trend: "up", change: 8 },
+        quizzes: {
+          value: hasSubjectData ? overallScore : student.quizScores,
+          trend: "stable",
+          change: 0,
+        },
+        participation: {
+          value: hasSubjectData ? overallScore : student.participation,
+          trend: "up",
+          change: 8,
+        },
       },
       gamification: {
         level: student.level,
@@ -130,7 +163,9 @@ export const getStudentProgress = async (req, res) => {
           ? "High"
           : overallScore >= 70
             ? "Medium"
-            : "Needs Improvement",
+            : overallScore >= 50
+              ? "Average"
+              : "Needs Improvement",
     };
 
     res.json({ success: true, progress });
@@ -148,31 +183,37 @@ export const getStudentProgress = async (req, res) => {
  */
 export const getWhatIfScenario = async (req, res) => {
   try {
-    const { id } = req.params;
     const { scenario } = req.body;
 
-    const student = mockStudents[id];
+    const student = await Student.findOne({ user: req.params.id }).populate(
+      "user",
+      "name",
+    );
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    if (!scenario) {
-      return res
-        .status(400)
-        .json({ error: "Scenario description is required" });
+    if (!scenario || scenario.length > 500) {
+      return res.status(400).json({
+        error:
+          "Scenario description is required and must be under 500 characters",
+      });
     }
 
-    const prompt = `Analyze this "What If" scenario for a student:
+    // Basic sanitization (remove newlines if needed, though LLM handles it)
+    const sanitizedScenario = scenario.replace(/[\r\n]+/g, " ");
 
+    const prompt = `Analyze this "What If" scenario for a student:
+    
 Current Student Stats:
-- Name: ${student.name}
+- Name: ${student.user.name}
 - Attendance: ${student.attendance}%
 - Assignment Completion: ${student.assignmentCompletion}%
 - Quiz Scores: ${student.quizScores}%
 - Study Hours/Week: ${student.studyHours}
 
-Scenario: "${scenario}"
+Scenario: "${sanitizedScenario}"
 
 Provide:
 1. Predicted Impact (how this would affect their grades/success)
@@ -211,6 +252,87 @@ Format as JSON with keys: impact, projectedScores, timeline, actionSteps, challe
     res.status(500).json({
       error: error.message || "Failed to analyze scenario",
       details: error.stack,
+    });
+  }
+};
+
+/**
+ * Get student subjects/marks
+ */
+export const getStudentSubjects = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.params.id }).populate(
+      "user",
+      "name rollNumber",
+    );
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.json({
+      success: true,
+      subjects: student.subjects || [],
+      studentName: student.user?.name,
+      rollNumber: student.user?.rollNumber,
+    });
+  } catch (error) {
+    console.error("Get subjects error:", error);
+    res.status(500).json({
+      error: "Failed to fetch subjects",
+      details: error.message,
+    });
+  }
+};
+
+/**
+ * Update student subjects/marks
+ */
+export const updateStudentSubjects = async (req, res) => {
+  try {
+    const { subjects } = req.body;
+
+    if (!subjects || !Array.isArray(subjects)) {
+      return res.status(400).json({ error: "Subjects array is required" });
+    }
+
+    // Validate each subject
+    for (const subject of subjects) {
+      if (!subject.name) {
+        return res.status(400).json({ error: "Subject name is required" });
+      }
+      if (subject.internalMarks < 0 || subject.internalMarks > 100) {
+        return res
+          .status(400)
+          .json({ error: "Internal marks must be between 0 and 100" });
+      }
+      if (subject.externalMarks < 0 || subject.externalMarks > 100) {
+        return res
+          .status(400)
+          .json({ error: "External marks must be between 0 and 100" });
+      }
+    }
+
+    const student = await Student.findOneAndUpdate(
+      { user: req.params.id },
+      { $set: { subjects: subjects } },
+      { new: true },
+    );
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Subjects updated successfully",
+      subjects: student.subjects,
+    });
+  } catch (error) {
+    console.error("Update subjects error:", error);
+    res.status(500).json({
+      error: "Failed to update subjects",
+      details: error.message,
     });
   }
 };

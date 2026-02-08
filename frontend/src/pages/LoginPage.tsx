@@ -1,36 +1,79 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import ComicButton from '@/components/ComicButton';
-import ComicCard from '@/components/ComicCard';
-import ComicInput from '@/components/ComicInput';
-import StickerBadge from '@/components/StickerBadge';
-import StickerText from '@/components/StickerText';
-import { Brain, GraduationCap, Users, User } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import ComicButton from "@/components/ComicButton";
+import ComicCard from "@/components/ComicCard";
+import StickerBadge from "@/components/StickerBadge";
+import StickerText from "@/components/StickerText";
+import { Brain, GraduationCap, Users, User } from "lucide-react";
+import { AuthService } from "@/services/auth.service";
+import { useToast } from "@/components/ui/use-toast";
 
-type Role = 'admin' | 'faculty' | 'student';
+type Role = "admin" | "faculty" | "student";
 
 const LoginPage = () => {
-  const [selectedRole, setSelectedRole] = useState<Role>('student');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState<Role>("student");
+  const [email, setEmail] = useState("");
+  const [rollNumber, setRollNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const roles: { id: Role; label: string; icon: React.ElementType; color: string }[] = [
-    { id: 'admin', label: 'Admin', icon: Users, color: 'bg-destructive' },
-    { id: 'faculty', label: 'Faculty', icon: GraduationCap, color: 'bg-secondary' },
-    { id: 'student', label: 'Student', icon: User, color: 'bg-accent' },
+  // Redirect if already logged in
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    if (currentUser && AuthService.isAuthenticated()) {
+      const role = currentUser.role || "student";
+      navigate(`/dashboard/${role}`, { replace: true });
+    }
+  }, [navigate]);
+
+  const roles: {
+    id: Role;
+    label: string;
+    icon: React.ElementType;
+    color: string;
+  }[] = [
+    { id: "admin", label: "Admin", icon: Users, color: "bg-destructive" },
+    {
+      id: "faculty",
+      label: "Faculty",
+      icon: GraduationCap,
+      color: "bg-secondary",
+    },
+    { id: "student", label: "Student", icon: User, color: "bg-accent" },
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to appropriate dashboard based on role
-    if (selectedRole === 'admin') {
-      navigate('/dashboard/admin');
-    } else if (selectedRole === 'faculty') {
-      navigate('/dashboard/faculty');
-    } else {
-      navigate('/dashboard/student');
+    setLoading(true);
+
+    try {
+      // For students, use roll number; for others, use email
+      const loginData =
+        selectedRole === "student"
+          ? { rollNumber: rollNumber.toUpperCase(), password }
+          : { email, password };
+
+      const response = await AuthService.login(loginData);
+
+      toast({
+        title: "Login Successful! 🚀",
+        description: `Welcome, ${response.name}!`,
+      });
+
+      // Navigate based on role
+      const role = response.role || selectedRole;
+      navigate(`/dashboard/${role}`);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: error.message || "Invalid credentials",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,7 +82,7 @@ const LoginPage = () => {
       <div className="w-full max-w-5xl">
         <div className="flex flex-col lg:flex-row gap-8 items-center">
           {/* Left - Illustration & Branding */}
-          <motion.div 
+          <motion.div
             className="flex-1 text-center lg:text-left"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -48,9 +91,11 @@ const LoginPage = () => {
               <div className="w-16 h-16 bg-secondary rounded-2xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center">
                 <Brain className="w-10 h-10 text-comic-black" />
               </div>
-              <span className="font-bangers text-4xl text-foreground">EduPredict</span>
+              <span className="font-bangers text-4xl text-foreground">
+                EduPredict
+              </span>
             </Link>
-            
+
             <div className="space-y-4 mb-8">
               <StickerText size="xl" color="white" className="block">
                 Welcome Back!
@@ -83,7 +128,7 @@ const LoginPage = () => {
           </motion.div>
 
           {/* Right - Login Form */}
-          <motion.div 
+          <motion.div
             className="flex-1 w-full max-w-md"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -102,26 +147,36 @@ const LoginPage = () => {
                   {roles.map((role) => (
                     <motion.button
                       key={role.id}
+                      type="button"
                       onClick={() => setSelectedRole(role.id)}
                       className={`
                         p-3 rounded-xl border-4 border-comic-black text-center transition-all
-                        ${selectedRole === role.id 
-                          ? `${role.color} shadow-[4px_4px_0px_black] -translate-x-0.5 -translate-y-0.5` 
-                          : 'bg-gray-100 hover:bg-gray-200'
+                        ${
+                          selectedRole === role.id
+                            ? `${role.color} shadow-[4px_4px_0px_black] -translate-x-0.5 -translate-y-0.5`
+                            : "bg-gray-100 hover:bg-gray-200"
                         }
                       `}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <role.icon className={`w-6 h-6 mx-auto mb-1 ${
-                        selectedRole === role.id 
-                          ? role.id === 'faculty' ? 'text-comic-black' : 'text-comic-white'
-                          : 'text-comic-black'
-                      }`} />
-                      <span className={`font-bangers text-sm ${
-                        selectedRole === role.id 
-                          ? role.id === 'faculty' ? 'text-comic-black' : 'text-comic-white'
-                          : 'text-comic-black'
-                      }`}>
+                      <role.icon
+                        className={`w-6 h-6 mx-auto mb-1 ${
+                          selectedRole === role.id
+                            ? role.id === "faculty"
+                              ? "text-comic-black"
+                              : "text-comic-white"
+                            : "text-comic-black"
+                        }`}
+                      />
+                      <span
+                        className={`font-bangers text-sm ${
+                          selectedRole === role.id
+                            ? role.id === "faculty"
+                              ? "text-comic-black"
+                              : "text-comic-white"
+                            : "text-comic-black"
+                        }`}
+                      >
                         {role.label}
                       </span>
                     </motion.button>
@@ -131,54 +186,113 @@ const LoginPage = () => {
 
               {/* Login Form */}
               <form onSubmit={handleLogin} className="space-y-4">
-                <ComicInput
-                  label="Email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                
-                <ComicInput
-                  label="Password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                {selectedRole === "student" ? (
+                  /* Roll Number Input for Students */
+                  <div className="space-y-2">
+                    <label className="font-bangers text-lg text-comic-black">
+                      Roll Number
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20 uppercase"
+                      placeholder="e.g., 24H71F0002"
+                      value={rollNumber}
+                      onChange={(e) =>
+                        setRollNumber(e.target.value.toUpperCase())
+                      }
+                      required
+                    />
+                    <p className="text-xs text-gray-500 font-comic">
+                      Password is same as Roll No. (UPPER CASE)
+                    </p>
+                  </div>
+                ) : (
+                  /* Email Input for Admin/Faculty */
+                  <div className="space-y-2">
+                    <label className="font-bangers text-lg text-comic-black">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20"
+                      placeholder="your@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <label className="font-bangers text-lg text-comic-black">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20"
+                    placeholder={
+                      selectedRole === "student"
+                        ? "Same as Roll No."
+                        : "••••••••"
+                    }
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
 
                 <div className="flex items-center justify-between text-sm font-comic">
                   <label className="flex items-center gap-2 text-comic-black">
-                    <input type="checkbox" className="w-4 h-4 rounded border-2 border-comic-black" />
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 rounded border-2 border-comic-black"
+                    />
                     Remember me
                   </label>
-                  <a href="#" className="text-destructive font-bold hover:underline">
+                  <a
+                    href="#"
+                    className="text-destructive font-bold hover:underline"
+                  >
                     Forgot Password?
                   </a>
                 </div>
 
-                <ComicButton type="submit" variant="primary" size="lg" className="w-full">
-                  🚀 Login as {roles.find(r => r.id === selectedRole)?.label}
+                <ComicButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Logging in..."
+                    : `🚀 Login as ${roles.find((r) => r.id === selectedRole)?.label}`}
                 </ComicButton>
               </form>
 
               <div className="mt-6 text-center">
                 <p className="font-comic text-comic-black">
-                  Don't have an account?{' '}
-                  <a href="#" className="text-destructive font-bold hover:underline">
+                  Don't have an account?{" "}
+                  <Link
+                    to="/register"
+                    className="text-destructive font-bold hover:underline"
+                  >
                     Sign Up
-                  </a>
+                  </Link>
                 </p>
               </div>
             </ComicCard>
 
-            <motion.div 
+            <motion.div
               className="text-center mt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              <Link to="/" className="font-comic text-foreground/80 hover:text-foreground">
+              <Link
+                to="/"
+                className="font-comic text-foreground/80 hover:text-foreground"
+              >
                 ← Back to Home
               </Link>
             </motion.div>

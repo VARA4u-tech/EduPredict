@@ -7,26 +7,46 @@ export const generatePrediction = async (req, res) => {
   try {
     const { studentData } = req.body;
 
-    if (!studentData) {
-      return res.status(400).json({ error: "Student data is required" });
+    if (!studentData || typeof studentData !== "object") {
+      return res.status(400).json({ error: "Valid student data is required" });
     }
+
+    // Helper to sanitize inputs
+    const clean = (val) =>
+      String(val !== undefined && val !== null && val !== "" ? val : "N/A")
+        .replace(/[\r\n]+/g, " ")
+        .substring(0, 100);
+
+    // Determine fields based on input (support both old and new formats)
+    const attendance = clean(studentData.attendance);
+    const internals =
+      studentData.internalMarks !== undefined
+        ? clean(studentData.internalMarks)
+        : clean(studentData.quizScores);
+    const externals =
+      studentData.externalMarks !== undefined
+        ? clean(studentData.externalMarks)
+        : clean(studentData.assignmentCompletion);
+    const performance =
+      studentData.subjectPerformance !== undefined
+        ? clean(studentData.subjectPerformance)
+        : clean(studentData.participation);
+    const studyHours = clean(studentData.studyHours);
 
     const prompt = `Based on the following student data, provide a success prediction analysis:
     
 Student Data:
-- Attendance: ${studentData.attendance || "N/A"}%
-- Assignment Completion: ${studentData.assignmentCompletion || "N/A"}%
-- Quiz Scores Average: ${studentData.quizScores || "N/A"}%
-- Study Hours Per Week: ${studentData.studyHours || "N/A"}
-- Participation Score: ${studentData.participation || "N/A"}%
+- Attendance: ${attendance}%
+- Internal Marks (Exams/Quizzes): ${internals}%
+- External Marks (Assignments/Projects): ${externals}%
+- Overall Subject Performance: ${performance}%
+- Study Hours Per Week: ${studyHours}
 
 Provide:
 1. Success Probability (as a percentage)
 2. Key Strengths (2-3 points)
 3. Areas for Improvement (2-3 points)
 4. Personalized Recommendations (3-4 actionable tips)
-
-
 
 Format the response as pure JSON without markdown. Do NOT include any text before or after JSON.
 Keys: successProbability, strengths, improvements, recommendations`;
@@ -228,9 +248,13 @@ export const chatWithAI = async (req, res) => {
 
     const { message, context } = req.body;
 
-    if (!message) {
-      return res.status(400).json({ error: "Message is required" });
+    if (!message || typeof message !== "string" || message.length > 500) {
+      return res.status(400).json({
+        error: "Message is required and must be under 500 characters",
+      });
     }
+
+    const sanitizedMessage = message.trim();
 
     const systemPrompt =
       context === "student"
@@ -241,7 +265,7 @@ export const chatWithAI = async (req, res) => {
       model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: message },
+        { role: "user", content: sanitizedMessage },
       ],
       temperature: 0.7,
       max_tokens: 500,

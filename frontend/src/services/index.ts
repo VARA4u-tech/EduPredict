@@ -2,3 +2,4 @@
 export * from "./api";
 export * from "./ai.service";
 export * from "./student.service";
+export * from "./auth.service";

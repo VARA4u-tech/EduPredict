@@ -18,7 +18,10 @@ export function useStudentProfile(studentId: string) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
-    if (!studentId) return;
+    if (!studentId) {
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -69,7 +72,10 @@ export function useStudentProgress(studentId: string) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProgress = useCallback(async () => {
-    if (!studentId) return;
+    if (!studentId) {
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
     setError(null);

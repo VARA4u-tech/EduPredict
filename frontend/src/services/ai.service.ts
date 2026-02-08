@@ -7,6 +7,9 @@ export interface StudentData {
   quizScores?: number;
   studyHours?: number;
   participation?: number;
+  internalMarks?: number;
+  externalMarks?: number;
+  subjectPerformance?: number;
 }
 
 export interface PredictionResponse {

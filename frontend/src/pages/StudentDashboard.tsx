@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Brain,
   Home,
@@ -28,20 +28,38 @@ import ThemeToggle from "@/components/ThemeToggle";
 import AlertsCenter from "@/components/AlertsCenter";
 import { useStudentProgress } from "@/hooks/useStudent";
 import { usePrediction } from "@/hooks/useAI";
+import { AuthService } from "@/services/auth.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
 const StudentDashboard = () => {
   const { user } = useMockData();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Use real backend data (hardcoded ID '1' for demo)
+  // Get the logged-in user's ID from localStorage
+  const currentUser = useMemo(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, []);
+
+  const studentId = currentUser?._id || "";
+
+  // Use real backend data
   const {
     progress,
     loading: progressLoading,
     refresh,
-  } = useStudentProgress("1");
+  } = useStudentProgress(studentId);
   const {
     execute: getPrediction,
     data: aiPrediction,
@@ -114,17 +132,63 @@ const StudentDashboard = () => {
           "💪 Keep up the great attendance record!",
         ];
 
-  // Mock subject data (could be moved to context later)
-  const subjects = [
-    { name: "Mathematics", marks: 88, predicted: 90 },
-    { name: "Science", marks: 82, predicted: 85 },
-    { name: "English", marks: 90, predicted: 92 },
-    { name: "Social Studies", marks: 78, predicted: 80 },
-    { name: "Computer", marks: 95, predicted: 96 },
-  ];
+  // Detect first-time user (no subject data)
+  useEffect(() => {
+    if (progress && !progress.hasSubjectData && !progressLoading) {
+      setShowWelcome(true);
+    }
+  }, [progress, progressLoading]);
+
+  // Use real subject data from backend or fallback
+  const subjects =
+    progress?.subjectAverages?.length > 0
+      ? progress.subjectAverages.map((s) => ({
+          name: s.name,
+          marks: s.average,
+          predicted: Math.min(100, s.average + 5),
+        }))
+      : [{ name: "No Data", marks: 0, predicted: 0 }];
 
   return (
     <div className="min-h-screen bg-background flex">
+      {/* Welcome Modal for First-Time Users */}
+      {showWelcome && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-card rounded-2xl border-4 border-comic-black shadow-[8px_8px_0px_black] p-8 max-w-md w-full text-center"
+          >
+            <div className="w-20 h-20 bg-secondary rounded-2xl border-4 border-comic-black mx-auto mb-6 flex items-center justify-center">
+              <BookOpen className="w-10 h-10 text-comic-black" />
+            </div>
+            <h2 className="font-bangers text-3xl text-foreground mb-4">
+              Welcome, {currentUser?.name?.split(" ")[0] || "Student"}! 🎉
+            </h2>
+            <p className="font-comic text-muted-foreground mb-6">
+              To see your performance analysis and predictions, please enter
+              your subject-wise marks first.
+            </p>
+            <div className="space-y-3">
+              <ComicButton
+                variant="primary"
+                size="lg"
+                className="w-full"
+                onClick={() => navigate("/dashboard/student/performance")}
+              >
+                📝 Enter My Performance
+              </ComicButton>
+              <button
+                onClick={() => setShowWelcome(false)}
+                className="font-comic text-muted-foreground hover:text-foreground text-sm"
+              >
+                I'll do it later
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -194,11 +258,16 @@ const StudentDashboard = () => {
 
         {/* Logout */}
         <div className="p-4 border-t-4 border-comic-black">
-          <Link to="/">
-            <ComicButton variant="outline" size="sm" className="w-full">
-              <LogOut className="w-4 h-4 mr-2" /> Logout
-            </ComicButton>
-          </Link>
+          <ComicButton
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={() => {
+              AuthService.logout();
+            }}
+          >
+            <LogOut className="w-4 h-4 mr-2" /> Logout
+          </ComicButton>
         </div>
       </aside>
 
@@ -242,7 +311,19 @@ const StudentDashboard = () => {
               </div>
               <p className="font-comic text-foreground/80 mt-1">
                 Welcome back,{" "}
-                <span className="font-bold text-accent">{user.name}</span>!
+                <span className="font-bold text-accent">
+                  {currentUser?.name || user.name}
+                </span>
+                {currentUser?.gender && (
+                  <span className="ml-2 text-xs bg-accent/20 px-2 py-1 rounded-full">
+                    {currentUser.gender}
+                  </span>
+                )}
+                {currentUser?.rollNumber && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    ({currentUser.rollNumber})
+                  </span>
+                )}
               </p>
             </div>
 

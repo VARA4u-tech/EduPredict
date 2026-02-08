@@ -27,10 +27,30 @@ export interface ProgressMetric {
   change: number;
 }
 
+export interface SubjectAverage {
+  name: string;
+  internal: number;
+  external: number;
+  average: number;
+}
+
+// Subject types
+export interface Subject {
+  name: string;
+  internalMarks: number;
+  externalMarks: number;
+  predictedScore: number;
+}
+
 export interface StudentProgress {
   studentId: string;
   name: string;
+  rollNumber?: string;
+  gender?: string;
   overallScore: number;
+  hasSubjectData: boolean;
+  subjects: Subject[];
+  subjectAverages: SubjectAverage[];
   metrics: {
     attendance: ProgressMetric;
     assignments: ProgressMetric;
@@ -110,4 +130,30 @@ export async function analyzeWhatIfScenario(
   return post<WhatIfScenarioResponse>(`/students/${studentId}/what-if`, {
     scenario,
   });
+}
+
+export interface SubjectsResponse {
+  success: boolean;
+  subjects: Subject[];
+  studentName?: string;
+  rollNumber?: string;
+}
+
+/**
+ * Get student subjects/marks
+ */
+export async function getStudentSubjects(
+  studentId: string,
+): Promise<SubjectsResponse> {
+  return get<SubjectsResponse>(`/students/${studentId}/subjects`);
+}
+
+/**
+ * Update student subjects/marks
+ */
+export async function updateStudentSubjects(
+  studentId: string,
+  subjects: Subject[],
+): Promise<SubjectsResponse> {
+  return put<SubjectsResponse>(`/students/${studentId}/subjects`, { subjects });
 }
