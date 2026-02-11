@@ -1,4 +1,6 @@
 # 🎓 EduPredict - Predictive Analytics System for Student Performance Forecasting Platform
+![Uploading image.png…]()
+
 
 <div align="center">
   
