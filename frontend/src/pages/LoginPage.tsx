@@ -5,7 +5,7 @@ import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
 import StickerText from "@/components/StickerText";
-import { Brain, GraduationCap, Users, User } from "lucide-react";
+import { Brain, GraduationCap, Users, User, Eye, EyeOff } from "lucide-react";
 import { AuthService } from "@/services/auth.service";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -17,6 +17,7 @@ const LoginPage = () => {
   const [rollNumber, setRollNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -227,18 +228,31 @@ const LoginPage = () => {
                   <label className="font-bangers text-lg text-comic-black">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20"
-                    placeholder={
-                      selectedRole === "student"
-                        ? "Same as Roll No."
-                        : "••••••••"
-                    }
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20 pr-10"
+                      placeholder={
+                        selectedRole === "student"
+                          ? "Same as Roll No."
+                          : "••••••••"
+                      }
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-comic-black hover:text-primary transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between text-sm font-comic">
