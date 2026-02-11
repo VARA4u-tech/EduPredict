@@ -1,4 +1,6 @@
 # 🎓 EduPredict - Predictive Analytics System for Student Performance Forecasting Platform
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4139485f-94e2-4cdb-b817-4426296abe0f" />
+
 
 <div align="center">
   
@@ -21,22 +23,34 @@ EduPredict is an innovative **AI-powered student success prediction platform** w
 
 ---
 
-## 📁 Project Structure
 
-```
-student-success-comic/
-├── frontend/          # React + Vite frontend application
-│   ├── src/           # Source code
-│   ├── public/        # Static assets
-│   ├── package.json   # Frontend dependencies
-│   └── ...
-├── backend/           # Node.js + Express backend API
-│   ├── src/           # API source code (controllers, routes)
-│   ├── .env           # Environment variables (OpenAI Key)
-│   ├── package.json   # Backend dependencies
-│   └── ...
-└── README.md          # This file
-```
+### ✨ Key Features
+
+- 🎯 **Predictive Analytics** - AI-powered grade predictions based on attendance, assignments, and more
+- 📊 **Interactive Dashboards** - Role-based dashboards for Students, Faculty, and Administrators
+- 🎮 **Gamification** - XP system, levels, and achievements to motivate students
+- 📖 **Comic Strip Stories** - Engaging visual narratives that explain academic journeys
+- 🌙 **Theme Modes** - Light, Dark, and unique "Inked" comic book mode
+- 🔔 **Real-time Alerts** - Smart notifications for at-risk students
+- 📄 **Report Generation** - Downloadable performance reports
+- 🎨 **Comic Book Design** - Fun, engaging UI with sticker badges, speech bubbles, and animations
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology        | Purpose                 |
+| ----------------- | ----------------------- |
+| **React 18**      | UI Framework            |
+| **TypeScript**    | Type Safety             |
+| **Vite**          | Build Tool & Dev Server |
+| **Tailwind CSS**  | Styling                 |
+| **Framer Motion** | Animations              |
+| **shadcn/ui**     | UI Components           |
+| **React Router**  | Navigation              |
+| **Recharts**      | Data Visualization      |
+| **Lucide Icons**  | Iconography             |
+| **Zod**           | Form Validation         |
 
 ---
 
@@ -44,82 +58,114 @@ student-success-comic/
 
 ### Prerequisites
 
-- Node.js 18+ and npm installed
-- OpenAI API Key
+- Node.js 18+ and npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-### 1️⃣ Backend Setup
+### Installation
 
 ```bash
-# Navigate to backend directory
-cd backend
+# Clone the repository
+git clone https://github.com/VARA4u-tech/student-success-comic.git
+
+# Navigate to the project directory
+cd student-success-comic
 
 # Install dependencies
 npm install
 
-# Configure environment variables
-# Copy .env.example to .env and add your OpenAI API Key
-cp .env.example .env
-
-# Start development server
+# Start the development server
 npm run dev
 ```
 
-The backend will start at `http://localhost:5000`
+The application will open at `http://localhost:5173`
 
-### 2️⃣ Frontend Setup
+---
 
-Open a new terminal:
+## 📁 Project Structure
 
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
+```
+src/
+├── assets/          # Images and static assets
+├── components/      # Reusable UI components
+│   ├── ui/          # shadcn/ui components
+│   ├── ComicButton.tsx
+│   ├── ComicCard.tsx
+│   ├── ComicStrip.tsx
+│   ├── Navbar.tsx
+│   ├── Footer.tsx
+│   └── ...
+├── context/         # React Context providers
+├── hooks/           # Custom React hooks
+├── lib/             # Utility functions
+├── pages/           # Page components
+│   ├── LandingPage.tsx
+│   ├── StudentDashboard.tsx
+│   ├── FacultyDashboard.tsx
+│   ├── AdminDashboard.tsx
+│   └── ...
+├── App.tsx          # Main app with routing
+├── index.css        # Global styles & design system
+└── main.tsx         # Entry point
 ```
 
-The frontend will open at `http://localhost:5173` (or similar port).
+---
+
+## 🎨 Design System
+
+EduPredict uses a unique **comic book-inspired design system** with:
+
+- **Bold borders** and comic-style shadows
+- **Vibrant color palette** (Yellow, Red, Green, Blue accents)
+- **Custom fonts** (Bangers for headings, Comic Neue for body text)
+- **Sticker badges** and animated elements
+- **Halftone patterns** and action backgrounds
 
 ---
 
-## ✨ Key Features
+## 📱 Pages & Features
 
-- 🎯 **Predictive Analytics** - AI-powered grade predictions
-- 🤖 **AI Chat Assistant** - Real-time academic support chatbot
-- 📚 **Personalized Study Advice** - Tailored recommendations based on learning style
-- 📊 **Interactive Dashboards** - Role-based views for Students, Faculty, and Administrators
-- 🎮 **Gamification** - XP system, levels, and achievements
-- 📖 **Comic Strip Stories** - Engaging visual narratives
-- 🌙 **Theme Modes** - Light, Dark, and "Inked" mode
-- 🔔 **Real-time Alerts** - Smart notifications for at-risk students
-- 📄 **Report Generation** - Downloadable performance reports
+### Public Pages
+
+- **Landing Page** - Hero section, features, testimonials
+- **About Page** - Mission and values
+- **Help/FAQ Page** - Common questions and support
+- **Contact Page** - Contact form and information
+
+### Dashboard Pages
+
+- **Student Dashboard** - Personal performance, predictions, recommendations
+- **Faculty Dashboard** - Class overview, student tracking
+- **Admin Dashboard** - Institution-wide analytics, alerts
+- **Prediction Page** - Interactive "What If" scenario analysis
+- **Reports Page** - Downloadable analytics and charts
 
 ---
 
-## 🛠️ Tech Stack
+## 🔧 Available Scripts
 
-### Frontend
+| Script            | Description              |
+| ----------------- | ------------------------ |
+| `npm run dev`     | Start development server |
+| `npm run build`   | Build for production     |
+| `npm run preview` | Preview production build |
+| `npm run lint`    | Run ESLint               |
 
-| Technology        | Purpose       |
-| ----------------- | ------------- |
-| **React 18**      | UI Framework  |
-| **TypeScript**    | Type Safety   |
-| **Vite**          | Build Tool    |
-| **Tailwind CSS**  | Styling       |
-| **Framer Motion** | Animations    |
-| **shadcn/ui**     | UI Components |
+---
 
-### Backend
+## 🤝 Contributing
 
-| Technology      | Purpose         |
-| --------------- | --------------- |
-| **Node.js**     | Runtime         |
-| **Express.js**  | API Framework   |
-| **OpenAI API**  | AI Intelligence |
-| **Cors/Dotenv** | Middleware      |
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
 
 ---
 
@@ -131,7 +177,9 @@ The frontend will open at `http://localhost:5173` (or similar port).
 
 ---
 
+---
+
 <div align="center">
-  <p>Made with ❤️ for Education</p>
+  <p>Engineered & Deigned With 💡 By VARA for Education</p>
   <p>🎓 <strong>Empowering Students, One Prediction at a Time!</strong> 🚀</p>
 </div>

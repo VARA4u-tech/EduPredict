@@ -12,22 +12,57 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
+  preview: {
+    port: 8080,
+    host: "::",
+  },
   plugins: [react(), mode === "development" && componentTagger()].filter(
     Boolean,
   ),
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
   build: {
     chunkSizeWarningLimit: 1000,
+    sourcemap: mode === "development",
+    minify: "esbuild",
+    cssMinify: true,
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom", "react-router-dom"],
-          "ui-libs": ["framer-motion", "lucide-react", "@tanstack/react-query"],
-          charts: ["recharts"],
+        manualChunks(id) {
+          // Handle CSS chunks
+          if (id.includes(".css")) {
+            return "styles";
+          }
+
+          // All node_modules go into vendor by default
+          if (id.includes("node_modules")) {
+            // Heavy chart library split separately
+            if (id.includes("recharts")) {
+              return "charts";
+            }
+
+            // UI + animation libraries
+            if (
+              id.includes("framer-motion") ||
+              id.includes("lucide-react") ||
+              id.includes("@tanstack/react-query")
+            ) {
+              return "ui-libs";
+            }
+
+            // Split React itself
+            if (id.includes("react") || id.includes("scheduler")) {
+              return "react-core";
+            }
+
+            return "vendor";
+          }
         },
       },
     },
