@@ -30,6 +30,30 @@ import {
   type Subject,
 } from "@/services/student.service";
 
+// Default subjects if none exist
+const defaultSubjects: Subject[] = [
+  {
+    name: "Mathematics",
+    internalMarks: 0,
+    externalMarks: 0,
+    predictedScore: 0,
+  },
+  { name: "Science", internalMarks: 0, externalMarks: 0, predictedScore: 0 },
+  { name: "English", internalMarks: 0, externalMarks: 0, predictedScore: 0 },
+  {
+    name: "Social Studies",
+    internalMarks: 0,
+    externalMarks: 0,
+    predictedScore: 0,
+  },
+  {
+    name: "Computer Science",
+    internalMarks: 0,
+    externalMarks: 0,
+    predictedScore: 0,
+  },
+];
+
 const StudentPerformance = () => {
   const { user } = useMockData();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -68,30 +92,6 @@ const StudentPerformance = () => {
       path: "/dashboard/student/predictions",
     },
     { icon: Settings, label: "Settings", path: "/dashboard/student/settings" },
-  ];
-
-  // Default subjects if none exist
-  const defaultSubjects: Subject[] = [
-    {
-      name: "Mathematics",
-      internalMarks: 0,
-      externalMarks: 0,
-      predictedScore: 0,
-    },
-    { name: "Science", internalMarks: 0, externalMarks: 0, predictedScore: 0 },
-    { name: "English", internalMarks: 0, externalMarks: 0, predictedScore: 0 },
-    {
-      name: "Social Studies",
-      internalMarks: 0,
-      externalMarks: 0,
-      predictedScore: 0,
-    },
-    {
-      name: "Computer Science",
-      internalMarks: 0,
-      externalMarks: 0,
-      predictedScore: 0,
-    },
   ];
 
   // Fetch subjects on mount
@@ -186,7 +186,7 @@ const StudentPerformance = () => {
       setTimeout(() => {
         navigate("/dashboard/student");
       }, 1500);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Save Failed",
@@ -211,7 +211,7 @@ const StudentPerformance = () => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:static z-40
+          fixed lg:static z-[60]
           w-64 h-screen bg-sidebar border-r-4 border-comic-black
           flex flex-col transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -267,7 +267,7 @@ const StudentPerformance = () => {
         </nav>
 
         {/* Logout */}
-        <div className="p-4 border-t-4 border-comic-black">
+        <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
           <ComicButton
             variant="outline"
             size="sm"

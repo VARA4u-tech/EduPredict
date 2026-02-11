@@ -6,13 +6,13 @@ import {
   Twitter,
   Linkedin,
   Mail,
-  Heart,
   Sparkles,
   ExternalLink,
   ArrowUp,
 } from "lucide-react";
 import ComicButton from "./ComicButton";
 import StickerBadge from "./StickerBadge";
+import WhatsAppIcon from "./WhatsAppIcon";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -41,17 +41,42 @@ const Footer = () => {
       { name: "Press Kit", path: "/about" },
     ],
     legal: [
-      { name: "Privacy Policy", path: "/about" },
-      { name: "Terms of Service", path: "/about" },
-      { name: "Cookie Policy", path: "/about" },
+      { name: "Privacy Policy", path: "/privacy" },
+      { name: "Terms of Service", path: "/terms" },
+      { name: "Cookie Policy", path: "/cookies" },
     ],
   };
 
+  const whatsappMessage = encodeURIComponent(
+    "⚡ POW! I'm excited about EduPredict. Tell me more about how it transforms education!",
+  );
+
+  const emailSubject = encodeURIComponent("Inquiry about EduPredict");
+  const emailBody = encodeURIComponent(
+    "Hello VARA,\n\nI would like to know more about EduPredict and how it can be used for education.\n\nRegards,",
+  );
+
   const socialLinks = [
-    { icon: Github, href: "https://github.com/VARA4u-tech", label: "GitHub" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "/contact", label: "Email" },
+    {
+      icon: Github,
+      href: "https://github.com/VARA4u-tech",
+      label: "GitHub",
+    },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/durga-vara-prasad-pappuri-1797701b6",
+      label: "LinkedIn",
+    },
+    {
+      icon: WhatsAppIcon,
+      href: `https://wa.me/919550533315?text=${whatsappMessage}`,
+      label: "WhatsApp",
+    },
+    {
+      icon: Mail,
+      href: `mailto:pappuridurgavaraprasad4pl@gmail.com?subject=${emailSubject}&body=${emailBody}`,
+      label: "Email",
+    },
   ];
 
   return (
@@ -238,16 +263,18 @@ const Footer = () => {
             {/* Copyright */}
             <div className="flex items-center gap-2 text-center md:text-left">
               <p className="font-comic text-sm text-muted-foreground">
-                © {currentYear} EduPredict. Made with
+                © {currentYear} EduPredict. Engineered& Designed with
               </p>
               <motion.span
+                style={{ display: "inline-block", fontWeight: "bold" }}
                 animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
+                transition={{ repeat: Infinity, duration: 1 }}
               >
-                <Heart className="w-4 h-4 text-destructive fill-destructive" />
+                POW!
               </motion.span>
+
               <p className="font-comic text-sm text-muted-foreground">
-                for Education.
+                By VARA for Education.
               </p>
             </div>
 

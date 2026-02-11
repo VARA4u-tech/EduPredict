@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -14,9 +19,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        bangers: ['Bangers', 'cursive'],
-        comic: ['Comic Neue', 'cursive'],
-        fredoka: ['Fredoka', 'sans-serif'],
+        bangers: ["Bangers", "cursive"],
+        comic: ["Comic Neue", "cursive"],
+        fredoka: ["Fredoka", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -96,16 +101,16 @@ export default {
           "50%": { transform: "scale(1.1)" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
-        "wobble": {
+        wobble: {
           "0%, 100%": { transform: "rotate(-3deg)" },
           "50%": { transform: "rotate(3deg)" },
         },
-        "pop": {
+        pop: {
           "0%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.05)" },
           "100%": { transform: "scale(1)" },
         },
-        "float": {
+        float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
@@ -130,9 +135,9 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "bounce-in": "bounce-in 0.5s ease-out",
-        "wobble": "wobble 2s ease-in-out infinite",
-        "pop": "pop 0.3s ease-in-out",
-        "float": "float 3s ease-in-out infinite",
+        wobble: "wobble 2s ease-in-out infinite",
+        pop: "pop 0.3s ease-in-out",
+        float: "float 3s ease-in-out infinite",
         "slide-up": "slide-up 0.5s ease-out",
         "slide-in-left": "slide-in-left 0.5s ease-out",
         "slide-in-right": "slide-in-right 0.5s ease-out",
@@ -140,5 +145,6 @@ export default {
       },
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

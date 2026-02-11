@@ -66,7 +66,7 @@ const LoginPage = () => {
       // Navigate based on role
       const role = response.role || selectedRole;
       navigate(`/dashboard/${role}`);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Login Failed",

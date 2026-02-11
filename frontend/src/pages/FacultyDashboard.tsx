@@ -107,7 +107,7 @@ const FacultyDashboard = () => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:static z-40
+          fixed lg:static z-[60]
           w-64 h-screen bg-sidebar border-r-4 border-comic-black
           flex flex-col transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -163,7 +163,7 @@ const FacultyDashboard = () => {
         </nav>
 
         {/* Logout */}
-        <div className="p-4 border-t-4 border-comic-black">
+        <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
           <Link to="/">
             <ComicButton variant="outline" size="sm" className="w-full">
               <LogOut className="w-4 h-4 mr-2" /> Logout

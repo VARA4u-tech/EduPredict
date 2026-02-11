@@ -29,7 +29,7 @@ const RegisterPage = () => {
         description: "Welcome to EduPredict! Please login.",
       });
       navigate("/login");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Registration Failed",
