@@ -1,5 +1,5 @@
 # 🎓 EduPredict - Predictive Analytics System for Student Performance Forecasting Platform
-![Uploading image.png…]()
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4139485f-94e2-4cdb-b817-4426296abe0f" />
 
 
 <div align="center">
@@ -134,6 +134,6 @@ The frontend will open at `http://localhost:5173` (or similar port).
 ---
 
 <div align="center">
-  <p>Made with ❤️ for Education</p>
+  <p>Engineered & Deigned With 💡 By VARA for Education</p>
   <p>🎓 <strong>Empowering Students, One Prediction at a Time!</strong> 🚀</p>
 </div>
