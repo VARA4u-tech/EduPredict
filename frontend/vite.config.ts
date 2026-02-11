@@ -35,13 +35,18 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Handle CSS chunks
-          if (id.includes(".css")) {
-            return "styles";
-          }
-
-          // All node_modules go into vendor by default
           if (id.includes("node_modules")) {
+            // Group React core ecosystem together for stability
+            if (
+              id.includes("react/") ||
+              id.includes("react-dom/") ||
+              id.includes("react-router/") ||
+              id.includes("react-router-dom/") ||
+              id.includes("scheduler/")
+            ) {
+              return "react-core";
+            }
+
             // Heavy chart library split separately
             if (id.includes("recharts")) {
               return "charts";
@@ -54,11 +59,6 @@ export default defineConfig(({ mode }) => ({
               id.includes("@tanstack/react-query")
             ) {
               return "ui-libs";
-            }
-
-            // Split React itself
-            if (id.includes("react") || id.includes("scheduler")) {
-              return "react-core";
             }
 
             return "vendor";
