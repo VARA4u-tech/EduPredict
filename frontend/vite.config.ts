@@ -12,10 +12,7 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  preview: {
-    port: 8080,
-    host: "::",
-  },
+
   plugins: [react(), mode === "development" && componentTagger()].filter(
     Boolean,
   ),
@@ -28,25 +25,12 @@ export default defineConfig(({ mode }) => ({
 
   build: {
     chunkSizeWarningLimit: 1000,
-    sourcemap: mode === "development",
-    minify: "esbuild",
-    cssMinify: true,
-    cssCodeSplit: true,
+
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // All node_modules go into vendor by default
           if (id.includes("node_modules")) {
-            // Group React core ecosystem together for stability
-            if (
-              id.includes("react/") ||
-              id.includes("react-dom/") ||
-              id.includes("react-router/") ||
-              id.includes("react-router-dom/") ||
-              id.includes("scheduler/")
-            ) {
-              return "react-core";
-            }
-
             // Heavy chart library split separately
             if (id.includes("recharts")) {
               return "charts";
