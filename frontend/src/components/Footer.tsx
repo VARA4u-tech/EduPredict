@@ -256,45 +256,52 @@ const Footer = () => {
             </ul>
           </div>
         </div>
+{/* Bottom Bar */}
+<div className="pt-6 border-t border-dashed border-muted-foreground/30">
+  <div className="flex flex-col items-center md:flex-row md:justify-between gap-6 text-center md:text-left">
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t-2 border-dashed border-muted-foreground/30">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Copyright */}
-            <div className="flex items-center gap-2 text-center md:text-left">
-              <p className="font-comic text-sm text-muted-foreground">
-                © {currentYear} EduPredict. Engineered& Designed with
-              </p>
-              <motion.span
-                style={{ display: "inline-block", fontWeight: "bold" }}
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 1 }}
-              >
-                POW!
-              </motion.span>
+    {/* Copyright */}
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center px-4">
+      <p className="font-comic text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-1">
+        <span>© {currentYear} EduPredict.</span>
+        <span className="hidden xs:inline">Engineered & Designed with</span>
+        <span className="xs:hidden">Made with</span>
+      </p>
+      <motion.span
+        style={{ display: "inline-block", fontWeight: "bold" }}
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ repeat: Infinity, duration: 1 }}
+        className="text-base"
+      >
+        POW!
+      </motion.span>
+      <p className="font-comic text-sm text-muted-foreground">
+        By VARA for Education.
+      </p>
+    </div>
 
-              <p className="font-comic text-sm text-muted-foreground">
-                By VARA for Education.
-              </p>
-            </div>
-
-            {/* Tagline */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-2"
-            >
-              <span className="font-comic font-bold text-sm text-secondary">
-                🎓 Empowering Students, One Prediction at a Time!
-              </span>
-            </motion.div>
-          </div>
-        </div>
+    {/* Tagline */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      className="w-full px-4"
+    >
+      <div className="bg-secondary/10 rounded-xl p-3 text-center">
+        <span className="font-comic font-bold text-sm text-secondary block leading-relaxed">
+          🎓 Empowering Students, <br className="xs:hidden" /> 
+          One Prediction at a Time!
+        </span>
       </div>
+    </motion.div>
+
+    
+  </div>
+</div>
 
       {/* Decorative Bottom Border */}
       <div className="h-2 bg-gradient-to-r from-destructive via-secondary to-accent" />
+      </div>
     </footer>
   );
 };

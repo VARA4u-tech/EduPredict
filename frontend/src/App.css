@@ -26,6 +26,20 @@
     transform: rotate(360deg);
   }
 }
+/* Add to your global CSS file */
+@screen xl {
+  @media (min-width: 475px) {
+    .xs\:inline {
+      display: inline;
+    }
+    .xs\:hidden {
+      display: none;
+    }
+    .xs\:flex-row {
+      flex-direction: row;
+    }
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
