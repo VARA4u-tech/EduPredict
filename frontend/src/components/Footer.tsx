@@ -211,127 +211,107 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-{/* Company Links */}
-<div>
-  <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
-    <StickerBadge variant="green" size="sm">
-      Company
-    </StickerBadge>
-  </h4>
-  <ul className="space-y-3">
-    {footerLinks.company.map((link) => (
-      <li key={link.name}>
-        <Link
-          to={link.path}
-          className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
-        >
-          {link.name}
-          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </Link>
-      </li>
-    ))}
-  </ul>
-</div>
+          {/* Company Links */}
+          <div>
+            <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
+              <StickerBadge variant="green" size="sm">
+                Company
+              </StickerBadge>
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
+                  >
+                    {link.name}
+                    <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-{/* Legal Links */}
-<div>
-  <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
-    <StickerBadge variant="blue" size="sm">
-      Legal
-    </StickerBadge>
-  </h4>
-  <ul className="space-y-3">
-    {footerLinks.legal.map((link) => (
-      <li key={link.name}>
-        <Link
-          to={link.path}
-          className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
-        >
-          {link.name}
-          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </Link>
-      </li>
-    ))}
-  </ul>
-</div>
+          {/* Legal Links */}
+          <div>
+            <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
+              <StickerBadge variant="blue" size="sm">
+                Legal
+              </StickerBadge>
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
+                  >
+                    {link.name}
+                    <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-{/* Bottom Bar */}
-<div className="pt-8 mt-8 border-t-2 border-dashed border-muted-foreground/30">
-  <div className="flex flex-col items-center gap-4 px-4">
-    
-    {/* Copyright Section */}
-    <div className="text-center space-y-2">
-      <p className="font-comic text-sm text-muted-foreground">
-        © 2026 EduPredict.
-      </p>
-      
-      <div className="flex items-center justify-center gap-1.5">
-        <span className="font-comic text-sm text-muted-foreground">Made with</span>
-        <motion.span
-          className="font-bold text-primary text-base inline-block"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
-        >
-          POW!
-        </motion.span>
+          {/* Bottom Bar */}
+          <div className="pt-8 mt-8 border-t-2 border-dashed border-muted-foreground/30">
+            <div className="flex flex-col items-center gap-4 px-4">
+              {/* Copyright Section */}
+              <div className="text-center space-y-4">
+                <p className="font-comic text-sm text-muted-foreground/80">
+                  © {currentYear} EduPredict.
+                </p>
+
+                <div className="flex items-center justify-center gap-2">
+                  <span className="font-comic text-sm text-muted-foreground/80">
+                    Made with
+                  </span>
+                  <motion.span
+                    className="sticker-text-red text-2xl inline-block"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: [-3, 3, -3],
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    POW!
+                  </motion.span>
+                </div>
+
+                <p className="font-comic text-sm text-muted-foreground/80">
+                  By <span className="font-bold text-foreground">VARA</span> for
+                  Education.
+                </p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="w-full flex justify-center mt-2 group"
+              >
+                <div className="px-6 py-2 bg-secondary/10 rounded-2xl border-2 border-dashed border-secondary/30 relative transition-all hover:bg-secondary/20">
+                  <p className="font-comic font-bold text-secondary text-sm md:text-base leading-relaxed text-center">
+                    🎓 Empowering Students, One Prediction at a Time!
+                  </p>
+                </div>
+              </motion.div>
+
+              <div className="flex justify-center mt-2">
+                <span className="text-[10px] text-muted-foreground/40 font-comic tracking-widest uppercase">
+                  #EduPredict • #VARA
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <p className="font-comic text-sm text-muted-foreground">
-        By VARA for Education.
-      </p>
-    </div>
-
-    {/* Tagline - Single line on desktop, wrapped on mobile */}
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="w-full flex justify-center mt-2"
-    >
-      <p className="font-comic font-semibold text-secondary text-sm leading-relaxed text-center max-w-[280px] sm:max-w-none">
-        <span className="hidden sm:inline">🎓 Empowering Students, One Prediction at a Time!</span>
-        <span className="sm:hidden">🎓 Empowering Students,<br />One Prediction at a Time!</span>
-      </p>
-    </motion.div>
-    
-    {/* Optional: Small decorative element */}
-    <div className="flex justify-center mt-2">
-      <span className="text-[10px] text-muted-foreground/30 font-comic">
-        #EduPredict #VARA
-      </span>
-    </div>
-    
-  </div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
 
       {/* Decorative Bottom Border */}
       <div className="h-2 bg-gradient-to-r from-destructive via-secondary to-accent" />

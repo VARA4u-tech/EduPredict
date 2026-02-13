@@ -153,13 +153,18 @@ export function AIChatWidget() {
 
       {/* Toggle Button */}
       {!isOpen && (
-        <Button
+        <button
           onClick={() => setIsOpen(true)}
-          size="lg"
-          className="h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
+          className="h-14 w-14 bg-primary text-primary-foreground rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center transition-all hover:scale-110 active:scale-95 hover:bg-primary/90 group"
+          aria-label="Open chat"
         >
           <MessageSquare className="h-6 w-6" />
-        </Button>
+
+          {/* Tooltip */}
+          <span className="absolute -top-10 right-0 bg-comic-black text-white text-xs font-comic font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            Chat with AI
+          </span>
+        </button>
       )}
     </div>
   );
