@@ -254,60 +254,68 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+        </div>
 
-          {/* Bottom Bar */}
-          <div className="pt-8 mt-8 border-t-2 border-dashed border-muted-foreground/30">
-            <div className="flex flex-col items-center gap-4 px-4">
-              {/* Copyright Section */}
-              <div className="text-center space-y-4">
-                <p className="font-comic text-sm text-muted-foreground/80">
-                  © {currentYear} EduPredict.
-                </p>
+        {/* Bottom Bar */}
+        <div className="pt-10 mt-12 border-t-2 border-dashed border-muted-foreground/20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 px-4">
+            {/* Left: Copyright Section */}
+            <div className="order-2 md:order-1 flex flex-col items-center md:items-start">
+              <p className="font-comic text-sm text-muted-foreground/80">
+                © {currentYear}{" "}
+                <span className="font-bold text-foreground">EduPredict</span>.
+              </p>
+              <span className="text-[10px] font-comic text-muted-foreground/80 uppercase tracking-widest mt-1">
+                Transforming Education
+              </span>
+            </div>
 
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-comic text-sm text-muted-foreground/80">
-                    Made with
-                  </span>
-                  <motion.span
-                    className="sticker-text-red text-2xl inline-block"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      rotate: [-3, 3, -3],
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 2,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    POW!
-                  </motion.span>
-                </div>
-
-                <p className="font-comic text-sm text-muted-foreground/80">
-                  By <span className="font-bold text-foreground">VARA</span> for
-                  Education.
-                </p>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="w-full flex justify-center mt-2 group"
-              >
-                <div className="px-6 py-2 bg-secondary/10 rounded-2xl border-2 border-dashed border-secondary/30 relative transition-all hover:bg-secondary/20">
-                  <p className="font-comic font-bold text-secondary text-sm md:text-base leading-relaxed text-center">
-                    🎓 Empowering Students, One Prediction at a Time!
-                  </p>
-                </div>
-              </motion.div>
-
-              <div className="flex justify-center mt-2">
-                <span className="text-[10px] text-muted-foreground/40 font-comic tracking-widest uppercase">
-                  #EduPredict • #VARA
+            {/* Center: Made with POW! */}
+            <div className="order-1 md:order-2 flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="font-comic text-sm text-muted-foreground/100">
+                  Made with
+                </span>
+                <motion.span
+                  className="sticker-text-red text-2xl inline-block"
+                  animate={{ scale: [1, 1.2, 1], rotate: [-3, 3, -3] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut",
+                  }}
+                >
+                  BOOM!
+                </motion.span>
+                <span className="font-comic text-sm text-muted-foreground/100">
+                  by <span className="font-bold text-foreground">VARA</span>
                 </span>
               </div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="hidden lg:block px-4 py-1 bg-secondary/5 rounded-full border border-dotted border-secondary/30"
+              >
+                <p className="font-comic font-bold text-secondary text-[10px] tracking-[0.2em] uppercase">
+                  🎓 Empowering Students, One Prediction at a Time!
+                </p>
+              </motion.div>
+            </div>
+            {/* Right: Hashtags & Extra Info */}
+            <div className="order-3 flex flex-col items-center md:items-end gap-1">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-comic text-muted-foreground/80 uppercase tracking-widest select-none hover:text-secondary transition-colors cursor-default">
+                  #EduPredict
+                </span>
+                <span className="w-1 h-1 rounded-full bg-muted-foreground/50 hidden md:block" />
+                <span className="text-xs font-comic text-muted-foreground/80 uppercase tracking-widest select-none hover:text-primary transition-colors cursor-default">
+                  #VARA
+                </span>
+              </div>
+              <p className="text-[9px] text-muted-foreground/100 font-comic uppercase tracking-[0.3em] mt-1 hidden md:block">
+                Success • Analytics • Innovation
+              </p>
             </div>
           </div>
         </div>
