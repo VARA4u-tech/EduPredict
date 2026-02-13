@@ -211,97 +211,130 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+{/* Company Links */}
+<div>
+  <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
+    <StickerBadge variant="green" size="sm">
+      Company
+    </StickerBadge>
+  </h4>
+  <ul className="space-y-3">
+    {footerLinks.company.map((link) => (
+      <li key={link.name}>
+        <Link
+          to={link.path}
+          className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
+        >
+          {link.name}
+          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
 
-          {/* Company Links */}
-          <div>
-            <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
-              <StickerBadge variant="green" size="sm">
-                Company
-              </StickerBadge>
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group"
-                  >
-                    {link.name}
-                    <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+{/* Legal Links */}
+<div>
+  <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
+    <StickerBadge variant="blue" size="sm">
+      Legal
+    </StickerBadge>
+  </h4>
+  <ul className="space-y-3">
+    {footerLinks.legal.map((link) => (
+      <li key={link.name}>
+        <Link
+          to={link.path}
+          className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group text-center md:text-left w-full md:w-auto justify-center md:justify-start"
+        >
+          {link.name}
+          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
 
-          {/* Legal Links */}
-          <div className="col-span-2 md:col-span-1">
-            <h4 className="font-bangers text-lg text-foreground mb-4 flex items-center justify-center md:justify-start gap-2">
-              <StickerBadge variant="blue" size="sm">
-                Legal
-              </StickerBadge>
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="font-comic text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors inline-flex items-center gap-1 group"
-                  >
-                    {link.name}
-                    <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
 {/* Bottom Bar */}
-<div className="pt-6 border-t border-dashed border-muted-foreground/30">
-  <div className="flex flex-col items-center md:flex-row md:justify-between gap-6 text-center md:text-left">
-
-    {/* Copyright */}
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center px-4">
-      <p className="font-comic text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-1">
-        <span>© {currentYear} EduPredict.</span>
-        <span className="hidden xs:inline">Engineered & Designed with</span>
-        <span className="xs:hidden">Made with</span>
+<div className="pt-8 mt-8 border-t-2 border-dashed border-muted-foreground/30">
+  <div className="flex flex-col items-center gap-4 px-4">
+    
+    {/* Copyright Section */}
+    <div className="text-center space-y-2">
+      <p className="font-comic text-sm text-muted-foreground">
+        © 2026 EduPredict.
       </p>
-      <motion.span
-        style={{ display: "inline-block", fontWeight: "bold" }}
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ repeat: Infinity, duration: 1 }}
-        className="text-base"
-      >
-        POW!
-      </motion.span>
+      
+      <div className="flex items-center justify-center gap-1.5">
+        <span className="font-comic text-sm text-muted-foreground">Made with</span>
+        <motion.span
+          className="font-bold text-primary text-base inline-block"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
+        >
+          POW!
+        </motion.span>
+      </div>
+      
       <p className="font-comic text-sm text-muted-foreground">
         By VARA for Education.
       </p>
     </div>
 
-    {/* Tagline */}
+    {/* Tagline - Single line on desktop, wrapped on mobile */}
     <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="w-full px-4"
+      transition={{ duration: 0.5 }}
+      className="w-full flex justify-center mt-2"
     >
-      <div className="bg-secondary/10 rounded-xl p-3 text-center">
-        <span className="font-comic font-bold text-sm text-secondary block leading-relaxed">
-          🎓 Empowering Students, <br className="xs:hidden" /> 
-          One Prediction at a Time!
-        </span>
-      </div>
+      <p className="font-comic font-semibold text-secondary text-sm leading-relaxed text-center max-w-[280px] sm:max-w-none">
+        <span className="hidden sm:inline">🎓 Empowering Students, One Prediction at a Time!</span>
+        <span className="sm:hidden">🎓 Empowering Students,<br />One Prediction at a Time!</span>
+      </p>
     </motion.div>
-
+    
+    {/* Optional: Small decorative element */}
+    <div className="flex justify-center mt-2">
+      <span className="text-[10px] text-muted-foreground/30 font-comic">
+        #EduPredict #VARA
+      </span>
+    </div>
     
   </div>
 </div>
 
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
       {/* Decorative Bottom Border */}
       <div className="h-2 bg-gradient-to-r from-destructive via-secondary to-accent" />
-      </div>
     </footer>
   );
 };
