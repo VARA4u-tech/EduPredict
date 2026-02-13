@@ -95,13 +95,13 @@ const ComicStrip = () => {
 
               {/* Content */}
               <div className="text-center space-y-2">
-                <p className="font-comic text-sm font-bold text-muted-foreground uppercase tracking-wider">
+                <p className="font-comic text-sm font-bold text-comic-black/60 dark:text-muted-foreground uppercase tracking-wider">
                   {item.subtitle}
                 </p>
-                <h3 className="font-bangers text-2xl text-foreground">
+                <h3 className="font-bangers text-2xl text-comic-black dark:text-foreground">
                   {item.title}
                 </h3>
-                <p className="font-comic text-sm text-muted-foreground leading-relaxed">
+                <p className="font-comic text-sm text-comic-black/70 dark:text-muted-foreground leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -145,10 +145,10 @@ const ComicStrip = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.7 + i * 0.1, type: "spring" }}
             >
-              <p className="font-bangers text-3xl md:text-4xl text-foreground">
+              <p className="font-bangers text-3xl md:text-4xl text-comic-black dark:text-foreground">
                 {stat.value}
               </p>
-              <p className="font-comic text-sm text-muted-foreground">
+              <p className="font-comic text-sm text-comic-black/60 dark:text-muted-foreground">
                 {stat.label}
               </p>
             </motion.div>

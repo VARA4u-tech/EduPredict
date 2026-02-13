@@ -180,7 +180,7 @@ const LandingPage = () => {
             <StickerText size="xl" color="yellow">
               Super Powers!
             </StickerText>
-            <p className="text-xl font-comic text-foreground/80 mt-4">
+            <p className="text-xl font-comic text-muted-foreground mt-4">
               Check out what our system can do
             </p>
           </motion.div>
@@ -259,6 +259,7 @@ const LandingPage = () => {
       </section>
 
       {/* Stats Section */}
+
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -270,13 +271,17 @@ const LandingPage = () => {
               },
               {
                 value: "10K+",
-                label: "Students Helped",
+                label: "We Can Analyze 10K+ Data Points",
                 color: "yellow" as const,
               },
-              { value: "500+", label: "Schools Using", color: "red" as const },
               {
-                value: "24/7",
-                label: "Real-Time Analysis",
+                value: "0.8",
+                label: "Avg Response Time",
+                color: "red" as const,
+              },
+              {
+                value: "98%",
+                label: "Model Confidence",
                 color: "green" as const,
               },
             ].map((stat, i) => (
