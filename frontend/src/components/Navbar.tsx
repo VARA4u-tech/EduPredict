@@ -178,7 +178,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+              className="fixed inset-0 bg-black/50 z-[60] lg:hidden"
             />
 
             {/* Mobile Menu Panel */}
@@ -187,9 +187,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25 }}
-              className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-background border-l-4 border-comic-black z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-background border-l-4 border-comic-black z-[60] lg:hidden overflow-y-auto"
             >
-              <div className="p-6">
+              <div className="p-6 pb-8">
                 {/* Mobile Header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
@@ -243,7 +243,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 </div>
 
                 {/* Mobile CTA Buttons */}
-                <div className="space-y-3">
+                <div className="space-y-4 pr-1 pb-1">
                   <Link to="/login" className="block">
                     <ComicButton variant="outline" size="md" className="w-full">
                       Login
