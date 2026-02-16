@@ -332,7 +332,7 @@ const StudentPerformance = () => {
                   onClick={addSubject}
                   variant="outline"
                   size="sm"
-                  className="border-2 border-comic-black"
+                  className="border-2 border-comic-black bg-accent text-comic-black font-comic font-bold hover:bg-accent/80 shadow-[2px_2px_0px_black]"
                 >
                   <Plus className="w-4 h-4 mr-1" /> Add Subject
                 </Button>
