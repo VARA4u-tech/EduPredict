@@ -29,25 +29,25 @@ const ThemeToggle = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="border-4 border-black rounded-xl p-0 overflow-hidden font-comic font-bold"
+        className="min-w-[160px] border-4 border-black rounded-xl p-1 overflow-hidden font-comic font-bold shadow-[4px_4px_0px_black] z-[70]"
       >
         <DropdownMenuItem
           onClick={() => setTheme("light")}
-          className="cursor-pointer hover:bg-muted focus:bg-muted p-3"
+          className="cursor-pointer hover:bg-muted focus:bg-muted p-3 px-4 rounded-lg flex items-center transition-colors"
         >
-          <Sun className="mr-2 h-4 w-4" /> Light Mode
+          <Sun className="mr-3 h-4 w-4" /> <span>Light Mode</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("dark")}
-          className="cursor-pointer hover:bg-muted focus:bg-muted p-3"
+          className="cursor-pointer hover:bg-muted focus:bg-muted p-3 px-4 rounded-lg flex items-center transition-colors"
         >
-          <Moon className="mr-2 h-4 w-4" /> Dark Mode
+          <Moon className="mr-3 h-4 w-4" /> <span>Dark Mode</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("inked")}
-          className="cursor-pointer hover:bg-muted focus:bg-muted p-3"
+          className="cursor-pointer hover:bg-muted focus:bg-muted p-3 px-4 rounded-lg flex items-center transition-colors"
         >
-          <PenTool className="mr-2 h-4 w-4" /> Inked Mode
+          <PenTool className="mr-3 h-4 w-4" /> <span>Inked Mode</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
