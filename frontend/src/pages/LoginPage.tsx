@@ -195,6 +195,7 @@ const LoginPage = () => {
                     </label>
                     <input
                       type="text"
+                      autoComplete="username"
                       className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20 uppercase"
                       placeholder="e.g., 24H71F0002"
                       value={rollNumber}
@@ -215,6 +216,7 @@ const LoginPage = () => {
                     </label>
                     <input
                       type="email"
+                      autoComplete="email"
                       className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20"
                       placeholder="your@email.com"
                       value={email}
@@ -231,6 +233,7 @@ const LoginPage = () => {
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       className="w-full p-3 rounded-xl border-4 border-comic-black font-comic focus:outline-none focus:ring-4 focus:ring-primary/20 pr-10"
                       placeholder={
                         selectedRole === "student"
