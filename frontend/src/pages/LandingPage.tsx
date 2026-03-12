@@ -64,7 +64,7 @@ const LandingPage = () => {
                   Predictive Analytics
                 </StickerText>
                 <StickerText size="lg" color="yellow" className="block">
-                  Student Performance Forecasting
+                  For Student Performance Forecasting
                 </StickerText>
               </div>
 

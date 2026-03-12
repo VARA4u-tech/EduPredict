@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { Brain, Menu, X, Sparkles } from "lucide-react";
@@ -13,6 +13,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  const currentUser = useMemo(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, []);
+
+  const dashboardPath = currentUser ? `/dashboard/${currentUser.role}` : "/login";
 
   // Handle scroll effect
   useEffect(() => {
@@ -121,17 +135,28 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center gap-2">
-                <Link to="/login">
-                  <ComicButton variant="outline" size="sm">
-                    Login
-                  </ComicButton>
-                </Link>
-                <Link to="/login">
-                  <ComicButton variant="primary" size="sm">
-                    <Sparkles className="w-4 h-4 mr-1" />
-                    Get Started
-                  </ComicButton>
-                </Link>
+                {currentUser ? (
+                  <Link to={dashboardPath}>
+                    <ComicButton variant="primary" size="sm">
+                      <Sparkles className="w-4 h-4 mr-1" />
+                      User Dashboard
+                    </ComicButton>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <ComicButton variant="outline" size="sm">
+                        Login
+                      </ComicButton>
+                    </Link>
+                    <Link to="/login">
+                      <ComicButton variant="primary" size="sm">
+                        <Sparkles className="w-4 h-4 mr-1" />
+                        Get Started
+                      </ComicButton>
+                    </Link>
+                  </>
+                )}
               </div>
 
               {/* Mobile Menu Toggle */}
@@ -244,17 +269,28 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
                 {/* Mobile CTA Buttons */}
                 <div className="space-y-4 pr-1 pb-1">
-                  <Link to="/login" className="block">
-                    <ComicButton variant="outline" size="md" className="w-full">
-                      Login
-                    </ComicButton>
-                  </Link>
-                  <Link to="/login" className="block">
-                    <ComicButton variant="primary" size="md" className="w-full">
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Get Started Free!
-                    </ComicButton>
-                  </Link>
+                  {currentUser ? (
+                    <Link to={dashboardPath} className="block">
+                      <ComicButton variant="primary" size="md" className="w-full">
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        User Dashboard
+                      </ComicButton>
+                    </Link>
+                  ) : (
+                    <>
+                      <Link to="/login" className="block">
+                        <ComicButton variant="outline" size="md" className="w-full">
+                          Login
+                        </ComicButton>
+                      </Link>
+                      <Link to="/login" className="block">
+                        <ComicButton variant="primary" size="md" className="w-full">
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Get Started Free!
+                        </ComicButton>
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* Fun Footer */}
