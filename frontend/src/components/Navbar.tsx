@@ -213,7 +213,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25 }}
+              transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
               className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-background border-l-4 border-comic-black z-[60] lg:hidden overflow-y-auto"
             >
               <div className="p-6 pb-8">
@@ -240,9 +240,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   {navLinks.map((link, index) => (
                     <motion.div
                       key={link.path}
-                      initial={{ x: 50, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.2, delay: index * 0.05 }}
                     >
                       <Link
                         to={link.path}
