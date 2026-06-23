@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "keywords": [
     "nodejs",
