@@ -26,7 +26,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
     return null;
   }, []);
 
-  const dashboardPath = currentUser ? `/dashboard/${currentUser.role}` : "/login";
+  const dashboardPath = currentUser
+    ? `/dashboard/${currentUser.role}`
+    : "/login";
 
   // Handle scroll effect
   useEffect(() => {
@@ -271,7 +273,11 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 <div className="space-y-4 pr-1 pb-1">
                   {currentUser ? (
                     <Link to={dashboardPath} className="block">
-                      <ComicButton variant="primary" size="md" className="w-full">
+                      <ComicButton
+                        variant="primary"
+                        size="md"
+                        className="w-full"
+                      >
                         <Sparkles className="w-4 h-4 mr-2" />
                         User Dashboard
                       </ComicButton>
@@ -279,12 +285,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   ) : (
                     <>
                       <Link to="/login" className="block">
-                        <ComicButton variant="outline" size="md" className="w-full">
+                        <ComicButton
+                          variant="outline"
+                          size="md"
+                          className="w-full"
+                        >
                           Login
                         </ComicButton>
                       </Link>
                       <Link to="/login" className="block">
-                        <ComicButton variant="primary" size="md" className="w-full">
+                        <ComicButton
+                          variant="primary"
+                          size="md"
+                          className="w-full"
+                        >
                           <Sparkles className="w-4 h-4 mr-2" />
                           Get Started Free!
                         </ComicButton>

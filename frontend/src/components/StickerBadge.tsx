@@ -1,16 +1,27 @@
-import { HTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { HTMLAttributes, forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface StickerBadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: 'red' | 'yellow' | 'green' | 'blue' | 'white';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "red" | "yellow" | "green" | "blue" | "white";
+  size?: "sm" | "md" | "lg";
   rotate?: boolean;
 }
 
 const StickerBadge = forwardRef<HTMLSpanElement, StickerBadgeProps>(
-  ({ className, variant = 'yellow', size = 'md', rotate = true, children, ...props }, ref) => {
-    const baseStyles = "inline-block font-bangers uppercase tracking-wide border-4 border-comic-white rounded-full shadow-lg";
-    
+  (
+    {
+      className,
+      variant = "yellow",
+      size = "md",
+      rotate = true,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const baseStyles =
+      "inline-block font-bangers uppercase tracking-wide border-4 border-comic-white rounded-full shadow-lg";
+
     const variants = {
       red: "bg-destructive text-destructive-foreground",
       yellow: "bg-secondary text-secondary-foreground",
@@ -30,15 +41,21 @@ const StickerBadge = forwardRef<HTMLSpanElement, StickerBadgeProps>(
     return (
       <span
         ref={ref}
-        className={cn(baseStyles, variants[variant], sizes[size], rotateStyle, className)}
+        className={cn(
+          baseStyles,
+          variants[variant],
+          sizes[size],
+          rotateStyle,
+          className,
+        )}
         {...props}
       >
         {children}
       </span>
     );
-  }
+  },
 );
 
-StickerBadge.displayName = 'StickerBadge';
+StickerBadge.displayName = "StickerBadge";
 
 export default StickerBadge;

@@ -57,7 +57,7 @@ const ReportsPage = () => {
   const isStudent = role === "student";
 
   const { progress, loading: progressLoading } = useStudentProgress(
-    isStudent ? studentId : ""
+    isStudent ? studentId : "",
   );
 
   const adminMenuItems = [
@@ -141,9 +141,15 @@ const ReportsPage = () => {
 
   // Student Data (Derived from Progress)
   const studentOverallScore = progress?.overallScore || 0;
-  
+
   const studentSubjectPerformance = progress?.subjectAverages?.map((s, i) => {
-    const colors = ["hsl(217, 91%, 50%)", "hsl(0, 84%, 60%)", "hsl(45, 93%, 55%)", "hsl(142, 71%, 45%)", "hsl(280, 71%, 45%)"];
+    const colors = [
+      "hsl(217, 91%, 50%)",
+      "hsl(0, 84%, 60%)",
+      "hsl(45, 93%, 55%)",
+      "hsl(142, 71%, 45%)",
+      "hsl(280, 71%, 45%)",
+    ];
     return {
       name: s.name,
       value: s.average,
@@ -151,7 +157,10 @@ const ReportsPage = () => {
     };
   }) || [{ name: "No Data", value: 100, color: "hsl(0, 0%, 80%)" }];
 
-  const currentMonth = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const currentMonth = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 
   const studentReports = [
     {
@@ -161,10 +170,10 @@ const ReportsPage = () => {
       type: "Performance",
       icon: TrendingUp,
       color: "green",
-      stats: { 
-        avgScore: `${studentOverallScore.toFixed(0)}%`, 
-        subjects: progress?.subjectAverages?.length || 0, 
-        prediction: `${Math.min(100, studentOverallScore + 5).toFixed(0)}%` 
+      stats: {
+        avgScore: `${studentOverallScore.toFixed(0)}%`,
+        subjects: progress?.subjectAverages?.length || 0,
+        prediction: `${Math.min(100, studentOverallScore + 5).toFixed(0)}%`,
       },
     },
     {
@@ -174,10 +183,13 @@ const ReportsPage = () => {
       type: "Attendance",
       icon: Calendar,
       color: "yellow",
-      stats: { 
-        present: `${progress?.metrics?.attendance?.value || 0}%`, 
-        status: (progress?.metrics?.attendance?.value || 0) > 85 ? "Excellent" : "Needs Review",
-        xp: progress?.gamification?.xp || 0
+      stats: {
+        present: `${progress?.metrics?.attendance?.value || 0}%`,
+        status:
+          (progress?.metrics?.attendance?.value || 0) > 85
+            ? "Excellent"
+            : "Needs Review",
+        xp: progress?.gamification?.xp || 0,
       },
     },
     {
@@ -187,17 +199,19 @@ const ReportsPage = () => {
       type: "Academics",
       icon: FileText,
       color: "red",
-      stats: { 
-        assignments: `${progress?.metrics?.assignments?.value || 0}%`, 
+      stats: {
+        assignments: `${progress?.metrics?.assignments?.value || 0}%`,
         quizzes: `${progress?.metrics?.quizzes?.value || 0}%`,
-        participation: `${progress?.metrics?.participation?.value || 0}%` 
+        participation: `${progress?.metrics?.participation?.value || 0}%`,
       },
-    }
+    },
   ];
 
   const reports = isStudent ? studentReports : adminReports;
 
-  const hasSubjectData = progress?.hasSubjectData ?? (progress?.subjectAverages && progress.subjectAverages.length > 0);
+  const hasSubjectData =
+    progress?.hasSubjectData ??
+    (progress?.subjectAverages && progress.subjectAverages.length > 0);
   const showEmptyState = isStudent && !progressLoading && !hasSubjectData;
 
   const handleDownload = (reportTitle: string) => {
@@ -218,9 +232,11 @@ const ReportsPage = () => {
           stroke="#000"
           strokeWidth={3}
         >
-          {(isStudent ? studentSubjectPerformance : classPerformance).map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
-          ))}
+          {(isStudent ? studentSubjectPerformance : classPerformance).map(
+            (entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ),
+          )}
         </Pie>
         <Tooltip
           contentStyle={{
@@ -271,7 +287,11 @@ const ReportsPage = () => {
         </div>
 
         <div className="p-4">
-          <StickerBadge variant={isStudent ? "green" : "red"} size="md" className="w-full text-center">
+          <StickerBadge
+            variant={isStudent ? "green" : "red"}
+            size="md"
+            className="w-full text-center"
+          >
             {role.toUpperCase()}
           </StickerBadge>
         </div>
@@ -302,7 +322,12 @@ const ReportsPage = () => {
         </nav>
 
         <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
-          <ComicButton variant="outline" size="sm" className="w-full" onClick={() => AuthService.logout()}>
+          <ComicButton
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={() => AuthService.logout()}
+          >
             <LogOut className="w-4 h-4 mr-2" /> Logout
           </ComicButton>
         </div>
@@ -354,7 +379,8 @@ const ReportsPage = () => {
                 No Performance Data Found
               </h2>
               <p className="font-comic text-lg text-muted-foreground mb-8 md:text-xl px-4">
-                Please upload your performance data. Your reports will appear here.
+                Please upload your performance data. Your reports will appear
+                here.
               </p>
               <ComicButton
                 variant="primary"
@@ -377,25 +403,27 @@ const ReportsPage = () => {
                 >
                   <ComicCard variant="white">
                     <h3 className="font-bangers text-2xl text-comic-black mb-4">
-                      {isStudent ? "🎯 Academic Risk Status" : "🎯 Risk Distribution"}
+                      {isStudent
+                        ? "🎯 Academic Risk Status"
+                        : "🎯 Risk Distribution"}
                     </h3>
                     <div className="h-64">
                       {isStudent ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
-                           {studentOverallScore >= 75 ? (
-                             <RiskBadge level="low" />
-                           ) : studentOverallScore >= 60 ? (
-                             <RiskBadge level="medium" />
-                           ) : (
-                             <RiskBadge level="high" />
-                           )}
-                           <p className="font-comic text-lg text-center mt-4 text-comic-black/80">
-                             {studentOverallScore >= 75
-                               ? "You're on track! Keep up the good work."
-                               : studentOverallScore >= 60
-                               ? "You're doing okay, but there's room for improvement."
-                               : "You're at high risk. Please focus on your studies and assignments."}
-                           </p>
+                          {studentOverallScore >= 75 ? (
+                            <RiskBadge level="low" />
+                          ) : studentOverallScore >= 60 ? (
+                            <RiskBadge level="medium" />
+                          ) : (
+                            <RiskBadge level="high" />
+                          )}
+                          <p className="font-comic text-lg text-center mt-4 text-comic-black/80">
+                            {studentOverallScore >= 75
+                              ? "You're on track! Keep up the good work."
+                              : studentOverallScore >= 60
+                                ? "You're doing okay, but there's room for improvement."
+                                : "You're at high risk. Please focus on your studies and assignments."}
+                          </p>
                         </div>
                       ) : (
                         <ResponsiveContainer width="100%" height="100%">
@@ -412,7 +440,10 @@ const ReportsPage = () => {
                               strokeWidth={3}
                             >
                               {riskDistribution.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={entry.color}
+                                />
                               ))}
                             </Pie>
                             <Tooltip
@@ -451,11 +482,11 @@ const ReportsPage = () => {
                 >
                   <ComicCard variant="white">
                     <h3 className="font-bangers text-2xl text-comic-black mb-4">
-                      {isStudent ? "📚 Subject Performance" : "📚 Students by Class"}
+                      {isStudent
+                        ? "📚 Subject Performance"
+                        : "📚 Students by Class"}
                     </h3>
-                    <div className="h-64">
-                      {renderSubjectOrClassChart()}
-                    </div>
+                    <div className="h-64">{renderSubjectOrClassChart()}</div>
                   </ComicCard>
                 </motion.div>
               </div>
@@ -502,17 +533,21 @@ const ReportsPage = () => {
 
                             {/* Stats */}
                             <div className="grid grid-cols-3 gap-2 mb-4">
-                            {Object.entries(report.stats).map(([key, value]) => (
-                                <div
-                                  key={key}
-                                  className="bg-comic-white/20 rounded-lg p-2 text-center"
-                                >
-                                  <p className="font-bangers text-lg break-words">{String(value)}</p>
-                                  <p className="font-comic text-xs capitalize">
-                                    {key.replace(/([A-Z])/g, " $1")}
-                                  </p>
-                                </div>
-                              ))}
+                              {Object.entries(report.stats).map(
+                                ([key, value]) => (
+                                  <div
+                                    key={key}
+                                    className="bg-comic-white/20 rounded-lg p-2 text-center"
+                                  >
+                                    <p className="font-bangers text-lg break-words">
+                                      {String(value)}
+                                    </p>
+                                    <p className="font-comic text-xs capitalize">
+                                      {key.replace(/([A-Z])/g, " $1")}
+                                    </p>
+                                  </div>
+                                ),
+                              )}
                             </div>
 
                             <ComicButton
@@ -578,19 +613,25 @@ const ReportsPage = () => {
                           </p>
                         </div>
                         <div>
-                          <p className="font-bangers text-4xl text-comic-black">156</p>
+                          <p className="font-bangers text-4xl text-comic-black">
+                            156
+                          </p>
                           <p className="font-comic text-comic-black/80">
                             Reports Generated
                           </p>
                         </div>
                         <div>
-                          <p className="font-bangers text-4xl text-comic-black">94%</p>
+                          <p className="font-bangers text-4xl text-comic-black">
+                            94%
+                          </p>
                           <p className="font-comic text-comic-black/80">
                             Prediction Accuracy
                           </p>
                         </div>
                         <div>
-                          <p className="font-bangers text-4xl text-comic-black">12</p>
+                          <p className="font-bangers text-4xl text-comic-black">
+                            12
+                          </p>
                           <p className="font-comic text-comic-black/80">
                             Classes Monitored
                           </p>

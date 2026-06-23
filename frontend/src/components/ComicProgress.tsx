@@ -1,21 +1,21 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface ComicProgressProps {
   value: number;
   max?: number;
   label?: string;
   showValue?: boolean;
-  variant?: 'default' | 'success' | 'warning' | 'danger';
+  variant?: "default" | "success" | "warning" | "danger";
   className?: string;
 }
 
-const ComicProgress = ({ 
-  value, 
-  max = 100, 
-  label, 
-  showValue = true, 
-  variant = 'default',
-  className 
+const ComicProgress = ({
+  value,
+  max = 100,
+  label,
+  showValue = true,
+  variant = "default",
+  className,
 }: ComicProgressProps) => {
   const percentage = Math.min((value / max) * 100, 100);
 
@@ -36,7 +36,10 @@ const ComicProgress = ({
       )}
       <div className="h-6 rounded-full border-4 border-comic-black bg-comic-white overflow-hidden">
         <div
-          className={cn("h-full rounded-full transition-all duration-500", variants[variant])}
+          className={cn(
+            "h-full rounded-full transition-all duration-500",
+            variants[variant],
+          )}
           style={{ width: `${percentage}%` }}
         />
       </div>

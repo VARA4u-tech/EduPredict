@@ -1,7 +1,7 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface RiskBadgeProps {
-  level: 'low' | 'medium' | 'high';
+  level: "low" | "medium" | "high";
   className?: string;
 }
 
@@ -23,9 +23,9 @@ const RiskBadge = ({ level, className }: RiskBadgeProps) => {
       className={cn(
         "inline-block px-3 py-1 font-fredoka font-bold text-sm uppercase rounded-full border-3 border-comic-black",
         styles[level],
-        className
+        className,
       )}
-      style={{ borderWidth: '3px' }}
+      style={{ borderWidth: "3px" }}
     >
       {labels[level]}
     </span>
