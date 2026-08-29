@@ -3,7 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
-import xss from "xss-clean";
+import compression from "compression";
+import morgan from "morgan";
+import mongoSanitize from "express-mongo-sanitize";
 import aiRoutes from "./routes/ai.routes.js";
 import studentRoutes from "./routes/student.routes.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -13,12 +15,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  "https://edu-pridect.vercel.app",
-  "https://edupridect.vercel.app",
-  "http://localhost:8080",
-  "http://localhost:8081",
-  "http://localhost:8082",
-  "http://localhost:5173",
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
 ].filter(Boolean);
 
 const corsOptions = {
@@ -50,8 +47,11 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 // Security Headers
 app.use(helmet());
 
-// Prevent XSS
-app.use(xss());
+// Compress all responses
+app.use(compression());
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
 
 // Prevent Parameter Pollution
 app.use(hpp());
@@ -65,10 +65,11 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // Request logging middleware
-app.use((req, res, next) => {
-  // console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
-});
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+} else {
+  app.use(morgan("combined"));
+}
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
@@ -80,9 +81,9 @@ app.get("/api/health", (req, res) => {
 });
 
 // API Routes
-app.use("/api/ai", aiRoutes);
-app.use("/api/students", studentRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/ai", aiRoutes);
+app.use("/api/v1/students", studentRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // 404 handler
 app.use((req, res) => {
