@@ -1,7 +1,8 @@
 import { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import { motion, HTMLMotionProps } from "framer-motion";
 
-interface ComicCardProps extends HTMLAttributes<HTMLDivElement> {
+interface ComicCardProps extends Omit<HTMLMotionProps<"div">, "ref"> {
   variant?: "default" | "white" | "yellow" | "red" | "green" | "blue";
   hover?: boolean;
 }
@@ -22,18 +23,27 @@ const ComicCard = forwardRef<HTMLDivElement, ComicCardProps>(
       blue: "bg-background text-foreground",
     };
 
-    const hoverStyles = hover
-      ? "shadow-[6px_6px_0px_hsl(var(--comic-black))] hover:shadow-[8px_8px_0px_hsl(var(--comic-black))] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200"
-      : "shadow-[6px_6px_0px_hsl(var(--comic-black))]";
+    // Remove the CSS hover transitions since framer-motion handles it
+    const shadowStyles = "shadow-[6px_6px_0px_hsl(var(--comic-black))]";
+
+    const motionProps = hover ? {
+      whileHover: { 
+        y: -4, 
+        x: -4,
+        boxShadow: "8px 8px 0px hsl(var(--comic-black))" 
+      },
+      transition: { type: "spring" as const, stiffness: 300, damping: 20 }
+    } : {};
 
     return (
-      <div
+      <motion.div
         ref={ref}
-        className={cn(baseStyles, variants[variant], hoverStyles, className)}
+        className={cn(baseStyles, variants[variant], shadowStyles, className)}
+        {...motionProps}
         {...props}
       >
         {children}
-      </div>
+      </motion.div>
     );
   },
 );
