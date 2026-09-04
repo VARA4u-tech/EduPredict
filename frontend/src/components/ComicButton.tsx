@@ -14,7 +14,7 @@ const ComicButton = forwardRef<HTMLButtonElement, ComicButtonProps>(
   ) => {
     const baseStyles =
       "inline-flex items-center justify-center font-bangers uppercase tracking-wider rounded-xl border-4 border-comic-black";
-    
+
     // Removed the hover translation and active translation from CSS as framer-motion handles it
     const variants = {
       primary:
@@ -37,15 +37,15 @@ const ComicButton = forwardRef<HTMLButtonElement, ComicButtonProps>(
       <motion.button
         ref={ref}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
-        whileHover={{ 
-          scale: 1.03, 
+        whileHover={{
+          scale: 1.03,
           y: -2,
-          boxShadow: "6px 6px 0px hsl(var(--comic-black))" 
+          boxShadow: "6px 6px 0px hsl(var(--comic-black))",
         }}
-        whileTap={{ 
-          scale: 0.95, 
+        whileTap={{
+          scale: 0.95,
           y: 2,
-          boxShadow: "2px 2px 0px hsl(var(--comic-black))" 
+          boxShadow: "2px 2px 0px hsl(var(--comic-black))",
         }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
         {...props}

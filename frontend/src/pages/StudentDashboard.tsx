@@ -196,7 +196,11 @@ const StudentDashboard = () => {
           className="pointer-events-auto w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
           aria-label="Toggle Menu"
         >
-          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {sidebarOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
         <div className="flex gap-2 pointer-events-auto">
           <ThemeToggle />

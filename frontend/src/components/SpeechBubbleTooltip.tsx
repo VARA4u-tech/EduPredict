@@ -3,7 +3,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  TooltipProvider
+  TooltipProvider,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -25,16 +25,19 @@ export function SpeechBubbleTooltip({
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
-        <TooltipTrigger asChild>
-          {children}
-        </TooltipTrigger>
-        <TooltipContent 
-          side={side} 
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent
+          side={side}
           sideOffset={20}
           className="bg-transparent border-none shadow-none p-0 overflow-visible"
         >
           {/* We wrap the content in the speech bubble div to use the existing CSS */}
-          <div className={cn("speech-bubble shadow-[4px_4px_0px_hsl(var(--comic-black))] text-sm font-comic font-bold animate-in zoom-in-95 max-w-[250px] text-center", className)}>
+          <div
+            className={cn(
+              "speech-bubble shadow-[4px_4px_0px_hsl(var(--comic-black))] text-sm font-comic font-bold animate-in zoom-in-95 max-w-[250px] text-center",
+              className,
+            )}
+          >
             {content}
           </div>
         </TooltipContent>

@@ -26,14 +26,16 @@ const ComicCard = forwardRef<HTMLDivElement, ComicCardProps>(
     // Remove the CSS hover transitions since framer-motion handles it
     const shadowStyles = "shadow-[6px_6px_0px_hsl(var(--comic-black))]";
 
-    const motionProps = hover ? {
-      whileHover: { 
-        y: -4, 
-        x: -4,
-        boxShadow: "8px 8px 0px hsl(var(--comic-black))" 
-      },
-      transition: { type: "spring" as const, stiffness: 300, damping: 20 }
-    } : {};
+    const motionProps = hover
+      ? {
+          whileHover: {
+            y: -4,
+            x: -4,
+            boxShadow: "8px 8px 0px hsl(var(--comic-black))",
+          },
+          transition: { type: "spring" as const, stiffness: 300, damping: 20 },
+        }
+      : {};
 
     return (
       <motion.div
