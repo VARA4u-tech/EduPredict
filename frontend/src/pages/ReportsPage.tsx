@@ -257,7 +257,7 @@ const ReportsPage = () => {
   );
 
   return (
-    <div className="h-screen overflow-hidden bg-background flex">
+    <div className="h-[100dvh] overflow-hidden bg-background flex">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -270,7 +270,7 @@ const ReportsPage = () => {
       <aside
         className={`
           fixed lg:static z-[60]
-          w-64 h-screen bg-sidebar border-r-4 border-comic-black
+          w-64 h-[100dvh] bg-sidebar border-r-4 border-comic-black
           flex flex-col transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
