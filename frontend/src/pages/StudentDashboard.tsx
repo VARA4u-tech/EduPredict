@@ -150,7 +150,7 @@ const StudentDashboard = () => {
       : [{ name: "No Data", marks: 0, predicted: 0 }];
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="h-screen overflow-hidden bg-background flex">
       {/* Welcome Modal for First-Time Users */}
       {showWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
