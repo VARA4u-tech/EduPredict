@@ -1,22 +1,19 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import Student from "../models/student.model.js";
+import { AppError } from "../utils/AppError.js";
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: "Please provide all fields" });
-    }
 
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ error: "User already exists" });
+      return next(new AppError("User already exists", 400));
     }
 
     const user = await User.create({
@@ -40,17 +37,17 @@ export const register = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      res.status(400).json({ error: "Invalid user data" });
+      return next(new AppError("Invalid user data", 400));
     }
   } catch (error) {
-    res.status(500).json({ error: "Server error during registration" });
+    return next(new AppError("Server error during registration", 500));
   }
 };
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password, rollNumber } = req.body;
 
@@ -64,7 +61,7 @@ export const login = async (req, res) => {
     }
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return next(new AppError("Invalid credentials", 401));
     }
 
     if (await user.matchPassword(password)) {
@@ -78,11 +75,11 @@ export const login = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      res.status(401).json({ error: "Invalid credentials" });
+      return next(new AppError("Invalid credentials", 401));
     }
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ error: "Server error during login" });
+    return next(new AppError("Server error during login", 500));
   }
 };
 
