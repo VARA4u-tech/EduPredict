@@ -341,7 +341,7 @@ const ReportsPage = () => {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 p-4 lg:p-8 pt-20 lg:pt-8 overflow-auto">
+      <main className="flex-1 px-4 pb-4 pt-24 lg:p-8 overflow-auto">
         <div className="max-w-7xl mx-auto">
           <motion.div
             className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"

@@ -189,14 +189,20 @@ const StudentDashboard = () => {
         </div>
       )}
 
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
-        aria-label="Toggle Menu"
-      >
-        {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
+      {/* Mobile Top Navigation */}
+      <div className="lg:hidden fixed top-4 left-4 right-4 z-50 flex justify-between items-start pointer-events-none">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="pointer-events-auto w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
+          aria-label="Toggle Menu"
+        >
+          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+        <div className="flex gap-2 pointer-events-auto">
+          <ThemeToggle />
+          <AlertsCenter />
+        </div>
+      </div>
 
       {/* Sidebar */}
       <aside
@@ -280,7 +286,7 @@ const StudentDashboard = () => {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 p-4 lg:p-8 pt-20 lg:pt-8 overflow-auto">
+      <main className="flex-1 px-4 pb-4 pt-24 lg:p-8 overflow-auto">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
@@ -325,12 +331,6 @@ const StudentDashboard = () => {
                   </span>
                 )}
               </p>
-            </div>
-
-            {/* Mobile Header Icons */}
-            <div className="flex md:hidden gap-2 absolute top-4 right-4">
-              <ThemeToggle />
-              <AlertsCenter />
             </div>
 
             {progressLoading ? (
