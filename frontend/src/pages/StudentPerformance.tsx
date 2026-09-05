@@ -1,20 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Brain,
-  Home,
-  BarChart3,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  Target,
-  Save,
-  Plus,
-  Trash2,
-  BookOpen,
-} from "lucide-react";
+import { Home, BarChart3, Settings, LogOut, Menu, X, Target, Save, Plus, Trash2, BookOpen,  } from "lucide-react";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
@@ -25,6 +12,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { AuthService } from "@/services/auth.service";
+import Logo from "@/components/Logo";
 import {
   getStudentSubjects,
   updateStudentSubjects,
@@ -253,7 +241,7 @@ const StudentPerformance = () => {
         <div className="p-4 border-b-4 border-comic-black">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Brain className="w-7 h-7 text-comic-black" />
+              <Logo className="w-7 h-7 text-comic-black" />
             </div>
             <span className="font-bangers text-2xl text-sidebar-foreground">
               EduPredict

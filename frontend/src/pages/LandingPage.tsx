@@ -8,7 +8,8 @@ import ComicCard from "@/components/ComicCard";
 import ComicStrip from "@/components/ComicStrip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Brain, TrendingUp, Users, Shield, BarChart3, Zap } from "lucide-react";
+import { TrendingUp, Users, Shield, BarChart3, Zap } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const LandingPage = () => {
   return (
@@ -188,7 +189,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                icon: Brain,
+                icon: Logo,
                 title: "AI Predictions",
                 desc: "Machine learning models predict student performance with high accuracy!",
                 color: "red" as const,

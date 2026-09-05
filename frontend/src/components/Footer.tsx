@@ -1,18 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-  Brain,
-  Github,
-  Twitter,
-  Linkedin,
-  Mail,
-  Sparkles,
-  ExternalLink,
-  ArrowUp,
-} from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, Sparkles, ExternalLink, ArrowUp,  } from "lucide-react";
 import ComicButton from "./ComicButton";
 import StickerBadge from "./StickerBadge";
 import WhatsAppIcon from "./WhatsAppIcon";
+import Logo from "@/components/Logo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -129,7 +121,7 @@ const Footer = () => {
                 whileHover={{ rotate: 10 }}
                 className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
               >
-                <Brain className="w-7 h-7 text-comic-black" />
+                <Logo className="w-7 h-7 text-comic-black" />
               </motion.div>
               <div>
                 <span className="font-bangers text-xl text-foreground block">

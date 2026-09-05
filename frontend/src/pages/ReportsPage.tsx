@@ -1,23 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Brain,
-  Home,
-  BarChart3,
-  FileText,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  Download,
-  PieChart,
-  Users,
-  TrendingUp,
-  Calendar,
-  Target,
-  BookOpen,
-} from "lucide-react";
+import { Home, BarChart3, FileText, Settings, LogOut, Menu, X, Download, PieChart, Users, TrendingUp, Calendar, Target, BookOpen,  } from "lucide-react";
 import {
   PieChart as RechartsPie,
   Pie,
@@ -34,6 +18,7 @@ import RiskBadge from "@/components/RiskBadge";
 import { useStudentProgress } from "@/hooks/useStudent";
 import { AuthService } from "@/services/auth.service";
 import { Skeleton } from "@/components/ui/skeleton";
+import Logo from "@/components/Logo";
 
 const ReportsPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -278,7 +263,7 @@ const ReportsPage = () => {
         <div className="p-4 border-b-4 border-comic-black">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Brain className="w-7 h-7 text-comic-black" />
+              <Logo className="w-7 h-7 text-comic-black" />
             </div>
             <span className="font-bangers text-2xl text-sidebar-foreground">
               EduPredict

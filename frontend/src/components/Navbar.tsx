@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Brain, Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
+import Logo from "./Logo";
 import ComicButton from "./ComicButton";
 import ThemeToggle from "./ThemeToggle";
 
@@ -76,7 +77,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 className="relative"
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-secondary via-secondary to-orange-400 rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center overflow-hidden">
-                  <Brain className="w-7 h-7 text-comic-black" />
+                  <Logo className="w-7 h-7 text-comic-black" />
                   {/* Sparkle effect */}
                   <motion.div
                     className="absolute -top-1 -right-1"
@@ -220,8 +221,8 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 {/* Mobile Header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-secondary rounded-xl border-3 border-comic-black flex items-center justify-center">
-                      <Brain className="w-6 h-6 text-comic-black" />
+                    <div className="w-10 h-10 bg-secondary rounded-xl border-[3px] border-comic-black flex items-center justify-center shrink-0">
+                      <Logo className="w-6 h-6 text-comic-black" />
                     </div>
                     <span className="font-bangers text-xl text-foreground">
                       EduPredict

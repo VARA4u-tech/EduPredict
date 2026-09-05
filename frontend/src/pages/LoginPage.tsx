@@ -5,9 +5,10 @@ import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
 import StickerText from "@/components/StickerText";
-import { Brain, GraduationCap, Users, User, Eye, EyeOff } from "lucide-react";
+import { GraduationCap, Users, User, Eye, EyeOff } from "lucide-react";
 import { AuthService } from "@/services/auth.service";
 import { useToast } from "@/components/ui/use-toast";
+import Logo from "@/components/Logo";
 
 type Role = "admin" | "faculty" | "student";
 
@@ -90,7 +91,7 @@ const LoginPage = () => {
           >
             <Link to="/" className="inline-flex items-center gap-3 mb-8">
               <div className="w-16 h-16 bg-secondary rounded-2xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center">
-                <Brain className="w-10 h-10 text-comic-black" />
+                <Logo className="w-10 h-10 text-comic-black" />
               </div>
               <span className="font-bangers text-4xl text-foreground">
                 EduPredict

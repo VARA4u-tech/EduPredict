@@ -1,26 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-  Brain,
-  Home,
-  BarChart3,
-  FileText,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  Calculator,
-  Target,
-  TrendingUp,
-  AlertTriangle,
-  Zap,
-  CheckCircle,
-  XCircle,
-  ThumbsUp,
-  ArrowUpCircle,
-  Lightbulb,
-} from "lucide-react";
+import { Home, BarChart3, FileText, Settings, LogOut, Menu, X, Calculator, Target, TrendingUp, AlertTriangle, Zap, CheckCircle, XCircle, ThumbsUp, ArrowUpCircle, Lightbulb,  } from "lucide-react";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import ComicInput from "@/components/ComicInput";
@@ -31,6 +12,7 @@ import { useMockData } from "@/context/MockDataContext";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { usePrediction } from "@/hooks/useAI";
+import Logo from "@/components/Logo";
 
 const PredictionPage = () => {
   const { user } = useMockData();
@@ -220,7 +202,7 @@ const PredictionPage = () => {
         <div className="p-4 border-b-4 border-comic-black">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Brain className="w-7 h-7 text-comic-black" />
+              <Logo className="w-7 h-7 text-comic-black" />
             </div>
             <span className="font-bangers text-2xl text-sidebar-foreground">
               EduPredict
@@ -530,7 +512,7 @@ const PredictionPage = () => {
                       >
                         <ComicCard variant="yellow" className="mb-4">
                           <div className="flex items-center gap-2 mb-4">
-                            <Brain className="w-6 h-6" />
+                            <Logo className="w-6 h-6" />
                             <h3 className="font-bangers text-2xl">
                               AI Insights
                             </h3>
@@ -703,7 +685,7 @@ const PredictionPage = () => {
                     animate={{ y: [0, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                   >
-                    <Brain className="w-24 h-24 mx-auto mb-6 text-secondary" />
+                    <Logo className="w-24 h-24 mx-auto mb-6 text-secondary" />
                   </motion.div>
                   <StickerText size="lg" color="yellow">
                     Enter Your Data

@@ -1,22 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Brain,
-  Home,
-  BarChart3,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  BookOpen,
-  TrendingUp,
-  Target,
-  Award,
-  Lightbulb,
-  Zap,
-  RefreshCw,
-} from "lucide-react";
+import { Home, BarChart3, Settings, LogOut, Menu, X, BookOpen, TrendingUp, Target, Award, Lightbulb, Zap, RefreshCw,  } from "lucide-react";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
@@ -31,6 +16,7 @@ import { usePrediction } from "@/hooks/useAI";
 import { AuthService } from "@/services/auth.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import Logo from "@/components/Logo";
 
 const StudentDashboard = () => {
   const { user } = useMockData();
@@ -221,7 +207,7 @@ const StudentDashboard = () => {
         <div className="p-4 border-b-4 border-comic-black">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Brain className="w-7 h-7 text-comic-black" />
+              <Logo className="w-7 h-7 text-comic-black" />
             </div>
             <span className="font-bangers text-2xl text-sidebar-foreground">
               EduPredict

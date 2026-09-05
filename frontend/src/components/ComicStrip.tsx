@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { BookOpen, Brain, TrendingUp, Award, ArrowRight } from "lucide-react";
+import { BookOpen, TrendingUp, Award, ArrowRight } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const ComicStrip = () => {
   const journeySteps = [
@@ -23,7 +24,7 @@ const ComicStrip = () => {
       subtitle: "Predict Performance",
       description:
         "Our machine learning models analyze patterns and predict future academic outcomes with high accuracy.",
-      icon: Brain,
+      icon: Logo,
       color: "from-blue-500 to-cyan-500",
       bgColor: "bg-blue-50 dark:bg-blue-950/30",
       borderColor: "border-blue-400",
