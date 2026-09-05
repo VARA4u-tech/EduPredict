@@ -165,7 +165,7 @@ const FacultyDashboard = () => {
         {/* Logout */}
         <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
           <Link to="/">
-            <ComicButton variant="outline" size="sm" className="w-full">
+            <ComicButton variant="danger" size="sm" className="w-full">
               <LogOut className="w-4 h-4 mr-2" /> Logout
             </ComicButton>
           </Link>

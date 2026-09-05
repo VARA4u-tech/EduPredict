@@ -12,6 +12,7 @@ import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useAIChat } from "../hooks/useAI";
+import { useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
 
 export function AIChatWidget() {
@@ -19,6 +20,7 @@ export function AIChatWidget() {
   const [inputMessage, setInputMessage] = useState("");
   const { messages, loading, sendMessage } = useAIChat();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   // Auto-scroll to bottom of chat
   useEffect(() => {
@@ -26,6 +28,10 @@ export function AIChatWidget() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, loading]);
+
+  if (location.pathname !== "/") {
+    return null;
+  }
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();

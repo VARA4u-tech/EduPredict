@@ -323,7 +323,7 @@ const ReportsPage = () => {
 
         <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
           <ComicButton
-            variant="outline"
+            variant="danger"
             size="sm"
             className="w-full"
             onClick={() => AuthService.logout()}

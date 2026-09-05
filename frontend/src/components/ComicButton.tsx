@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { motion, HTMLMotionProps } from "framer-motion";
 
 interface ComicButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
-  variant?: "primary" | "secondary" | "accent" | "outline";
+  variant?: "primary" | "secondary" | "accent" | "outline" | "danger";
   size?: "sm" | "md" | "lg";
 }
 
@@ -25,6 +25,8 @@ const ComicButton = forwardRef<HTMLButtonElement, ComicButtonProps>(
         "bg-accent text-accent-foreground shadow-[4px_4px_0px_hsl(var(--comic-black))]",
       outline:
         "bg-comic-white text-comic-black shadow-[4px_4px_0px_hsl(var(--comic-black))]",
+      danger:
+        "bg-red-500 text-white shadow-[4px_4px_0px_hsl(var(--comic-black))]",
     };
 
     const sizes = {
