@@ -11,6 +11,8 @@ import RiskBadge from "@/components/RiskBadge";
 import { useMockData } from "@/context/MockDataContext";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import DashboardLayout from "@/components/DashboardLayout";
 import { usePrediction } from "@/hooks/useAI";
 import Logo from "@/components/Logo";
 
@@ -181,93 +183,20 @@ const PredictionPage = () => {
       : null;
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-background flex">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
-      >
-        {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:static z-[60]
-          w-64 h-[100dvh] bg-sidebar border-r-4 border-comic-black
-          flex flex-col transition-transform duration-300
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
-        <div className="p-4 border-b-4 border-comic-black">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Logo className="w-7 h-7 text-comic-black" />
-            </div>
-            <span className="font-bangers text-2xl text-sidebar-foreground">
-              EduPredict
-            </span>
-          </Link>
+    <DashboardLayout
+      menuItems={menuItems}
+      role="STUDENT"
+      headerContent={
+        <div>
+          <StickerText size="lg" color="white">
+            Prediction & Analytics
+          </StickerText>
+          <p className="font-comic text-foreground/80 mt-1">
+            Enter your scores and total marks to predict your performance! 🎯
+          </p>
         </div>
-
-        <div className="p-4">
-          <StickerBadge
-            variant="green"
-            size="md"
-            className="w-full text-center"
-          >
-            STUDENT
-          </StickerBadge>
-        </div>
-
-        <nav className="flex-1 p-4 space-y-2">
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setSidebarOpen(false)}
-              className={`
-                flex items-center gap-3 p-3 rounded-xl font-comic font-bold transition-all
-                border-4 border-transparent text-sidebar-foreground hover:bg-sidebar-accent
-              `}
-            >
-              <item.icon className="w-5 h-5" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
-          <Link to="/">
-            <ComicButton variant="danger" size="sm" className="w-full">
-              <LogOut className="w-4 h-4 mr-2" /> Logout
-            </ComicButton>
-          </Link>
-        </div>
-      </aside>
-
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-comic-black/50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Main Content */}
-      <main className="flex-1 px-4 pb-4 pt-24 lg:p-8 overflow-auto">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <StickerText size="lg" color="white">
-              Prediction & Analytics
-            </StickerText>
-            <p className="font-comic text-foreground/80 mt-1">
-              Enter your scores and total marks to predict your performance! 🎯
-            </p>
-          </motion.div>
+      }
+    >
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Input Form */}
@@ -757,9 +686,7 @@ const PredictionPage = () => {
               </ComicCard>
             </motion.div>
           )}
-        </div>
-      </main>
-    </div>
+    </DashboardLayout>
   );
 };
 
