@@ -18,112 +18,154 @@ const LandingPage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 md:pt-32 md:pb-24 lg:py-32 px-4">
-        <div className="container mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-24 pb-16 md:pt-32 md:pb-24 lg:py-32 px-4 overflow-hidden border-b-[6px] md:border-b-8 border-comic-black">
+        {/* Comic Sunburst Background — two near-identical transparent tones, no harsh gap */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none opacity-30"
+          style={{
+            background: 'repeating-conic-gradient(from 0deg at 50% 50%, hsl(var(--secondary) / 0.25) 0deg 10deg, hsl(var(--secondary) / 0.05) 10deg 20deg)',
+            animation: 'spin 80s linear infinite',
+            transformOrigin: 'center center'
+          }}
+        />
+
+        <div className="container mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-16">
             {/* Left Content */}
             <motion.div
-              className="flex-1 text-center lg:text-left space-y-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              className="flex-1 text-center lg:text-left space-y-6 md:space-y-8 relative w-full"
+              initial={{ opacity: 0, x: -50, rotate: -5 }}
+              animate={{ opacity: 1, x: 0, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 120, damping: 12 }}
             >
-              {/* Sticker Badges */}
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              {/* Comic Action Star - Hidden on very small screens, visible on md+ */}
+              <motion.div 
+                className="hidden md:flex absolute -top-16 -left-10 w-28 h-28 bg-yellow-400 items-center justify-center border-4 border-comic-black shadow-[4px_4px_0px_black] z-20"
+                style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }}
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <span className="font-bangers text-2xl text-comic-black -rotate-12 mt-2">POW!</span>
+              </motion.div>
+
+              {/* Sticker Badges - Better mobile wrapping & scaling */}
+              <div className="flex flex-wrap gap-2 md:gap-3 justify-center lg:justify-start">
                 <motion.div
-                  initial={{ scale: 0, rotate: -20 }}
-                  animate={{ scale: 1, rotate: -3 }}
-                  transition={{ delay: 0.4, type: "spring" }}
+                  initial={{ scale: 0, rotate: -30 }}
+                  animate={{ scale: 1, rotate: -6 }}
+                  transition={{ delay: 0.4, type: "spring", bounce: 0.6 }}
                 >
-                  <StickerBadge variant="yellow" size="lg">
+                  <StickerBadge variant="yellow" size="md" className="md:text-lg">
                     WHAT'S UP!
                   </StickerBadge>
                 </motion.div>
                 <motion.div
-                  initial={{ scale: 0, rotate: 20 }}
-                  animate={{ scale: 1, rotate: 5 }}
-                  transition={{ delay: 0.5, type: "spring" }}
+                  initial={{ scale: 0, rotate: 30 }}
+                  animate={{ scale: 1, rotate: 6 }}
+                  transition={{ delay: 0.5, type: "spring", bounce: 0.6 }}
                 >
-                  <StickerBadge variant="red" size="lg">
+                  <StickerBadge variant="red" size="md" className="md:text-lg">
                     AI POWERED
                   </StickerBadge>
                 </motion.div>
                 <motion.div
-                  initial={{ scale: 0, rotate: -10 }}
-                  animate={{ scale: 1, rotate: -2 }}
-                  transition={{ delay: 0.6, type: "spring" }}
+                  initial={{ scale: 0, rotate: -15 }}
+                  animate={{ scale: 1, rotate: -3 }}
+                  transition={{ delay: 0.6, type: "spring", bounce: 0.6 }}
                 >
-                  <StickerBadge variant="green" size="lg">
+                  <StickerBadge variant="green" size="md" className="md:text-lg">
                     SMART PREDICTIONS
                   </StickerBadge>
                 </motion.div>
               </div>
 
-              {/* Main Title */}
-              <div className="space-y-2">
-                <StickerText size="xl" color="white" className="block">
+              {/* Main Title - Responsive sizing */}
+              <div className="space-y-2 md:space-y-4 relative">
+                {/* Speech bubble pointer (desktop only) */}
+                <div className="hidden lg:block absolute -right-8 -top-8 w-16 h-16 bg-white border-4 border-comic-black rounded-full shadow-[4px_4px_0px_black] z-10 flex items-center justify-center animate-bounce">
+                  <span className="font-bangers text-xl text-primary">WOW!</span>
+                </div>
+                
+                <StickerText size="xl" color="white" className="block text-4xl md:text-6xl lg:text-7xl leading-tight">
                   Predictive Analytics
                 </StickerText>
-                <StickerText size="lg" color="yellow" className="block">
-                  For Student Performance Forecasting
+                <StickerText size="lg" color="yellow" className="block text-2xl md:text-4xl lg:text-5xl leading-tight">
+                  For Student Success
                 </StickerText>
               </div>
 
-              {/* Description */}
-              <p className="text-xl md:text-2xl font-comic text-foreground/90 max-w-xl mx-auto lg:mx-0">
-                Unlock the power of AI to predict student success, identify
-                at-risk learners, and boost academic outcomes! 🚀
-              </p>
+              {/* Description - comic font, uses theme card color */}
+              <div className="bg-card border-4 border-comic-black shadow-[4px_4px_0px_black] p-4 md:p-6 rounded-2xl mx-4 lg:mx-0 inline-block relative">
+                <p className="text-lg md:text-2xl font-comic text-card-foreground max-w-xl text-left font-bold">
+                  Unlock the power of AI to predict student outcomes, identify
+                  at-risk learners, and boost academic performance! 🚀
+                </p>
+                {/* Comic corner fold effect */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-muted border-l-4 border-t-4 border-comic-black rounded-tl-lg" style={{ clipPath: "polygon(100% 0, 0 100%, 100% 100%)" }} />
+              </div>
 
-              {/* CTA Buttons */}
+              {/* CTA Buttons - Mobile optimized */}
               <motion.div
-                className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4 px-4 lg:px-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
               >
-                <Link to="/login">
-                  <ComicButton variant="primary" size="lg">
-                    🎯 Get Started
+                <Link to="/login" className="w-full sm:w-auto">
+                  <ComicButton variant="primary" size="lg" className="w-full sm:w-auto text-xl py-4 md:py-3">
+                    🎯 Get Started Now
                   </ComicButton>
                 </Link>
-                <Link to="/dashboard">
-                  <ComicButton variant="secondary" size="lg">
-                    📊 View Dashboard
+                <Link to="/dashboard" className="w-full sm:w-auto">
+                  <ComicButton variant="secondary" size="lg" className="w-full sm:w-auto text-xl py-4 md:py-3">
+                    📊 View Demo Dashboard
                   </ComicButton>
                 </Link>
               </motion.div>
             </motion.div>
 
-            {/* Right - Hero Image */}
+            {/* Right - Hero Image Container */}
             <motion.div
-              className="flex-1 relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, type: "spring" }}
+              className="flex-1 relative w-full mt-8 lg:mt-0"
+              initial={{ opacity: 0, scale: 0.5, rotate: 10 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 0.3, type: "spring", bounce: 0.5 }}
             >
-              <div className="relative">
-                <img
-                  src={heroImage}
-                  alt="AI Education Hero"
-                  className="w-full max-w-lg mx-auto drop-shadow-2xl"
-                />
-                {/* Floating stickers around image */}
+              {/* Comic panel frame for the image */}
+              <div className="relative mx-auto max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg bg-white border-8 border-comic-black p-2 md:p-4 shadow-[8px_8px_0px_black] md:shadow-[16px_16px_0px_black] rotate-2 hover:rotate-0 transition-transform duration-300">
+                
+                {/* "NEW!" Badge */}
+                <div className="absolute -top-6 -left-6 md:-top-8 md:-left-8 bg-red-500 text-white font-bangers text-xl md:text-3xl px-4 py-2 border-4 border-comic-black shadow-[4px_4px_0px_black] -rotate-12 z-30">
+                  NEW!
+                </div>
+
+                <div className="bg-secondary/10 overflow-hidden border-4 border-comic-black relative">
+                  {/* Dynamic background behind image */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle,white_2px,transparent_2px)] bg-[length:12px_12px] opacity-30" />
+                  <img
+                    src={heroImage}
+                    alt="AI Education Hero"
+                    className="w-full h-auto object-cover relative z-10 drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+
+                {/* Floating stickers around image - Adjusted for mobile */}
                 <motion.div
-                  className="absolute -top-4 -right-4 md:top-0 md:right-0"
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
+                  className="absolute -right-6 md:-right-10 top-1/4 z-20"
+                  animate={{ y: [-5, 10, -5], rotate: [10, 15, 10] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                 >
-                  <StickerBadge variant="blue" size="md" rotate>
+                  <StickerBadge variant="blue" size="md" className="shadow-[4px_4px_0px_black]">
                     TOO COOL!
                   </StickerBadge>
                 </motion.div>
+                
                 <motion.div
-                  className="absolute -bottom-4 -left-4 md:bottom-10 md:-left-10"
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5 }}
+                  className="absolute -left-4 md:-left-12 bottom-1/4 z-20"
+                  animate={{ y: [5, -10, 5], rotate: [-10, -15, -10] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
                 >
-                  <StickerBadge variant="green" size="md" rotate>
+                  <StickerBadge variant="green" size="md" className="shadow-[4px_4px_0px_black]">
                     100% ACCURATE
                   </StickerBadge>
                 </motion.div>
