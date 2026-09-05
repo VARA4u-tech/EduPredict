@@ -17,6 +17,7 @@ import { AuthService } from "@/services/auth.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
+import DashboardLayout from "@/components/DashboardLayout";
 
 const StudentDashboard = () => {
   const { user } = useMockData();
@@ -136,7 +137,86 @@ const StudentDashboard = () => {
       : [{ name: "No Data", marks: 0, predicted: 0 }];
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-background flex">
+    <DashboardLayout
+      menuItems={menuItems}
+      role="STUDENT"
+      headerContent={
+        <>
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <StickerText size="lg" color="white" className="drop-shadow-md">
+                My Dashboard
+              </StickerText>
+              <div className="hidden md:flex gap-2">
+                <ThemeToggle />
+                <AlertsCenter />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => refresh()}
+                  disabled={progressLoading}
+                  className="hover:bg-transparent hover:text-white"
+                >
+                  <RefreshCw
+                    className={`h-5 w-5 ${progressLoading ? "animate-spin" : ""}`}
+                  />
+                </Button>
+              </div>
+            </div>
+            <p className="font-comic text-foreground/80 mt-1">
+              Welcome back,{" "}
+              <span className="font-bold text-accent">
+                {currentUser?.name || user.name}
+              </span>
+              {currentUser?.gender && (
+                <span className="ml-2 text-xs bg-accent/20 px-2 py-1 rounded-full">
+                  {currentUser.gender}
+                </span>
+              )}
+              {currentUser?.rollNumber && (
+                <span className="ml-2 text-xs text-muted-foreground">
+                  ({currentUser.rollNumber})
+                </span>
+              )}
+            </p>
+          </div>
+
+          {progressLoading ? (
+            <Skeleton className="h-20 w-64 rounded-xl" />
+          ) : (
+            <div className="flex items-center gap-4 bg-card p-3 rounded-xl border-4 border-black shadow-comic">
+              <div className="text-right">
+                <p className="font-bangers text-lg leading-none">
+                  Level {dashboardData.level}
+                </p>
+                <p className="text-xs font-bold text-muted-foreground uppercase">
+                  {user.title}
+                </p>
+              </div>
+              <div className="w-32">
+                <div className="flex justify-between text-[10px] font-bold mb-1">
+                  <span>XP</span>
+                  <span>
+                    {dashboardData.xp} / {dashboardData.nextLevelXp}
+                  </span>
+                </div>
+                <div className="h-3 bg-muted rounded-full border-2 border-black overflow-hidden">
+                  <div
+                    className="h-full bg-yellow-400"
+                    style={{
+                      width: `${(dashboardData.xp / dashboardData.nextLevelXp) * 100}%`,
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="w-10 h-10 bg-yellow-400 rounded-full border-4 border-black flex items-center justify-center">
+                <Zap className="w-5 h-5 text-black fill-current" />
+              </div>
+            </div>
+          )}
+        </>
+      }
+    >
       {/* Welcome Modal for First-Time Users */}
       {showWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -175,188 +255,6 @@ const StudentDashboard = () => {
         </div>
       )}
 
-      {/* Mobile Top Navigation */}
-      <div className="lg:hidden fixed top-4 left-4 right-4 z-50 flex justify-between items-start pointer-events-none">
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="pointer-events-auto w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center"
-          aria-label="Toggle Menu"
-        >
-          {sidebarOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
-        <div className="flex gap-2 pointer-events-auto">
-          <ThemeToggle />
-          <AlertsCenter />
-        </div>
-      </div>
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:static z-[60]
-          w-64 h-[100dvh] bg-sidebar border-r-4 border-comic-black
-          flex flex-col transition-transform duration-300
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
-        {/* Logo */}
-        <div className="p-4 border-b-4 border-comic-black">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-secondary rounded-xl border-4 border-comic-black flex items-center justify-center">
-              <Logo className="w-7 h-7 text-comic-black" />
-            </div>
-            <span className="font-bangers text-2xl text-sidebar-foreground">
-              EduPredict
-            </span>
-          </Link>
-        </div>
-
-        {/* Role Badge */}
-        <div className="p-4">
-          <StickerBadge
-            variant="green"
-            size="md"
-            className="w-full text-center"
-          >
-            {user.role.toUpperCase()}
-          </StickerBadge>
-        </div>
-
-        {/* Menu Items */}
-        <nav className="flex-1 p-4 space-y-2">
-          {menuItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setSidebarOpen(false)}
-                className={`
-                  flex items-center gap-3 p-3 rounded-xl font-comic font-bold transition-all
-                  border-4 border-transparent
-                  ${
-                    isActive
-                      ? "bg-secondary text-comic-black border-comic-black shadow-[4px_4px_0px_black]"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent"
-                  }
-                `}
-              >
-                <item.icon className="w-5 h-5" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Logout */}
-        <div className="p-4 pb-8 lg:pb-4 border-t-4 border-comic-black">
-          <ComicButton
-            variant="danger"
-            size="sm"
-            className="w-full"
-            onClick={() => {
-              AuthService.logout();
-            }}
-          >
-            <LogOut className="w-4 h-4 mr-2" /> Logout
-          </ComicButton>
-        </div>
-      </aside>
-
-      {/* Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-comic-black/50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Main Content */}
-      <main className="flex-1 px-4 pb-4 pt-24 lg:p-8 overflow-auto">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <motion.div
-            className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <StickerText size="lg" color="white" className="drop-shadow-md">
-                  My Dashboard
-                </StickerText>
-                <div className="hidden md:flex gap-2">
-                  <ThemeToggle />
-                  <AlertsCenter />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => refresh()}
-                    disabled={progressLoading}
-                    className="hover:bg-transparent hover:text-white"
-                  >
-                    <RefreshCw
-                      className={`h-5 w-5 ${progressLoading ? "animate-spin" : ""}`}
-                    />
-                  </Button>
-                </div>
-              </div>
-              <p className="font-comic text-foreground/80 mt-1">
-                Welcome back,{" "}
-                <span className="font-bold text-accent">
-                  {currentUser?.name || user.name}
-                </span>
-                {currentUser?.gender && (
-                  <span className="ml-2 text-xs bg-accent/20 px-2 py-1 rounded-full">
-                    {currentUser.gender}
-                  </span>
-                )}
-                {currentUser?.rollNumber && (
-                  <span className="ml-2 text-xs text-muted-foreground">
-                    ({currentUser.rollNumber})
-                  </span>
-                )}
-              </p>
-            </div>
-
-            {progressLoading ? (
-              <Skeleton className="h-20 w-64 rounded-xl" />
-            ) : (
-              <div className="flex items-center gap-4 bg-card p-3 rounded-xl border-4 border-black shadow-comic">
-                <div className="text-right">
-                  <p className="font-bangers text-lg leading-none">
-                    Level {dashboardData.level}
-                  </p>
-                  <p className="text-xs font-bold text-muted-foreground uppercase">
-                    {user.title}
-                  </p>
-                </div>
-                <div className="w-32">
-                  <div className="flex justify-between text-[10px] font-bold mb-1">
-                    <span>XP</span>
-                    <span>
-                      {dashboardData.xp} / {dashboardData.nextLevelXp}
-                    </span>
-                  </div>
-                  <div className="h-3 bg-muted rounded-full border-2 border-black overflow-hidden">
-                    <div
-                      className="h-full bg-yellow-400"
-                      style={{
-                        width: `${(dashboardData.xp / dashboardData.nextLevelXp) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="w-10 h-10 bg-yellow-400 rounded-full border-4 border-black flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-black fill-current" />
-                </div>
-              </div>
-            )}
-          </motion.div>
 
           {/* Main Stats */}
           {progressLoading ? (
@@ -542,9 +440,7 @@ const StudentDashboard = () => {
               </p>
             </ComicCard>
           </motion.div>
-        </div>
-      </main>
-    </div>
+    </DashboardLayout>
   );
 };
 
