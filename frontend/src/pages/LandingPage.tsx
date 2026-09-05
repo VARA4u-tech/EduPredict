@@ -19,15 +19,19 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-24 pb-16 md:pt-32 md:pb-24 lg:py-32 px-4 overflow-hidden border-b-[6px] md:border-b-8 border-comic-black">
-        {/* Comic Sunburst Background — two near-identical transparent tones, no harsh gap */}
-        <div 
-          className="absolute inset-0 z-0 pointer-events-none opacity-30"
-          style={{
-            background: 'repeating-conic-gradient(from 0deg at 50% 50%, hsl(var(--secondary) / 0.25) 0deg 10deg, hsl(var(--secondary) / 0.05) 10deg 20deg)',
-            animation: 'spin 80s linear infinite',
-            transformOrigin: 'center center'
-          }}
-        />
+        {/* Comic Sunburst Background — seamless, no gap version */}
+        <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
+          <div
+            className="rounded-full"
+            style={{
+              width: '200vw',
+              height: '200vw',
+              flexShrink: 0,
+              background: 'repeating-conic-gradient(rgba(255,200,50,0.08) 0deg 10deg, rgba(255,200,50,0.02) 10deg 20deg)',
+              animation: 'spin 120s linear infinite',
+            }}
+          />
+        </div>
 
         <div className="container mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-16">
