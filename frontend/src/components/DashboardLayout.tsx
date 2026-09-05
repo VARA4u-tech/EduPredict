@@ -49,7 +49,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     role === "ADMIN" ? "red" : role === "FACULTY" ? "blue" : "green";
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-background flex">
+    <div className="min-h-screen bg-background flex">
       {/* Mobile Menu Button - Pro UI/UX */}
       <motion.button
         whileTap={{ scale: 0.9, rotate: -5 }}
@@ -101,7 +101,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* Sidebar - Premium Design */}
       <aside
         className={`
-          fixed lg:static z-[70]
+          fixed lg:sticky lg:top-0 z-[70]
           w-[85vw] sm:w-80 lg:w-72 h-[100dvh] bg-sidebar border-r-8 border-comic-black shadow-[20px_0px_50px_rgba(0,0,0,0.1)] lg:shadow-none
           flex flex-col transition-transform duration-500 ease-out
           ${
@@ -189,7 +189,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-auto bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAiLz4KPGNpcmNsZSBjeD0iNCIgY3k9IjQiIHI9IjMiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPgo8L3N2Zz4=')]">
+      <main className="flex-1 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAiLz4KPGNpcmNsZSBjeD0iNCIgY3k9IjQiIHI9IjMiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNCIvPgo8L3N2Zz4=')]">
         <div className="px-4 pb-4 pt-24 lg:p-8 max-w-7xl mx-auto min-h-full">
           {/* Dashboard Header */}
           {headerContent && (
