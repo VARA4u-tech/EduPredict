@@ -336,3 +336,44 @@ export const updateStudentSubjects = async (req, res) => {
     });
   }
 };
+
+/**
+ * Reset student progress/data
+ */
+export const resetStudentProgress = async (req, res) => {
+  try {
+    const student = await Student.findOneAndUpdate(
+      { user: req.params.id },
+      { 
+        $set: { 
+          attendance: 100, 
+          assignmentCompletion: 0, 
+          quizScores: 0,
+          studyHours: 0,
+          participation: 0,
+          level: 1,
+          xp: 0,
+          badges: [],
+          subjects: []
+        } 
+      },
+      { new: true }
+    );
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Student progress reset successfully",
+      student
+    });
+  } catch (error) {
+    console.error("Reset progress error:", error);
+    res.status(500).json({
+      error: "Failed to reset progress",
+      details: error.message,
+    });
+  }
+};

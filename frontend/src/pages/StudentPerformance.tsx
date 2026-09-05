@@ -19,6 +19,7 @@ import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
 import StickerText from "@/components/StickerText";
+import { useStudentProfile } from "@/hooks/useStudent";
 import { useMockData } from "@/context/MockDataContext";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,7 @@ const StudentPerformance = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
   // Get the logged-in user's data from localStorage
@@ -78,6 +80,8 @@ const StudentPerformance = () => {
   }, []);
 
   const studentId = currentUser?._id || "";
+  
+  const { resetProgress } = useStudentProfile(studentId);
 
   const menuItems = [
     { icon: Home, label: "Overview", path: "/dashboard/student" },
@@ -194,6 +198,34 @@ const StudentPerformance = () => {
       });
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Reset Progress
+  const handleResetProgress = async () => {
+    if (!studentId || resetting) return;
+    
+    if (confirm("Are you sure you want to completely reset all your academic data? This action cannot be undone.")) {
+      setResetting(true);
+      try {
+        await resetProgress();
+        setSubjects([]);
+        toast({
+          title: "Progress Reset! 🔄",
+          description: "All your performance data has been cleared.",
+        });
+        setTimeout(() => {
+          navigate("/dashboard/student");
+        }, 1500);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Reset Failed",
+          description: error.message || "Failed to reset progress.",
+        });
+      } finally {
+        setResetting(false);
+      }
     }
   };
 
@@ -423,12 +455,19 @@ const StudentPerformance = () => {
                     </motion.div>
                   ))}
 
-                  {/* Save Button */}
-                  <div className="pt-4 border-t-2 border-comic-black/20 flex justify-end">
+                  {/* Save & Reset Buttons */}
+                  <div className="pt-4 border-t-2 border-comic-black/20 flex justify-between">
+                    <ComicButton
+                      onClick={handleResetProgress}
+                      variant="danger"
+                      disabled={resetting || saving}
+                    >
+                      {resetting ? "Resetting..." : "Reset Progress"}
+                    </ComicButton>
                     <ComicButton
                       onClick={saveSubjects}
                       variant="primary"
-                      disabled={saving}
+                      disabled={saving || resetting}
                     >
                       <Save className="w-4 h-4 mr-2" />
                       {saving ? "Saving..." : "Save Performance"}

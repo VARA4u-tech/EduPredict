@@ -7,6 +7,7 @@ import {
   getWhatIfScenario,
   getStudentSubjects,
   updateStudentSubjects,
+  resetStudentProgress,
 } from "../controllers/student.controller.js";
 
 const router = express.Router();
@@ -28,5 +29,8 @@ router.get("/:id/subjects", protect, getStudentSubjects);
 
 // Update student subjects/marks (for manual entry)
 router.put("/:id/subjects", protect, updateStudentSubjects);
+
+// Reset student progress/data
+router.put("/:id/reset", protect, resetStudentProgress);
 
 export default router;

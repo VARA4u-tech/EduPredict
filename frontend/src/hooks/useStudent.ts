@@ -4,6 +4,7 @@ import {
   getStudentProgress,
   updateStudentData,
   analyzeWhatIfScenario,
+  resetStudentProgress,
   type Student,
   type StudentProgress,
   type WhatIfScenarioResponse,
@@ -56,11 +57,29 @@ export function useStudentProfile(studentId: string) {
     [studentId],
   );
 
+  const resetProgress = useCallback(async () => {
+    if (!studentId) return;
+
+    try {
+      setLoading(true);
+      const response = await resetStudentProgress(studentId);
+      setStudent(response.student);
+      return response.student;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to reset progress";
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [studentId]);
+
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile]);
 
-  return { student, loading, error, refresh: fetchProfile, updateProfile };
+  return { student, loading, error, refresh: fetchProfile, updateProfile, resetProgress };
 }
 
 /**

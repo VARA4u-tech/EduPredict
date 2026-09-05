@@ -157,3 +157,12 @@ export async function updateStudentSubjects(
 ): Promise<SubjectsResponse> {
   return put<SubjectsResponse>(`/students/${studentId}/subjects`, { subjects });
 }
+
+/**
+ * Reset student progress and metrics to default values
+ */
+export async function resetStudentProgress(
+  studentId: string,
+): Promise<StudentResponse> {
+  return put<StudentResponse>(`/students/${studentId}/reset`, {});
+}
