@@ -24,132 +24,137 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
+import { ReactLenis } from '@studio-freight/react-lenis';
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <MockDataProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <RouteScrollToTop />
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/cookies" element={<CookiePolicy />} />
+const App = () => {
+  return (
+    <ReactLenis root>
+      <QueryClientProvider client={queryClient}>
+        <MockDataProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <RouteScrollToTop />
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/help" element={<HelpPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/cookies" element={<CookiePolicy />} />
 
-            {/* Protected Admin Routes */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/admin"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/admin/reports"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <ReportsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/admin/*"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+                {/* Protected Admin Routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/admin"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/admin/reports"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <ReportsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/admin/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-            {/* Protected Faculty Routes */}
-            <Route
-              path="/dashboard/faculty"
-              element={
-                <ProtectedRoute allowedRoles={["faculty"]}>
-                  <FacultyDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/faculty/*"
-              element={
-                <ProtectedRoute allowedRoles={["faculty"]}>
-                  <FacultyDashboard />
-                </ProtectedRoute>
-              }
-            />
+                {/* Protected Faculty Routes */}
+                <Route
+                  path="/dashboard/faculty"
+                  element={
+                    <ProtectedRoute allowedRoles={["faculty"]}>
+                      <FacultyDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/faculty/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["faculty"]}>
+                      <FacultyDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-            {/* Protected Student Routes */}
-            <Route
-              path="/dashboard/student"
-              element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                  <StudentDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/student/performance"
-              element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                  <StudentPerformance />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/student/predictions"
-              element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                  <PredictionPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/student/reports"
-              element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                  <ReportsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/student/*"
-              element={
-                <ProtectedRoute allowedRoles={["student"]}>
-                  <StudentDashboard />
-                </ProtectedRoute>
-              }
-            />
+                {/* Protected Student Routes */}
+                <Route
+                  path="/dashboard/student"
+                  element={
+                    <ProtectedRoute allowedRoles={["student"]}>
+                      <StudentDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/student/performance"
+                  element={
+                    <ProtectedRoute allowedRoles={["student"]}>
+                      <StudentPerformance />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/student/predictions"
+                  element={
+                    <ProtectedRoute allowedRoles={["student"]}>
+                      <PredictionPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/student/reports"
+                  element={
+                    <ProtectedRoute allowedRoles={["student"]}>
+                      <ReportsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard/student/*"
+                  element={
+                    <ProtectedRoute allowedRoles={["student"]}>
+                      <StudentDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-            {/* Catch-all Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <ScrollToTop />
-          <AIChatWidget />
-        </BrowserRouter>
-      </TooltipProvider>
-    </MockDataProvider>
-  </QueryClientProvider>
-);
+                {/* Catch-all Route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <ScrollToTop />
+              <AIChatWidget />
+            </BrowserRouter>
+          </TooltipProvider>
+        </MockDataProvider>
+      </QueryClientProvider>
+    </ReactLenis>
+  );
+};
 
 export default App;
