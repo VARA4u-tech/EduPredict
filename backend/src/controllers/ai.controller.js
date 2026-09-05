@@ -33,23 +33,11 @@ export const generatePrediction = async (req, res) => {
         : clean(studentData.participation);
     const studyHours = clean(studentData.studyHours);
 
-    const prompt = `Based on the following student data, provide a success prediction analysis:
-    
-Student Data:
-- Attendance: ${attendance}%
-- Internal Marks (Exams/Quizzes): ${internals}%
-- External Marks (Assignments/Projects): ${externals}%
-- Overall Subject Performance: ${performance}%
-- Study Hours Per Week: ${studyHours}
+    const prompt = `Analyze this student data and respond ONLY with JSON (no markdown).
 
-Provide:
-1. Success Probability (as a percentage)
-2. Key Strengths (2-3 points)
-3. Areas for Improvement (2-3 points)
-4. Personalized Recommendations (3-4 actionable tips)
+Data: Attendance: ${attendance}%, Internals: ${internals}%, Externals: ${externals}%, Performance: ${performance}%, Study Hours/Week: ${studyHours}
 
-Format the response as pure JSON without markdown. Do NOT include any text before or after JSON.
-Keys: successProbability, strengths, improvements, recommendations`;
+JSON keys: successProbability (number), strengths (array of 2 strings), improvements (array of 2 strings), recommendations (array of 3 strings)`;
 
     console.log("[AI Debug] Calling OpenAI API for Prediction...");
 
@@ -64,7 +52,7 @@ Keys: successProbability, strengths, improvements, recommendations`;
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
-      max_tokens: 800,
+      max_tokens: 500,
     });
 
     const responseText = completion.choices[0].message.content;
@@ -134,7 +122,7 @@ Make it engaging and actionable.`;
         { role: "user", content: prompt },
       ],
       temperature: 0.8,
-      max_tokens: 1000,
+      max_tokens: 500,
     });
 
     res.json({
@@ -193,7 +181,7 @@ Array of objects: panel, scene, dialogue, mood`;
         { role: "user", content: prompt },
       ],
       temperature: 0.9,
-      max_tokens: 800,
+      max_tokens: 500,
     });
 
     const responseText = completion.choices[0].message.content;
