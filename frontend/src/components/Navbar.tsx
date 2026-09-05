@@ -64,11 +64,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Dynamic classes for the floating pill effect
+  // Dynamic classes for the floating pill effect (always active now)
   const navContainerClasses = 
-    variant === "solid" || isScrolled
-      ? "bg-background/95 backdrop-blur-xl border-4 border-comic-black shadow-[6px_6px_0px_black] md:shadow-[8px_8px_0px_black] rounded-2xl mx-2 md:mx-6 mt-4 py-2 px-4 md:px-6"
-      : "bg-transparent py-4 px-4 md:px-8";
+    "bg-background/95 backdrop-blur-xl border-4 border-comic-black shadow-[6px_6px_0px_black] md:shadow-[8px_8px_0px_black] rounded-2xl mx-2 md:mx-6 mt-4 py-2 px-4 md:px-6 transition-all duration-300";
 
   return (
     <>
