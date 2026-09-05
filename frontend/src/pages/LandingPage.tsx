@@ -86,8 +86,8 @@ const LandingPage = () => {
               {/* Main Title - Responsive sizing */}
               <div className="space-y-2 md:space-y-4 relative">
                 {/* Speech bubble pointer (desktop only) */}
-                <div className="hidden lg:block absolute -right-8 -top-8 w-16 h-16 bg-white border-4 border-comic-black rounded-full shadow-[4px_4px_0px_black] z-10 flex items-center justify-center animate-bounce">
-                  <span className="font-bangers text-xl text-primary">WOW!</span>
+                <div className="hidden lg:flex absolute -right-10 -top-10 w-24 h-24 bg-yellow-400 border-4 border-comic-black rounded-full rounded-bl-none shadow-[6px_6px_0px_black] z-10 items-center justify-center animate-bounce rotate-12">
+                  <span className="font-bangers text-3xl text-comic-black mt-2 pr-1 tracking-wider">WOW!</span>
                 </div>
                 
                 <StickerText size="xl" color="white" className="block text-4xl md:text-6xl lg:text-7xl leading-tight">
