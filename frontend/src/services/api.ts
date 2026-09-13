@@ -49,12 +49,11 @@ async function fetchAPI<T>(
     }
 
     return response.json();
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Catch network errors (like server down) that throw TypeError: Failed to fetch
-    if (error.name === "TypeError" && error.message === "Failed to fetch") {
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
       toast.error("Network Error", {
-        description:
-          "Could not connect to the server. Please check your internet connection.",
+        description: "Could not connect to the server. Please check your internet connection.",
       });
     }
 
