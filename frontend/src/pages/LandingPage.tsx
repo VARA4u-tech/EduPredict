@@ -28,7 +28,7 @@ const LandingPage = () => {
               height: "200vw",
               flexShrink: 0,
               background:
-                "repeating-conic-gradient(rgba(255,200,50,0.08) 0deg 10deg, rgba(255,200,50,0.02) 10deg 20deg)",
+                "repeating-conic-gradient(rgba(255,200,50,0.3) 0deg 10deg, rgba(255,200,50,0.05) 10deg 20deg)",
               animation: "spin 120s linear infinite",
             }}
           />
