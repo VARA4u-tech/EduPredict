@@ -48,11 +48,13 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isMobileMenuOpen]);
 
   const navLinks = [
@@ -65,7 +67,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const isActive = (path: string) => location.pathname === path;
 
   // Dynamic classes for the floating pill effect (always active now)
-  const navContainerClasses = 
+  const navContainerClasses =
     "bg-background/95 backdrop-blur-xl border-4 border-comic-black shadow-[6px_6px_0px_black] md:shadow-[8px_8px_0px_black] rounded-2xl mx-2 md:mx-6 mt-4 py-2 px-4 md:px-6 transition-all duration-300";
 
   return (
@@ -127,7 +129,11 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                       layoutId="activeNavBackground"
                       className="absolute inset-0 bg-secondary border-2 border-comic-black rounded-lg shadow-[2px_2px_0px_black] z-0"
                       initial={false}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                     />
                   )}
                   {/* Hover indicator for inactive links */}
@@ -157,12 +163,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 ) : (
                   <>
                     <Link to="/login" className="hidden lg:block">
-                      <ComicButton variant="outline" size="sm" className="bg-white hover:bg-muted">
+                      <ComicButton
+                        variant="outline"
+                        size="sm"
+                        className="bg-white hover:bg-muted"
+                      >
                         Login
                       </ComicButton>
                     </Link>
                     <Link to="/login">
-                      <ComicButton variant="primary" size="sm" className="px-6 group">
+                      <ComicButton
+                        variant="primary"
+                        size="sm"
+                        className="px-6 group"
+                      >
                         <Sparkles className="w-4 h-4 mr-2 group-hover:animate-spin" />
                         Get Started
                       </ComicButton>
@@ -288,7 +302,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 <div className="mt-auto space-y-6 pt-8">
                   {/* Mobile Theme Toggle */}
                   <div className="p-5 bg-card rounded-2xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-between">
-                    <span className="font-comic font-bold text-lg">App Theme</span>
+                    <span className="font-comic font-bold text-lg">
+                      App Theme
+                    </span>
                     <ThemeToggle />
                   </div>
 
@@ -296,7 +312,11 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   <div className="space-y-3">
                     {currentUser ? (
                       <Link to={dashboardPath} className="block">
-                        <ComicButton variant="primary" size="lg" className="w-full text-xl py-6">
+                        <ComicButton
+                          variant="primary"
+                          size="lg"
+                          className="w-full text-xl py-6"
+                        >
                           <Sparkles className="w-6 h-6 mr-2" />
                           Dashboard
                         </ComicButton>
@@ -304,12 +324,20 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                     ) : (
                       <>
                         <Link to="/login" className="block">
-                          <ComicButton variant="outline" size="lg" className="w-full text-xl py-6 bg-white">
+                          <ComicButton
+                            variant="outline"
+                            size="lg"
+                            className="w-full text-xl py-6 bg-white"
+                          >
                             Login to Account
                           </ComicButton>
                         </Link>
                         <Link to="/login" className="block">
-                          <ComicButton variant="primary" size="lg" className="w-full text-xl py-6">
+                          <ComicButton
+                            variant="primary"
+                            size="lg"
+                            className="w-full text-xl py-6"
+                          >
                             <Sparkles className="w-6 h-6 mr-2 animate-bounce" />
                             Start for Free
                           </ComicButton>

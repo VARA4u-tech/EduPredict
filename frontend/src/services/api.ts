@@ -38,24 +38,26 @@ async function fetchAPI<T>(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = errorData.error || `HTTP error! status: ${response.status}`;
-      
+      const errorMessage =
+        errorData.error || `HTTP error! status: ${response.status}`;
+
       toast.error("Request Failed", {
         description: errorMessage,
       });
-      
+
       throw new Error(errorMessage);
     }
 
     return response.json();
   } catch (error: any) {
     // Catch network errors (like server down) that throw TypeError: Failed to fetch
-    if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+    if (error.name === "TypeError" && error.message === "Failed to fetch") {
       toast.error("Network Error", {
-        description: "Could not connect to the server. Please check your internet connection.",
+        description:
+          "Could not connect to the server. Please check your internet connection.",
       });
     }
-    
+
     if (error instanceof Error) {
       throw error;
     }

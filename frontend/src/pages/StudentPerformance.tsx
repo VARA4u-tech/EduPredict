@@ -1,7 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, BarChart3, Settings, LogOut, Menu, X, Target, Save, Plus, Trash2, BookOpen,  } from "lucide-react";
+import {
+  Home,
+  BarChart3,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  Target,
+  Save,
+  Plus,
+  Trash2,
+  BookOpen,
+} from "lucide-react";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
@@ -69,7 +81,7 @@ const StudentPerformance = () => {
   }, []);
 
   const studentId = currentUser?._id || "";
-  
+
   const { resetProgress } = useStudentProfile(studentId);
 
   const menuItems = [
@@ -193,8 +205,12 @@ const StudentPerformance = () => {
   // Reset Progress
   const handleResetProgress = async () => {
     if (!studentId || resetting) return;
-    
-    if (confirm("Are you sure you want to completely reset all your academic data? This action cannot be undone.")) {
+
+    if (
+      confirm(
+        "Are you sure you want to completely reset all your academic data? This action cannot be undone.",
+      )
+    ) {
       setResetting(true);
       try {
         await resetProgress();
@@ -241,169 +257,167 @@ const StudentPerformance = () => {
         </div>
       }
     >
+      {/* Subject Entry Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <ComicCard variant="white" className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-6 h-6 text-accent" />
+              <h2 className="font-bangers text-2xl text-comic-black">
+                Subject-wise Performance
+              </h2>
+            </div>
+            <Button
+              onClick={addSubject}
+              variant="outline"
+              size="sm"
+              className="border-2 border-comic-black bg-accent text-comic-black font-comic font-bold hover:bg-accent/80 shadow-[2px_2px_0px_black]"
+            >
+              <Plus className="w-4 h-4 mr-1" /> Add Subject
+            </Button>
+          </div>
 
-          {/* Subject Entry Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <ComicCard variant="white" className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-6 h-6 text-accent" />
-                  <h2 className="font-bangers text-2xl text-comic-black">
-                    Subject-wise Performance
-                  </h2>
-                </div>
-                <Button
-                  onClick={addSubject}
-                  variant="outline"
-                  size="sm"
-                  className="border-2 border-comic-black bg-accent text-comic-black font-comic font-bold hover:bg-accent/80 shadow-[2px_2px_0px_black]"
-                >
-                  <Plus className="w-4 h-4 mr-1" /> Add Subject
-                </Button>
+          {loading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-16 bg-gray-100 rounded-xl animate-pulse"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Header Row */}
+              <div className="grid grid-cols-12 gap-2 text-sm font-bold text-comic-black/70 pb-2 border-b-2 border-comic-black/20">
+                <div className="col-span-4">Subject Name</div>
+                <div className="col-span-3 text-center">Internal Marks</div>
+                <div className="col-span-3 text-center">External Marks</div>
+                <div className="col-span-2 text-center">Actions</div>
               </div>
 
-              {loading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="h-16 bg-gray-100 rounded-xl animate-pulse"
+              {/* Subject Rows */}
+              {subjects.map((subject, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="grid grid-cols-12 gap-2 items-center"
+                >
+                  <div className="col-span-4">
+                    <input
+                      type="text"
+                      value={subject.name}
+                      onChange={(e) =>
+                        handleSubjectChange(index, "name", e.target.value)
+                      }
+                      placeholder="Subject name"
+                      className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                     />
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {/* Header Row */}
-                  <div className="grid grid-cols-12 gap-2 text-sm font-bold text-comic-black/70 pb-2 border-b-2 border-comic-black/20">
-                    <div className="col-span-4">Subject Name</div>
-                    <div className="col-span-3 text-center">Internal Marks</div>
-                    <div className="col-span-3 text-center">External Marks</div>
-                    <div className="col-span-2 text-center">Actions</div>
                   </div>
-
-                  {/* Subject Rows */}
-                  {subjects.map((subject, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="grid grid-cols-12 gap-2 items-center"
-                    >
-                      <div className="col-span-4">
-                        <input
-                          type="text"
-                          value={subject.name}
-                          onChange={(e) =>
-                            handleSubjectChange(index, "name", e.target.value)
-                          }
-                          placeholder="Subject name"
-                          className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                        />
-                      </div>
-                      <div className="col-span-3">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={subject.internalMarks}
-                          onChange={(e) =>
-                            handleSubjectChange(
-                              index,
-                              "internalMarks",
-                              e.target.value,
-                            )
-                          }
-                          className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm text-center focus:outline-none focus:ring-2 focus:ring-accent"
-                        />
-                      </div>
-                      <div className="col-span-3">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={subject.externalMarks}
-                          onChange={(e) =>
-                            handleSubjectChange(
-                              index,
-                              "externalMarks",
-                              e.target.value,
-                            )
-                          }
-                          className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm text-center focus:outline-none focus:ring-2 focus:ring-accent"
-                        />
-                      </div>
-                      <div className="col-span-2 flex justify-center">
-                        <Button
-                          onClick={() => removeSubject(index)}
-                          variant="ghost"
-                          size="icon"
-                          className="text-destructive hover:bg-destructive/10"
-                          disabled={subjects.length <= 1}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </motion.div>
-                  ))}
-
-                  {/* Save & Reset Buttons */}
-                  <div className="pt-4 border-t-2 border-comic-black/20 flex justify-between">
-                    <ComicButton
-                      onClick={handleResetProgress}
-                      variant="danger"
-                      disabled={resetting || saving}
-                    >
-                      {resetting ? "Resetting..." : "Reset Progress"}
-                    </ComicButton>
-                    <ComicButton
-                      onClick={saveSubjects}
-                      variant="primary"
-                      disabled={saving || resetting}
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {saving ? "Saving..." : "Save Performance"}
-                    </ComicButton>
+                  <div className="col-span-3">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={subject.internalMarks}
+                      onChange={(e) =>
+                        handleSubjectChange(
+                          index,
+                          "internalMarks",
+                          e.target.value,
+                        )
+                      }
+                      className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm text-center focus:outline-none focus:ring-2 focus:ring-accent"
+                    />
                   </div>
-                </div>
-              )}
-            </ComicCard>
-          </motion.div>
+                  <div className="col-span-3">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={subject.externalMarks}
+                      onChange={(e) =>
+                        handleSubjectChange(
+                          index,
+                          "externalMarks",
+                          e.target.value,
+                        )
+                      }
+                      className="w-full p-2 rounded-lg border-2 border-comic-black font-comic text-sm text-center focus:outline-none focus:ring-2 focus:ring-accent"
+                    />
+                  </div>
+                  <div className="col-span-2 flex justify-center">
+                    <Button
+                      onClick={() => removeSubject(index)}
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive hover:bg-destructive/10"
+                      disabled={subjects.length <= 1}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
 
-          {/* Summary Card */}
-          {subjects.length > 0 && !loading && (
-            <motion.div
-              className="mt-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <ComicCard variant="green" className="p-6 text-center">
-                <h3 className="font-bangers text-2xl text-comic-white mb-2">
-                  Overall Average
-                </h3>
-                <p className="font-bangers text-5xl text-comic-white">
-                  {subjects.length > 0
-                    ? Math.round(
-                        subjects.reduce(
-                          (acc, s) =>
-                            acc + (s.internalMarks + s.externalMarks) / 2,
-                          0,
-                        ) / subjects.length,
-                      )
-                    : 0}
-                  %
-                </p>
-                <p className="font-comic text-comic-white/80 mt-2">
-                  Based on {subjects.length} subjects
-                </p>
-              </ComicCard>
-            </motion.div>
+              {/* Save & Reset Buttons */}
+              <div className="pt-4 border-t-2 border-comic-black/20 flex justify-between">
+                <ComicButton
+                  onClick={handleResetProgress}
+                  variant="danger"
+                  disabled={resetting || saving}
+                >
+                  {resetting ? "Resetting..." : "Reset Progress"}
+                </ComicButton>
+                <ComicButton
+                  onClick={saveSubjects}
+                  variant="primary"
+                  disabled={saving || resetting}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {saving ? "Saving..." : "Save Performance"}
+                </ComicButton>
+              </div>
+            </div>
           )}
+        </ComicCard>
+      </motion.div>
+
+      {/* Summary Card */}
+      {subjects.length > 0 && !loading && (
+        <motion.div
+          className="mt-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <ComicCard variant="green" className="p-6 text-center">
+            <h3 className="font-bangers text-2xl text-comic-white mb-2">
+              Overall Average
+            </h3>
+            <p className="font-bangers text-5xl text-comic-white">
+              {subjects.length > 0
+                ? Math.round(
+                    subjects.reduce(
+                      (acc, s) => acc + (s.internalMarks + s.externalMarks) / 2,
+                      0,
+                    ) / subjects.length,
+                  )
+                : 0}
+              %
+            </p>
+            <p className="font-comic text-comic-white/80 mt-2">
+              Based on {subjects.length} subjects
+            </p>
+          </ComicCard>
+        </motion.div>
+      )}
     </DashboardLayout>
   );
 };

@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Github, Twitter, Linkedin, Mail, Sparkles, ExternalLink, ArrowUp,  } from "lucide-react";
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  Sparkles,
+  ExternalLink,
+  ArrowUp,
+} from "lucide-react";
 import ComicButton from "./ComicButton";
 import StickerBadge from "./StickerBadge";
 import WhatsAppIcon from "./WhatsAppIcon";

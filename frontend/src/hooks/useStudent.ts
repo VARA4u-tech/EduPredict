@@ -79,7 +79,14 @@ export function useStudentProfile(studentId: string) {
     fetchProfile();
   }, [fetchProfile]);
 
-  return { student, loading, error, refresh: fetchProfile, updateProfile, resetProgress };
+  return {
+    student,
+    loading,
+    error,
+    refresh: fetchProfile,
+    updateProfile,
+    resetProgress,
+  };
 }
 
 /**

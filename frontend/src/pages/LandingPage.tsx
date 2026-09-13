@@ -24,11 +24,12 @@ const LandingPage = () => {
           <div
             className="rounded-full"
             style={{
-              width: '200vw',
-              height: '200vw',
+              width: "200vw",
+              height: "200vw",
               flexShrink: 0,
-              background: 'repeating-conic-gradient(rgba(255,200,50,0.08) 0deg 10deg, rgba(255,200,50,0.02) 10deg 20deg)',
-              animation: 'spin 120s linear infinite',
+              background:
+                "repeating-conic-gradient(rgba(255,200,50,0.08) 0deg 10deg, rgba(255,200,50,0.02) 10deg 20deg)",
+              animation: "spin 120s linear infinite",
             }}
           />
         </div>
@@ -40,16 +41,30 @@ const LandingPage = () => {
               className="flex-1 text-center lg:text-left space-y-6 md:space-y-8 relative w-full"
               initial={{ opacity: 0, x: -50, rotate: -5 }}
               animate={{ opacity: 1, x: 0, rotate: 0 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 120, damping: 12 }}
+              transition={{
+                delay: 0.2,
+                type: "spring",
+                stiffness: 120,
+                damping: 12,
+              }}
             >
               {/* Comic Action Star - Hidden on very small screens, visible on md+ */}
-              <motion.div 
+              <motion.div
                 className="hidden md:flex absolute -top-16 -left-10 w-28 h-28 bg-yellow-400 items-center justify-center border-4 border-comic-black shadow-[4px_4px_0px_black] z-20"
-                style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }}
+                style={{
+                  clipPath:
+                    "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+                }}
                 animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <span className="font-bangers text-2xl text-comic-black -rotate-12 mt-2">POW!</span>
+                <span className="font-bangers text-2xl text-comic-black -rotate-12 mt-2">
+                  POW!
+                </span>
               </motion.div>
 
               {/* Sticker Badges - Better mobile wrapping & scaling */}
@@ -59,7 +74,11 @@ const LandingPage = () => {
                   animate={{ scale: 1, rotate: -6 }}
                   transition={{ delay: 0.4, type: "spring", bounce: 0.6 }}
                 >
-                  <StickerBadge variant="yellow" size="md" className="md:text-lg">
+                  <StickerBadge
+                    variant="yellow"
+                    size="md"
+                    className="md:text-lg"
+                  >
                     WHAT'S UP!
                   </StickerBadge>
                 </motion.div>
@@ -77,7 +96,11 @@ const LandingPage = () => {
                   animate={{ scale: 1, rotate: -3 }}
                   transition={{ delay: 0.6, type: "spring", bounce: 0.6 }}
                 >
-                  <StickerBadge variant="green" size="md" className="md:text-lg">
+                  <StickerBadge
+                    variant="green"
+                    size="md"
+                    className="md:text-lg"
+                  >
                     SMART PREDICTIONS
                   </StickerBadge>
                 </motion.div>
@@ -87,13 +110,23 @@ const LandingPage = () => {
               <div className="space-y-2 md:space-y-4 relative">
                 {/* Speech bubble pointer (desktop only) */}
                 <div className="hidden lg:flex absolute -right-10 -top-10 w-24 h-24 bg-yellow-400 border-4 border-comic-black rounded-full rounded-bl-none shadow-[6px_6px_0px_black] z-10 items-center justify-center animate-bounce rotate-12">
-                  <span className="font-bangers text-3xl text-comic-black mt-2 pr-1 tracking-wider">WOW!</span>
+                  <span className="font-bangers text-3xl text-comic-black mt-2 pr-1 tracking-wider">
+                    WOW!
+                  </span>
                 </div>
-                
-                <StickerText size="xl" color="white" className="block text-4xl md:text-6xl lg:text-7xl leading-tight">
+
+                <StickerText
+                  size="xl"
+                  color="white"
+                  className="block text-4xl md:text-6xl lg:text-7xl leading-tight"
+                >
                   Predictive Analytics
                 </StickerText>
-                <StickerText size="lg" color="yellow" className="block text-2xl md:text-4xl lg:text-5xl leading-tight">
+                <StickerText
+                  size="lg"
+                  color="yellow"
+                  className="block text-2xl md:text-4xl lg:text-5xl leading-tight"
+                >
                   For Student Success
                 </StickerText>
               </div>
@@ -105,7 +138,10 @@ const LandingPage = () => {
                   at-risk learners, and boost academic performance! 🚀
                 </p>
                 {/* Comic corner fold effect */}
-                <div className="absolute bottom-0 right-0 w-8 h-8 bg-muted border-l-4 border-t-4 border-comic-black rounded-tl-lg" style={{ clipPath: "polygon(100% 0, 0 100%, 100% 100%)" }} />
+                <div
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-muted border-l-4 border-t-4 border-comic-black rounded-tl-lg"
+                  style={{ clipPath: "polygon(100% 0, 0 100%, 100% 100%)" }}
+                />
               </div>
 
               {/* CTA Buttons - Mobile optimized */}
@@ -116,12 +152,20 @@ const LandingPage = () => {
                 transition={{ delay: 0.8 }}
               >
                 <Link to="/login" className="w-full sm:w-auto">
-                  <ComicButton variant="primary" size="lg" className="w-full sm:w-auto text-xl py-4 md:py-3">
+                  <ComicButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto text-xl py-4 md:py-3"
+                  >
                     🎯 Get Started Now
                   </ComicButton>
                 </Link>
                 <Link to="/dashboard" className="w-full sm:w-auto">
-                  <ComicButton variant="secondary" size="lg" className="w-full sm:w-auto text-xl py-4 md:py-3">
+                  <ComicButton
+                    variant="secondary"
+                    size="lg"
+                    className="w-full sm:w-auto text-xl py-4 md:py-3"
+                  >
                     📊 View Demo Dashboard
                   </ComicButton>
                 </Link>
@@ -137,7 +181,6 @@ const LandingPage = () => {
             >
               {/* Comic panel frame for the image */}
               <div className="relative mx-auto max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg bg-white border-8 border-comic-black p-2 md:p-4 shadow-[8px_8px_0px_black] md:shadow-[16px_16px_0px_black] rotate-2 hover:rotate-0 transition-transform duration-300">
-                
                 {/* "NEW!" Badge */}
                 <div className="absolute -top-6 -left-6 md:-top-8 md:-left-8 bg-red-500 text-white font-bangers text-xl md:text-3xl px-4 py-2 border-4 border-comic-black shadow-[4px_4px_0px_black] -rotate-12 z-30">
                   NEW!
@@ -157,19 +200,35 @@ const LandingPage = () => {
                 <motion.div
                   className="absolute -right-6 md:-right-10 top-1/4 z-20"
                   animate={{ y: [-5, 10, -5], rotate: [10, 15, 10] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 3,
+                    ease: "easeInOut",
+                  }}
                 >
-                  <StickerBadge variant="blue" size="md" className="shadow-[4px_4px_0px_black]">
+                  <StickerBadge
+                    variant="blue"
+                    size="md"
+                    className="shadow-[4px_4px_0px_black]"
+                  >
                     TOO COOL!
                   </StickerBadge>
                 </motion.div>
-                
+
                 <motion.div
                   className="absolute -left-4 md:-left-12 bottom-1/4 z-20"
                   animate={{ y: [5, -10, 5], rotate: [-10, -15, -10] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2.5,
+                    ease: "easeInOut",
+                  }}
                 >
-                  <StickerBadge variant="green" size="md" className="shadow-[4px_4px_0px_black]">
+                  <StickerBadge
+                    variant="green"
+                    size="md"
+                    className="shadow-[4px_4px_0px_black]"
+                  >
                     100% ACCURATE
                   </StickerBadge>
                 </motion.div>

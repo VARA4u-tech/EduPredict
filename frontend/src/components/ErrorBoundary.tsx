@@ -14,7 +14,7 @@ interface State {
 
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -38,14 +38,15 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
               <AlertTriangle className="h-8 w-8 text-destructive" />
             </div>
-            
+
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
               Something went wrong
             </h2>
-            
+
             <p className="mb-6 text-sm text-muted-foreground">
-              We're sorry, but an unexpected error occurred. Our team has been notified. 
-              You can try refreshing the page or going back to the dashboard.
+              We're sorry, but an unexpected error occurred. Our team has been
+              notified. You can try refreshing the page or going back to the
+              dashboard.
             </p>
 
             {this.state.error && (
@@ -56,8 +57,8 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
             )}
 
-            <Button 
-              className="w-full gap-2" 
+            <Button
+              className="w-full gap-2"
               onClick={() => window.location.reload()}
             >
               <RefreshCcw className="h-4 w-4" />

@@ -1,7 +1,22 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, BarChart3, FileText, Settings, LogOut, Menu, X, Download, PieChart, Users, TrendingUp, Calendar, Target, BookOpen,  } from "lucide-react";
+import {
+  Home,
+  BarChart3,
+  FileText,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  Download,
+  PieChart,
+  Users,
+  TrendingUp,
+  Calendar,
+  Target,
+  BookOpen,
+} from "lucide-react";
 import {
   PieChart as RechartsPie,
   Pie,
@@ -262,289 +277,282 @@ const ReportsPage = () => {
         </>
       }
     >
-
-          {isStudent && progressLoading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <Skeleton className="h-64 rounded-xl" />
-              <Skeleton className="h-64 rounded-xl" />
-            </div>
-          ) : showEmptyState ? (
+      {isStudent && progressLoading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <Skeleton className="h-64 rounded-xl" />
+          <Skeleton className="h-64 rounded-xl" />
+        </div>
+      ) : showEmptyState ? (
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border-4 border-comic-black shadow-[8px_8px_0px_black] text-center max-w-2xl mx-auto my-12"
+        >
+          <div className="w-20 h-20 bg-secondary rounded-2xl border-4 border-comic-black mx-auto mb-6 flex items-center justify-center">
+            <BookOpen className="w-10 h-10 text-comic-black" />
+          </div>
+          <h2 className="font-bangers text-3xl text-foreground mb-4 md:text-4xl px-4">
+            No Performance Data Found
+          </h2>
+          <p className="font-comic text-lg text-muted-foreground mb-8 md:text-xl px-4">
+            Please upload your performance data. Your reports will appear here.
+          </p>
+          <ComicButton
+            variant="primary"
+            size="lg"
+            onClick={() => navigate("/dashboard/student/performance")}
+            className="w-full sm:w-auto"
+          >
+            Go to Performance Page
+          </ComicButton>
+        </motion.div>
+      ) : (
+        <>
+          {/* Charts Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Risk / Attendance Chart */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border-4 border-comic-black shadow-[8px_8px_0px_black] text-center max-w-2xl mx-auto my-12"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
             >
-              <div className="w-20 h-20 bg-secondary rounded-2xl border-4 border-comic-black mx-auto mb-6 flex items-center justify-center">
-                <BookOpen className="w-10 h-10 text-comic-black" />
-              </div>
-              <h2 className="font-bangers text-3xl text-foreground mb-4 md:text-4xl px-4">
-                No Performance Data Found
-              </h2>
-              <p className="font-comic text-lg text-muted-foreground mb-8 md:text-xl px-4">
-                Please upload your performance data. Your reports will appear
-                here.
-              </p>
-              <ComicButton
-                variant="primary"
-                size="lg"
-                onClick={() => navigate("/dashboard/student/performance")}
-                className="w-full sm:w-auto"
-              >
-                Go to Performance Page
-              </ComicButton>
-            </motion.div>
-          ) : (
-            <>
-              {/* Charts Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                {/* Risk / Attendance Chart */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <ComicCard variant="white">
-                    <h3 className="font-bangers text-2xl text-comic-black mb-4">
-                      {isStudent
-                        ? "🎯 Academic Risk Status"
-                        : "🎯 Risk Distribution"}
-                    </h3>
-                    <div className="h-64">
-                      {isStudent ? (
-                        <div className="flex flex-col items-center justify-center h-full space-y-4">
-                          {studentOverallScore >= 75 ? (
-                            <RiskBadge level="low" />
-                          ) : studentOverallScore >= 60 ? (
-                            <RiskBadge level="medium" />
-                          ) : (
-                            <RiskBadge level="high" />
-                          )}
-                          <p className="font-comic text-lg text-center mt-4 text-comic-black/80">
-                            {studentOverallScore >= 75
-                              ? "You're on track! Keep up the good work."
-                              : studentOverallScore >= 60
-                                ? "You're doing okay, but there's room for improvement."
-                                : "You're at high risk. Please focus on your studies and assignments."}
-                          </p>
-                        </div>
-                      ) : (
-                        <ResponsiveContainer width="100%" height="100%">
-                          <RechartsPie>
-                            <Pie
-                              data={riskDistribution}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={50}
-                              outerRadius={80}
-                              paddingAngle={5}
-                              dataKey="value"
-                              stroke="#000"
-                              strokeWidth={3}
-                            >
-                              {riskDistribution.map((entry, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={entry.color}
-                                />
-                              ))}
-                            </Pie>
-                            <Tooltip
-                              contentStyle={{
-                                border: "3px solid black",
-                                borderRadius: "12px",
-                                fontFamily: "Comic Neue",
-                              }}
-                            />
-                            <Legend
-                              formatter={(value) => (
-                                <span className="font-comic font-bold text-comic-black">
-                                  {value}
-                                </span>
-                              )}
-                            />
-                          </RechartsPie>
-                        </ResponsiveContainer>
-                      )}
-                    </div>
-                    {!isStudent && (
-                      <div className="flex justify-center gap-4 mt-4">
-                        <RiskBadge level="low" />
-                        <RiskBadge level="medium" />
-                        <RiskBadge level="high" />
-                      </div>
-                    )}
-                  </ComicCard>
-                </motion.div>
-
-                {/* Class Performance / Subject Performance Pie Chart */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <ComicCard variant="white">
-                    <h3 className="font-bangers text-2xl text-comic-black mb-4">
-                      {isStudent
-                        ? "📚 Subject Performance"
-                        : "📚 Students by Class"}
-                    </h3>
-                    <div className="h-64">{renderSubjectOrClassChart()}</div>
-                  </ComicCard>
-                </motion.div>
-              </div>
-
-              {/* Report Cards */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <h3 className="font-bangers text-2xl text-foreground mb-6">
-                  📄 Available Reports
+              <ComicCard variant="white">
+                <h3 className="font-bangers text-2xl text-comic-black mb-4">
+                  {isStudent
+                    ? "🎯 Academic Risk Status"
+                    : "🎯 Risk Distribution"}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {reports.map((report, i) => (
-                    <motion.div
-                      key={report.id}
-                      initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 + i * 0.1 }}
-                    >
-                      <ComicCard
-                        variant={report.color as "green" | "red" | "yellow"}
-                        className="relative overflow-hidden"
-                      >
-                        {/* Sticker Badge */}
-                        <div className="absolute top-4 right-4 hidden sm:block">
-                          <StickerBadge variant="white" size="sm" rotate>
-                            {report.type}
-                          </StickerBadge>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row items-start gap-4">
-                          <div className="w-16 h-16 bg-comic-white/30 rounded-xl border-4 border-comic-black flex items-center justify-center flex-shrink-0">
-                            <report.icon className="w-8 h-8" />
-                          </div>
-                          <div className="flex-1 min-w-0 w-full">
-                            <h4 className="font-bangers text-xl mb-1 sm:pr-20">
-                              {report.title}
-                            </h4>
-                            <p className="font-comic text-sm opacity-80 mb-4">
-                              {report.date}
-                            </p>
-
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-2 mb-4">
-                              {Object.entries(report.stats).map(
-                                ([key, value]) => (
-                                  <div
-                                    key={key}
-                                    className="bg-comic-white/20 rounded-lg p-2 text-center"
-                                  >
-                                    <p className="font-bangers text-lg break-words">
-                                      {String(value)}
-                                    </p>
-                                    <p className="font-comic text-xs capitalize">
-                                      {key.replace(/([A-Z])/g, " $1")}
-                                    </p>
-                                  </div>
-                                ),
-                              )}
-                            </div>
-
-                            <ComicButton
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleDownload(report.title)}
-                              className="w-full"
-                            >
-                              <Download className="w-4 h-4 mr-2" /> Download PDF
-                            </ComicButton>
-                          </div>
-                        </div>
-                      </ComicCard>
-                    </motion.div>
-                  ))}
+                <div className="h-64">
+                  {isStudent ? (
+                    <div className="flex flex-col items-center justify-center h-full space-y-4">
+                      {studentOverallScore >= 75 ? (
+                        <RiskBadge level="low" />
+                      ) : studentOverallScore >= 60 ? (
+                        <RiskBadge level="medium" />
+                      ) : (
+                        <RiskBadge level="high" />
+                      )}
+                      <p className="font-comic text-lg text-center mt-4 text-comic-black/80">
+                        {studentOverallScore >= 75
+                          ? "You're on track! Keep up the good work."
+                          : studentOverallScore >= 60
+                            ? "You're doing okay, but there's room for improvement."
+                            : "You're at high risk. Please focus on your studies and assignments."}
+                      </p>
+                    </div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsPie>
+                        <Pie
+                          data={riskDistribution}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={80}
+                          paddingAngle={5}
+                          dataKey="value"
+                          stroke="#000"
+                          strokeWidth={3}
+                        >
+                          {riskDistribution.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            border: "3px solid black",
+                            borderRadius: "12px",
+                            fontFamily: "Comic Neue",
+                          }}
+                        />
+                        <Legend
+                          formatter={(value) => (
+                            <span className="font-comic font-bold text-comic-black">
+                              {value}
+                            </span>
+                          )}
+                        />
+                      </RechartsPie>
+                    </ResponsiveContainer>
+                  )}
                 </div>
-              </motion.div>
-
-              {/* Quick Stats Footer */}
-              <motion.div
-                className="mt-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <ComicCard variant="yellow" className="text-center">
-                  <div className="flex flex-wrap justify-center gap-8">
-                    {isStudent ? (
-                      <>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            {progress?.subjectAverages?.length || 0}
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Subjects Tracked
-                          </p>
-                        </div>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            {progress?.metrics?.attendance?.value || 0}%
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Overall Attendance
-                          </p>
-                        </div>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            {studentOverallScore.toFixed(0)}%
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Performance Score
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            2,547
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Total Students
-                          </p>
-                        </div>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            156
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Reports Generated
-                          </p>
-                        </div>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            94%
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Prediction Accuracy
-                          </p>
-                        </div>
-                        <div>
-                          <p className="font-bangers text-4xl text-comic-black">
-                            12
-                          </p>
-                          <p className="font-comic text-comic-black/80">
-                            Classes Monitored
-                          </p>
-                        </div>
-                      </>
-                    )}
+                {!isStudent && (
+                  <div className="flex justify-center gap-4 mt-4">
+                    <RiskBadge level="low" />
+                    <RiskBadge level="medium" />
+                    <RiskBadge level="high" />
                   </div>
-                </ComicCard>
-              </motion.div>
-            </>
-          )}
+                )}
+              </ComicCard>
+            </motion.div>
+
+            {/* Class Performance / Subject Performance Pie Chart */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <ComicCard variant="white">
+                <h3 className="font-bangers text-2xl text-comic-black mb-4">
+                  {isStudent
+                    ? "📚 Subject Performance"
+                    : "📚 Students by Class"}
+                </h3>
+                <div className="h-64">{renderSubjectOrClassChart()}</div>
+              </ComicCard>
+            </motion.div>
+          </div>
+
+          {/* Report Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h3 className="font-bangers text-2xl text-foreground mb-6">
+              📄 Available Reports
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {reports.map((report, i) => (
+                <motion.div
+                  key={report.id}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                >
+                  <ComicCard
+                    variant={report.color as "green" | "red" | "yellow"}
+                    className="relative overflow-hidden"
+                  >
+                    {/* Sticker Badge */}
+                    <div className="absolute top-4 right-4 hidden sm:block">
+                      <StickerBadge variant="white" size="sm" rotate>
+                        {report.type}
+                      </StickerBadge>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-start gap-4">
+                      <div className="w-16 h-16 bg-comic-white/30 rounded-xl border-4 border-comic-black flex items-center justify-center flex-shrink-0">
+                        <report.icon className="w-8 h-8" />
+                      </div>
+                      <div className="flex-1 min-w-0 w-full">
+                        <h4 className="font-bangers text-xl mb-1 sm:pr-20">
+                          {report.title}
+                        </h4>
+                        <p className="font-comic text-sm opacity-80 mb-4">
+                          {report.date}
+                        </p>
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-3 gap-2 mb-4">
+                          {Object.entries(report.stats).map(([key, value]) => (
+                            <div
+                              key={key}
+                              className="bg-comic-white/20 rounded-lg p-2 text-center"
+                            >
+                              <p className="font-bangers text-lg break-words">
+                                {String(value)}
+                              </p>
+                              <p className="font-comic text-xs capitalize">
+                                {key.replace(/([A-Z])/g, " $1")}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+
+                        <ComicButton
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDownload(report.title)}
+                          className="w-full"
+                        >
+                          <Download className="w-4 h-4 mr-2" /> Download PDF
+                        </ComicButton>
+                      </div>
+                    </div>
+                  </ComicCard>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Quick Stats Footer */}
+          <motion.div
+            className="mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <ComicCard variant="yellow" className="text-center">
+              <div className="flex flex-wrap justify-center gap-8">
+                {isStudent ? (
+                  <>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        {progress?.subjectAverages?.length || 0}
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Subjects Tracked
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        {progress?.metrics?.attendance?.value || 0}%
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Overall Attendance
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        {studentOverallScore.toFixed(0)}%
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Performance Score
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        2,547
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Total Students
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        156
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Reports Generated
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        94%
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Prediction Accuracy
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-bangers text-4xl text-comic-black">
+                        12
+                      </p>
+                      <p className="font-comic text-comic-black/80">
+                        Classes Monitored
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </ComicCard>
+          </motion.div>
+        </>
+      )}
     </DashboardLayout>
   );
 };

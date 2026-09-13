@@ -1,7 +1,21 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, BarChart3, Settings, LogOut, Menu, X, BookOpen, TrendingUp, Target, Award, Lightbulb, Zap, RefreshCw,  } from "lucide-react";
+import {
+  Home,
+  BarChart3,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  BookOpen,
+  TrendingUp,
+  Target,
+  Award,
+  Lightbulb,
+  Zap,
+  RefreshCw,
+} from "lucide-react";
 import ComicButton from "@/components/ComicButton";
 import ComicCard from "@/components/ComicCard";
 import StickerBadge from "@/components/StickerBadge";
@@ -255,191 +269,185 @@ const StudentDashboard = () => {
         </div>
       )}
 
-
-          {/* Main Stats */}
-          {progressLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="h-40 rounded-xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-              >
-                <ComicCard variant="green">
-                  <div className="text-center">
-                    <Target className="w-10 h-10 mx-auto mb-2" />
-                    <p className="font-comic text-sm opacity-90">Attendance</p>
-                    <p className="font-bangers text-4xl">
-                      {dashboardData.attendance}%
-                    </p>
-                  </div>
-                </ComicCard>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <ComicCard variant="yellow">
-                  <div className="text-center">
-                    <BookOpen className="w-10 h-10 mx-auto mb-2" />
-                    <p className="font-comic text-sm opacity-90">
-                      Assignment Score
-                    </p>
-                    <p className="font-bangers text-4xl">
-                      {dashboardData.internalMarks}%
-                    </p>
-                  </div>
-                </ComicCard>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                <ComicCard variant="red">
-                  <div className="text-center">
-                    <TrendingUp className="w-10 h-10 mx-auto mb-2" />
-                    <p className="font-comic text-sm opacity-90">
-                      Overall Score
-                    </p>
-                    <p className="font-bangers text-4xl">
-                      {dashboardData.predictedScore}%
-                    </p>
-                  </div>
-                </ComicCard>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <ComicCard variant="white">
-                  <div className="text-center">
-                    <Award className="w-10 h-10 mx-auto mb-2 text-accent" />
-                    <p className="font-comic text-sm text-comic-black/70">
-                      Risk Level
-                    </p>
-                    <div className="mt-2">
-                      <RiskBadge level={dashboardData.riskLevel} />
-                    </div>
-                  </div>
-                </ComicCard>
-              </motion.div>
-            </div>
-          )}
-
-          {/* Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Subject Performance */}
-            <motion.div
-              className="lg:col-span-2"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <ComicCard variant="white">
-                <h3 className="font-bangers text-2xl text-comic-black mb-6">
-                  Subject Performance
-                </h3>
-                <div className="space-y-4">
-                  {subjects.map((subject) => (
-                    <div key={subject.name} className="space-y-2">
-                      <div className="flex justify-between font-comic">
-                        <span className="font-bold text-comic-black">
-                          {subject.name}
-                        </span>
-                        <div className="flex gap-4">
-                          <span className="text-comic-black/70">
-                            Current: <strong>{subject.marks}%</strong>
-                          </span>
-                          <span className="text-accent font-bold">
-                            Predicted: {subject.predicted}%
-                          </span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <ComicProgress
-                          value={subject.marks}
-                          showValue={false}
-                        />
-                        <div
-                          className="absolute top-0 h-6 w-1 bg-comic-black rounded"
-                          style={{ left: `${subject.predicted}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </ComicCard>
-            </motion.div>
-
-            {/* Recommendations */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <ComicCard variant="yellow">
-                <div className="flex items-center gap-2 mb-4 justify-between">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="w-6 h-6" />
-                    <h3 className="font-bangers text-2xl text-comic-black">
-                      AI Tips For You!
-                    </h3>
-                  </div>
-                  {aiLoading && <RefreshCw className="h-4 w-4 animate-spin" />}
-                </div>
-                <div className="space-y-3">
-                  {aiLoading && !aiPrediction
-                    ? [1, 2, 3].map((i) => (
-                        <Skeleton
-                          key={i}
-                          className="h-12 w-full rounded-xl bg-white/50"
-                        />
-                      ))
-                    : recommendations.map((rec, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.7 + i * 0.1 }}
-                          className="bg-comic-white rounded-xl p-3 border-2 border-comic-black shadow-sm"
-                        >
-                          <p className="font-comic text-comic-black text-sm">
-                            {rec}
-                          </p>
-                        </motion.div>
-                      ))}
-                </div>
-              </ComicCard>
-            </motion.div>
-          </div>
-
-          {/* Motivational Footer */}
+      {/* Main Stats */}
+      {progressLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-40 rounded-xl" />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <motion.div
-            className="mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
           >
-            <ComicCard variant="green" className="text-center py-8">
-              <StickerText size="lg" color="white" className="block mb-2">
-                You're Doing Amazing! 🎉
-              </StickerText>
-              <p className="font-comic text-xl text-comic-white/90">
-                Keep working hard and you'll achieve your goals!
-              </p>
+            <ComicCard variant="green">
+              <div className="text-center">
+                <Target className="w-10 h-10 mx-auto mb-2" />
+                <p className="font-comic text-sm opacity-90">Attendance</p>
+                <p className="font-bangers text-4xl">
+                  {dashboardData.attendance}%
+                </p>
+              </div>
             </ComicCard>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <ComicCard variant="yellow">
+              <div className="text-center">
+                <BookOpen className="w-10 h-10 mx-auto mb-2" />
+                <p className="font-comic text-sm opacity-90">
+                  Assignment Score
+                </p>
+                <p className="font-bangers text-4xl">
+                  {dashboardData.internalMarks}%
+                </p>
+              </div>
+            </ComicCard>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <ComicCard variant="red">
+              <div className="text-center">
+                <TrendingUp className="w-10 h-10 mx-auto mb-2" />
+                <p className="font-comic text-sm opacity-90">Overall Score</p>
+                <p className="font-bangers text-4xl">
+                  {dashboardData.predictedScore}%
+                </p>
+              </div>
+            </ComicCard>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <ComicCard variant="white">
+              <div className="text-center">
+                <Award className="w-10 h-10 mx-auto mb-2 text-accent" />
+                <p className="font-comic text-sm text-comic-black/70">
+                  Risk Level
+                </p>
+                <div className="mt-2">
+                  <RiskBadge level={dashboardData.riskLevel} />
+                </div>
+              </div>
+            </ComicCard>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Subject Performance */}
+        <motion.div
+          className="lg:col-span-2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <ComicCard variant="white">
+            <h3 className="font-bangers text-2xl text-comic-black mb-6">
+              Subject Performance
+            </h3>
+            <div className="space-y-4">
+              {subjects.map((subject) => (
+                <div key={subject.name} className="space-y-2">
+                  <div className="flex justify-between font-comic">
+                    <span className="font-bold text-comic-black">
+                      {subject.name}
+                    </span>
+                    <div className="flex gap-4">
+                      <span className="text-comic-black/70">
+                        Current: <strong>{subject.marks}%</strong>
+                      </span>
+                      <span className="text-accent font-bold">
+                        Predicted: {subject.predicted}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <ComicProgress value={subject.marks} showValue={false} />
+                    <div
+                      className="absolute top-0 h-6 w-1 bg-comic-black rounded"
+                      style={{ left: `${subject.predicted}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ComicCard>
+        </motion.div>
+
+        {/* Recommendations */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <ComicCard variant="yellow">
+            <div className="flex items-center gap-2 mb-4 justify-between">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="w-6 h-6" />
+                <h3 className="font-bangers text-2xl text-comic-black">
+                  AI Tips For You!
+                </h3>
+              </div>
+              {aiLoading && <RefreshCw className="h-4 w-4 animate-spin" />}
+            </div>
+            <div className="space-y-3">
+              {aiLoading && !aiPrediction
+                ? [1, 2, 3].map((i) => (
+                    <Skeleton
+                      key={i}
+                      className="h-12 w-full rounded-xl bg-white/50"
+                    />
+                  ))
+                : recommendations.map((rec, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 + i * 0.1 }}
+                      className="bg-comic-white rounded-xl p-3 border-2 border-comic-black shadow-sm"
+                    >
+                      <p className="font-comic text-comic-black text-sm">
+                        {rec}
+                      </p>
+                    </motion.div>
+                  ))}
+            </div>
+          </ComicCard>
+        </motion.div>
+      </div>
+
+      {/* Motivational Footer */}
+      <motion.div
+        className="mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+      >
+        <ComicCard variant="green" className="text-center py-8">
+          <StickerText size="lg" color="white" className="block mb-2">
+            You're Doing Amazing! 🎉
+          </StickerText>
+          <p className="font-comic text-xl text-comic-white/90">
+            Keep working hard and you'll achieve your goals!
+          </p>
+        </ComicCard>
+      </motion.div>
     </DashboardLayout>
   );
 };

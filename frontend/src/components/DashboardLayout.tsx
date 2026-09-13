@@ -105,9 +105,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           w-[85vw] sm:w-80 lg:w-72 h-[100dvh] bg-sidebar border-r-8 border-comic-black shadow-[20px_0px_50px_rgba(0,0,0,0.1)] lg:shadow-none
           flex flex-col transition-transform duration-500 ease-out
           ${
-            sidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full lg:translate-x-0"
+            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }
         `}
       >
@@ -131,7 +129,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Role Badge */}
           <div className="mb-8 pl-1">
-            <StickerBadge variant={badgeColor} size="md" className="w-full text-center">
+            <StickerBadge
+              variant={badgeColor}
+              size="md"
+              className="w-full text-center"
+            >
               {role} DASHBOARD
             </StickerBadge>
           </div>
@@ -180,7 +182,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {/* Logout Button */}
           <div className="mt-8 pt-6 border-t-4 border-comic-black/10">
             <Link to="/">
-              <ComicButton variant="danger" size="md" className="w-full py-4 text-lg">
+              <ComicButton
+                variant="danger"
+                size="md"
+                className="w-full py-4 text-lg"
+              >
                 <LogOut className="w-5 h-5 mr-2" /> Logout
               </ComicButton>
             </Link>
