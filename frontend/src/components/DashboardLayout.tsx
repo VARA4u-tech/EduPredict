@@ -114,7 +114,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* Decorative Top Pattern */}
         <div className="h-4 w-full bg-secondary bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAiLz4KPGNpcmNsZSBjeD0iNCIgY3k9IjQiIHI9IjMiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4xIi8+Cjwvc3ZnPg==')] border-b-4 border-comic-black" />
 
-        <div className="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto">
+        <div className="flex-1 flex flex-col p-4 pt-20 lg:p-6 overflow-y-auto">
           {/* Logo Section */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-gradient-to-br from-primary to-orange-500 rounded-xl border-4 border-comic-black shadow-[4px_4px_0px_black] flex items-center justify-center shrink-0 rotate-[-5deg]">
