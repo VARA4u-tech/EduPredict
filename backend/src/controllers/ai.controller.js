@@ -52,7 +52,7 @@ JSON keys: successProbability (number), strengths (array of 2 strings), improvem
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 400,
     });
 
     const responseText = completion.choices[0].message.content;
@@ -122,7 +122,7 @@ Make it engaging and actionable.`;
         { role: "user", content: prompt },
       ],
       temperature: 0.8,
-      max_tokens: 500,
+      max_tokens: 400,
     });
 
     res.json({
@@ -181,7 +181,7 @@ Array of objects: panel, scene, dialogue, mood`;
         { role: "user", content: prompt },
       ],
       temperature: 0.9,
-      max_tokens: 500,
+      max_tokens: 400,
     });
 
     const responseText = completion.choices[0].message.content;
@@ -256,7 +256,7 @@ export const chatWithAI = async (req, res) => {
         { role: "user", content: sanitizedMessage },
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 400,
     });
 
     res.json({
