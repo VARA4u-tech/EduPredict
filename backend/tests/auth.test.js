@@ -1,6 +1,15 @@
 import request from "supertest";
 import app from "../src/app.js";
 
+describe("Auth API routes", () => {
+  it("mounts login at the legacy /api/auth path", async () => {
+    const res = await request(app).post("/api/auth/login").send({});
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toHaveProperty("error");
+  });
+});
+
 describe("Auth Middleware", () => {
   it("should return 401 if no token provided", async () => {
     const res = await request(app).get("/api/v1/students/123/subjects");
