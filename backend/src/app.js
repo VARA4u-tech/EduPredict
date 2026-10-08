@@ -14,6 +14,7 @@ const app = express();
 
 // Middleware
 const allowedOrigins = [
+  "https://edu-pridect.vercel.app",
   process.env.FRONTEND_URL,
   ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",").map(url => url.trim()) : []),
 ].filter(Boolean);
@@ -22,10 +23,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (
-      allowedOrigins.indexOf(origin) !== -1 ||
-      allowedOrigins.includes(origin)
-    ) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       console.log("Blocked CORS origin:", origin);
@@ -81,6 +79,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // API Routes
+app.use("/api/ai", aiRoutes);
 app.use("/api/v1/ai", aiRoutes);
 app.use("/api/v1/students", studentRoutes);
 app.use("/api/v1/auth", authRoutes);

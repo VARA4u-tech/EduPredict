@@ -26,6 +26,32 @@ afterEach(() => {
 });
 
 describe("AI API", () => {
+  it("allows the deployed frontend's legacy AI preflight", async () => {
+    const res = await request(app)
+      .options("/api/ai/chat")
+      .set("Origin", "https://edu-pridect.vercel.app")
+      .set("Access-Control-Request-Method", "POST")
+      .set("Access-Control-Request-Headers", "content-type,authorization");
+
+    expect(res.statusCode).toEqual(204);
+    expect(res.headers["access-control-allow-origin"]).toEqual(
+      "https://edu-pridect.vercel.app",
+    );
+  });
+
+  it("supports the legacy /api/ai route", async () => {
+    createSpy.mockResolvedValue({
+      choices: [{ message: { content: "Here are some tips." } }],
+    });
+
+    const res = await request(app)
+      .post("/api/ai/chat")
+      .send({ message: "How can I improve?" });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.success).toBe(true);
+  });
+
   describe("POST /api/v1/ai/predict", () => {
     it("should return 200 and a prediction object", async () => {
       const fakePrediction = {
