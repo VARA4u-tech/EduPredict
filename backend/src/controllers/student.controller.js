@@ -83,7 +83,7 @@ export const updateStudentData = async (req, res) => {
     console.error("Update error:", error);
     res.status(500).json({
       error: "Failed to update student data",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -186,7 +186,7 @@ export const getStudentProgress = async (req, res) => {
     console.error("Progress error:", error);
     res.status(500).json({
       error: "Failed to fetch student progress",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -264,8 +264,8 @@ Format as JSON with keys: impact, projectedScores, timeline, actionSteps, challe
   } catch (error) {
     console.error("What-if error:", error);
     res.status(500).json({
-      error: error.message || "Failed to analyze scenario",
-      details: error.stack,
+      error: "Failed to analyze scenario",
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -295,7 +295,7 @@ export const getStudentSubjects = async (req, res) => {
     console.error("Get subjects error:", error);
     res.status(500).json({
       error: "Failed to fetch subjects",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -348,7 +348,7 @@ export const updateStudentSubjects = async (req, res) => {
     console.error("Update subjects error:", error);
     res.status(500).json({
       error: "Failed to update subjects",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -390,7 +390,7 @@ export const resetStudentProgress = async (req, res) => {
     console.error("Reset progress error:", error);
     res.status(500).json({
       error: "Failed to reset progress",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };

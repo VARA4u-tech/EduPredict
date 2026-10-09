@@ -78,8 +78,8 @@ JSON keys: successProbability (number), strengths (array of 2 strings), improvem
   } catch (error) {
     console.error("Prediction error:", error);
     res.status(500).json({
-      error: error.message || "Failed to generate prediction",
-      details: error.stack,
+      error: "Failed to generate prediction",
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -133,7 +133,7 @@ Make it engaging and actionable.`;
     console.error("Study advice error:", error);
     res.status(500).json({
       error: "Failed to generate study advice",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -208,7 +208,7 @@ Array of objects: panel, scene, dialogue, mood`;
     console.error("Comic narrative error:", error);
     res.status(500).json({
       error: "Failed to generate comic narrative",
-      details: error.message,
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
@@ -266,8 +266,8 @@ export const chatWithAI = async (req, res) => {
   } catch (error) {
     console.error("Chat error:", error);
     res.status(500).json({
-      error: error.message || "Failed to process chat message",
-      details: error.stack,
+      error: "Failed to process chat message",
+      ...(process.env.NODE_ENV === "development" && { details: error.message }),
     });
   }
 };
