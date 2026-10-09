@@ -81,6 +81,7 @@ app.get("/api/health", (req, res) => {
 // API Routes
 app.use("/api/ai", aiRoutes);
 app.use("/api/v1/ai", aiRoutes);
+app.use("/api/students", studentRoutes);       // alias (without v1)
 app.use("/api/v1/students", studentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/v1/auth", authRoutes);
