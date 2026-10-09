@@ -84,11 +84,11 @@ export const login = async (req, res, next) => {
 };
 
 const generateToken = (id) => {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET || "default_secret_key_change_me",
-    {
-      expiresIn: "30d",
-    },
-  );
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("FATAL: JWT_SECRET environment variable is not set");
+  }
+  return jwt.sign({ id }, secret, {
+    expiresIn: "7d",
+  });
 };
