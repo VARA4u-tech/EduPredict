@@ -13,16 +13,16 @@ import {
 const router = express.Router();
 
 // Get student profile
-router.get("/:id", getStudentProfile);
+router.get("/:id", protect, getStudentProfile);
 
 // Update student data
 router.put("/:id", protect, updateStudentData);
 
 // Get student progress/analytics
-router.get("/:id/progress", getStudentProgress);
+router.get("/:id/progress", protect, getStudentProgress);
 
 // "What If" scenario analysis
-router.post("/:id/what-if", getWhatIfScenario);
+router.post("/:id/what-if", protect, getWhatIfScenario);
 
 // Get student subjects/marks
 router.get("/:id/subjects", protect, getStudentSubjects);
