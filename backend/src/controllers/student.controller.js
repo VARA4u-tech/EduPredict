@@ -2,9 +2,23 @@ import Student from "../models/student.model.js";
 import openai from "../config/openai.config.js";
 
 /**
+ * Check if the requesting user owns this student record (or is admin/faculty)
+ */
+const checkOwnership = (req, res) => {
+  const isOwner = req.user._id.toString() === req.params.id;
+  const isPrivileged = ["admin", "faculty"].includes(req.user.role);
+  if (!isOwner && !isPrivileged) {
+    res.status(403).json({ error: "Access denied: you can only access your own data" });
+    return false;
+  }
+  return true;
+};
+
+/**
  * Get student profile by ID
  */
 export const getStudentProfile = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const student = await Student.findOne({ user: req.params.id }).populate(
       "user",
@@ -18,10 +32,7 @@ export const getStudentProfile = async (req, res) => {
     res.json({ success: true, student });
   } catch (error) {
     console.error("Get profile error:", error);
-    res.status(500).json({
-      error: "Failed to fetch student profile",
-      details: error.message,
-    });
+    res.status(500).json({ error: "Failed to fetch student profile" });
   }
 };
 
@@ -29,6 +40,7 @@ export const getStudentProfile = async (req, res) => {
  * Update student data
  */
 export const updateStudentData = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const updates = req.body;
 
@@ -79,6 +91,7 @@ export const updateStudentData = async (req, res) => {
  * Get student progress and analytics
  */
 export const getStudentProgress = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const student = await Student.findOne({ user: req.params.id }).populate(
       "user",
@@ -182,6 +195,7 @@ export const getStudentProgress = async (req, res) => {
  * Generate "What If" scenario analysis
  */
 export const getWhatIfScenario = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const { scenario } = req.body;
 
@@ -260,6 +274,7 @@ Format as JSON with keys: impact, projectedScores, timeline, actionSteps, challe
  * Get student subjects/marks
  */
 export const getStudentSubjects = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const student = await Student.findOne({ user: req.params.id }).populate(
       "user",
@@ -289,6 +304,7 @@ export const getStudentSubjects = async (req, res) => {
  * Update student subjects/marks
  */
 export const updateStudentSubjects = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const { subjects } = req.body;
 
@@ -341,6 +357,7 @@ export const updateStudentSubjects = async (req, res) => {
  * Reset student progress/data
  */
 export const resetStudentProgress = async (req, res) => {
+  if (!checkOwnership(req, res)) return;
   try {
     const student = await Student.findOneAndUpdate(
       { user: req.params.id },
