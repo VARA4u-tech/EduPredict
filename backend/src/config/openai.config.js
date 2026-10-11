@@ -35,7 +35,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   baseURL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
   defaultHeaders: {
-    "HTTP-Referer": process.env.FRONTEND_URL || "http://localhost:5173", // Site URL for rankings
+    "HTTP-Referer": process.env.FRONTEND_URL || "http://localhost:8080", // Site URL for rankings
     "X-Title": "EduPredict Student Success", // Site title for rankings
   },
 });
