@@ -67,7 +67,7 @@ export const updateStudentData = async (req, res) => {
     const student = await Student.findOneAndUpdate(
       { user: req.params.id },
       { $set: filteredUpdates },
-      { new: true },
+      { new: true, runValidators: true },
     );
 
     if (!student) {
@@ -332,7 +332,7 @@ export const updateStudentSubjects = async (req, res) => {
     const student = await Student.findOneAndUpdate(
       { user: req.params.id },
       { $set: { subjects: subjects } },
-      { new: true },
+      { new: true, runValidators: true },
     );
 
     if (!student) {
@@ -374,7 +374,7 @@ export const resetStudentProgress = async (req, res) => {
           subjects: []
         } 
       },
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!student) {
