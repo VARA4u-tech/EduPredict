@@ -1,10 +1,16 @@
 import Student from "../models/student.model.js";
 import openai from "../config/openai.config.js";
+import mongoose from "mongoose";
 
 /**
  * Check if the requesting user owns this student record (or is admin/faculty)
  */
 const checkOwnership = (req, res) => {
+  // Validate MongoDB ObjectId format first to avoid 500 errors
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ error: 'Invalid student ID format' });
+    return false;
+  }
   const isOwner = req.user._id.toString() === req.params.id;
   const isPrivileged = ["admin", "faculty"].includes(req.user.role);
   if (!isOwner && !isPrivileged) {
@@ -310,6 +316,10 @@ export const updateStudentSubjects = async (req, res) => {
 
     if (!subjects || !Array.isArray(subjects)) {
       return res.status(400).json({ error: "Subjects array is required" });
+    }
+
+    if (subjects.length > 20) {
+      return res.status(400).json({ error: "Maximum 20 subjects allowed" });
     }
 
     // Validate each subject
