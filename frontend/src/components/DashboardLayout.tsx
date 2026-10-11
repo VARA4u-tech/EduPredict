@@ -5,6 +5,7 @@ import { Menu, X, LogOut, ChevronRight } from "lucide-react";
 import Logo from "./Logo";
 import StickerBadge from "./StickerBadge";
 import ComicButton from "./ComicButton";
+import { AuthService } from "@/services/auth.service";
 
 export interface MenuItem {
   icon: React.ElementType;
@@ -181,15 +182,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Logout Button */}
           <div className="mt-8 pt-6 border-t-4 border-comic-black/10">
-            <Link to="/">
-              <ComicButton
-                variant="danger"
-                size="md"
-                className="w-full py-4 text-lg"
-              >
-                <LogOut className="w-5 h-5 mr-2" /> Logout
-              </ComicButton>
-            </Link>
+            <ComicButton
+              variant="danger"
+              size="md"
+              className="w-full py-4 text-lg"
+              onClick={() => AuthService.logout()}
+            >
+              <LogOut className="w-5 h-5 mr-2" /> Logout
+            </ComicButton>
           </div>
         </div>
       </aside>
